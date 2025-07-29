@@ -1,0 +1,513 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "retry": "Retry",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Information",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "required": "Required",
+    "optional": "Optional",
+    "select": "Select",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "reset": "Reset",
+    "download": "Download",
+    "upload": "Upload",
+    "view": "View",
+    "share": "Share"
+  },
+  "loading": {
+    "generic": "Loading...",
+    "validation": "Validating form data...",
+    "fetching": "Loading data...",
+    "submitting": "Submitting form...",
+    "processing": "Processing your request...",
+    "ai": {
+      "processing": "Processing with AI...",
+      "analyzing": "Analyzing your profile...",
+      "matching": "Finding career matches...",
+      "generating": "Generating recommendations...",
+      "finalizing": "Finalizing results..."
+    },
+    "stages": {
+      "initializing": "Initializing...",
+      "validating": "Validating data...",
+      "processing": "Processing...",
+      "finalizing": "Finalizing...",
+      "complete": "Complete"
+    },
+    "progress": {
+      "step": "Step {{current}} of {{total}}",
+      "percentage": "{{percentage}}% complete",
+      "estimatedTime": "Estimated time remaining: {{time}}",
+      "elapsedTime": "Elapsed time: {{time}}"
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "profile": "Profile",
+    "results": "Results",
+    "analytics": "Analytics",
+    "help": "Help",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "language": {
+    "english": "English",
+    "hindi": "हिंदी",
+    "switchTo": "Switch to {{language}}",
+    "currentLanguage": "Current Language"
+  },
+  "app": {
+    "title": "AI Career Counseling Tool",
+    "subtitle": "Discover Your Perfect Career Path",
+    "description": "AI-powered career guidance tailored for Indian students based on NEP 2020 guidelines",
+    "welcome": "Welcome to AI Career Counseling",
+    "getStarted": "Get Started"
+  },
+  "form": {
+    "personalInfo": {
+      "title": "Personal Information",
+      "description": "Tell us about yourself",
+      "name": {
+        "label": "Full Name",
+        "placeholder": "Enter your full name",
+        "error": "Please enter your full name"
+      },
+      "grade": {
+        "label": "Current Grade/Class",
+        "placeholder": "Select your grade",
+        "error": "Please select your current grade"
+      },
+      "board": {
+        "label": "Education Board",
+        "placeholder": "Select your board",
+        "error": "Please select your education board"
+      },
+      "age": {
+        "label": "Age",
+        "placeholder": "Enter your age",
+        "error": "Please enter a valid age"
+      },
+      "gender": {
+        "label": "Gender",
+        "placeholder": "Select gender",
+        "options": {
+          "male": "Male",
+          "female": "Female",
+          "other": "Other",
+          "prefer-not-to-say": "Prefer not to say"
+        }
+      },
+      "category": {
+        "label": "Category",
+        "placeholder": "Select category",
+        "options": {
+          "general": "General",
+          "obc": "OBC",
+          "sc": "SC",
+          "st": "ST",
+          "ews": "EWS"
+        }
+      },
+      "physicallyDisabled": {
+        "label": "Person with Disability (PwD)",
+        "yes": "Yes",
+        "no": "No"
+      }
+    },
+    "academicInfo": {
+      "title": "Academic Information",
+      "description": "Share your academic interests and performance",
+      "interests": {
+        "label": "Areas of Interest",
+        "placeholder": "Select your interests",
+        "error": "Please select at least one interest",
+        "helpText": "Choose subjects or fields that genuinely interest you"
+      },
+      "subjects": {
+        "label": "Current Subjects",
+        "placeholder": "Select your subjects",
+        "error": "Please select your current subjects"
+      },
+      "performance": {
+        "label": "Academic Performance",
+        "placeholder": "Select your performance level",
+        "options": {
+          "excellent": "Excellent (90%+)",
+          "good": "Good (75-89%)",
+          "average": "Average (60-74%)",
+          "below-average": "Below Average (<60%)"
+        }
+      },
+      "favoriteSubjects": {
+        "label": "Favorite Subjects",
+        "placeholder": "Select your favorite subjects",
+        "helpText": "Subjects you enjoy studying the most"
+      },
+      "difficultSubjects": {
+        "label": "Challenging Subjects",
+        "placeholder": "Select subjects you find difficult",
+        "helpText": "Subjects you struggle with or find challenging"
+      },
+      "extracurricular": {
+        "label": "Extracurricular Activities",
+        "placeholder": "Select your activities",
+        "helpText": "Sports, arts, clubs, competitions, etc."
+      },
+      "achievements": {
+        "label": "Achievements",
+        "placeholder": "List your achievements",
+        "helpText": "Awards, competitions, certifications, etc."
+      }
+    },
+    "socioeconomicInfo": {
+      "title": "Background Information",
+      "description": "Help us understand your background for better recommendations",
+      "location": {
+        "label": "Location",
+        "placeholder": "Enter your city/state",
+        "error": "Please enter your location"
+      },
+      "familyBackground": {
+        "label": "Family Background",
+        "placeholder": "Describe your family background",
+        "error": "Please describe your family background",
+        "helpText": "Brief description of your family's educational and professional background"
+      },
+      "familyIncome": {
+        "label": "Annual Family Income",
+        "placeholder": "Select income range",
+        "error": "Please select family income range",
+        "options": {
+          "below-1l": "Below ₹1 Lakh",
+          "1-3l": "₹1-3 Lakhs",
+          "3-5l": "₹3-5 Lakhs",
+          "5-10l": "₹5-10 Lakhs",
+          "10-20l": "₹10-20 Lakhs",
+          "20-50l": "₹20-50 Lakhs",
+          "above-50l": "Above ₹50 Lakhs"
+        }
+      },
+      "economicFactors": {
+        "label": "Economic Factors",
+        "placeholder": "Select applicable factors",
+        "error": "Please select at least one economic factor",
+        "helpText": "Factors that describe your family's economic situation"
+      },
+      "parentOccupation": {
+        "father": {
+          "label": "Father's Occupation",
+          "placeholder": "Enter father's occupation"
+        },
+        "mother": {
+          "label": "Mother's Occupation",
+          "placeholder": "Enter mother's occupation"
+        }
+      },
+      "householdSize": {
+        "label": "Household Size",
+        "placeholder": "Number of family members",
+        "helpText": "Total number of people living in your household"
+      },
+      "ruralUrban": {
+        "label": "Area Type",
+        "placeholder": "Select area type",
+        "options": {
+          "rural": "Rural",
+          "urban": "Urban",
+          "semi-urban": "Semi-Urban"
+        }
+      },
+      "transportMode": {
+        "label": "Primary Transport Mode",
+        "placeholder": "How do you usually travel?",
+        "options": {
+          "walking": "Walking",
+          "bicycle": "Bicycle",
+          "public-transport": "Public Transport",
+          "private-vehicle": "Private Vehicle",
+          "school-bus": "School Bus"
+        }
+      },
+      "internetAccess": {
+        "label": "Internet Access",
+        "yes": "Yes, I have regular internet access",
+        "no": "No, limited or no internet access"
+      },
+      "deviceAccess": {
+        "label": "Device Access",
+        "placeholder": "Select available devices",
+        "helpText": "Devices you have access to for learning"
+      }
+    },
+    "aspirations": {
+      "title": "Career Aspirations",
+      "description": "Share your career goals and preferences",
+      "preferredCareers": {
+        "label": "Preferred Career Fields",
+        "placeholder": "Select career fields of interest",
+        "helpText": "Career areas you're considering or interested in"
+      },
+      "preferredLocations": {
+        "label": "Preferred Work Locations",
+        "placeholder": "Select preferred locations",
+        "helpText": "Cities or regions where you'd like to work"
+      },
+      "salaryExpectations": {
+        "label": "Salary Expectations",
+        "placeholder": "Select expected salary range",
+        "options": {
+          "not-important": "Not a primary concern",
+          "basic": "Basic living wage",
+          "comfortable": "Comfortable lifestyle",
+          "high": "High income priority"
+        }
+      },
+      "workLifeBalance": {
+        "label": "Work-Life Balance Priority",
+        "placeholder": "Select priority level",
+        "options": {
+          "high": "High - Very important",
+          "medium": "Medium - Somewhat important",
+          "low": "Low - Career growth priority"
+        }
+      }
+    },
+    "constraints": {
+      "title": "Constraints & Considerations",
+      "description": "Help us understand any limitations or considerations",
+      "financialConstraints": {
+        "label": "Financial Constraints",
+        "yes": "Yes, financial resources are limited",
+        "no": "No, finances are not a major constraint"
+      },
+      "locationConstraints": {
+        "label": "Location Constraints",
+        "placeholder": "Select location limitations",
+        "helpText": "Places where you cannot study or work"
+      },
+      "familyExpectations": {
+        "label": "Family Expectations",
+        "placeholder": "Describe family expectations",
+        "helpText": "Career expectations or preferences from your family"
+      },
+      "timeConstraints": {
+        "label": "Time Constraints",
+        "placeholder": "Any time-related constraints",
+        "helpText": "Need to start earning soon, family responsibilities, etc."
+      }
+    },
+    "validation": {
+      "required": "This field is required",
+      "minLength": "Minimum {{min}} characters required",
+      "maxLength": "Maximum {{max}} characters allowed",
+      "invalidEmail": "Please enter a valid email address",
+      "invalidPhone": "Please enter a valid phone number",
+      "selectAtLeastOne": "Please select at least one option",
+      "invalidAge": "Please enter a valid age between 10 and 25",
+      "invalidName": "Name should only contain letters and spaces",
+      "invalidGrade": "Please select a valid grade",
+      "invalidBoard": "Please select a valid education board",
+      "invalidLanguage": "Please select a valid language preference",
+      "invalidGender": "Please select a valid gender option",
+      "invalidCategory": "Please select a valid category",
+      "invalidLocation": "Please enter a valid location",
+      "invalidFamilyBackground": "Please provide a brief description of your family background",
+      "invalidFamilyIncome": "Please select a valid family income range",
+      "invalidAreaType": "Please select a valid area type",
+      "invalidInternetAccess": "Please specify your internet access",
+      "invalidDeviceAccess": "Please select at least one device you have access to",
+      "invalidHouseholdSize": "Household size must be between 1 and 20",
+      "tooManySelections": "Too many selections. Maximum {{max}} allowed",
+      "suggestions": {
+        "required": "This field is required to continue.",
+        "minLength": "Please enter at least {{min}} characters.",
+        "maxLength": "Please enter no more than {{max}} characters.",
+        "email": "Please enter a valid email address (e.g., user@example.com).",
+        "phone": "Please enter a valid phone number (e.g., +91 9876543210).",
+        "pattern": "Please check the format of your input.",
+        "age": "Please enter a valid age between 10 and 25.",
+        "invalid": "Please enter a valid value.",
+        "name": "Use only letters and spaces in your name.",
+        "location": "Enter your city and state (e.g., Mumbai, Maharashtra).",
+        "familyBackground": "Briefly describe your family's educational and professional background.",
+        "selectOne": "Please select one option from the list.",
+        "selectMultiple": "You can select multiple options that apply to you."
+      }
+    },
+    "progress": {
+      "step": "Step {{current}} of {{total}}",
+      "completion": "{{percentage}}% Complete",
+      "personalInfo": "Personal Info",
+      "academicInfo": "Academic Info",
+      "backgroundInfo": "Background Info",
+      "aspirations": "Aspirations",
+      "review": "Review"
+    }
+  },
+  "results": {
+    "title": "Your Career Recommendations",
+    "subtitle": "Based on your profile, here are the top career matches",
+    "matchScore": "{{score}}% Match",
+    "viewDetails": "View Details",
+    "backToForm": "Modify Profile",
+    "shareResults": "Share Results",
+    "downloadReport": "Download Report",
+    "career": {
+      "description": "Description",
+      "requirements": "Requirements",
+      "prospects": "Career Prospects",
+      "colleges": "Recommended Colleges",
+      "scholarships": "Available Scholarships",
+      "pros": "Advantages",
+      "cons": "Challenges",
+      "dayInLife": "A Day in the Life",
+      "careerPath": "Career Progression",
+      "relatedCareers": "Related Careers",
+      "industryInsights": "Industry Insights"
+    },
+    "salary": {
+      "range": "Salary Range",
+      "entry": "Entry Level",
+      "mid": "Mid Level",
+      "senior": "Senior Level",
+      "currency": "INR"
+    },
+    "education": {
+      "path": "Education Path",
+      "duration": "Duration",
+      "requirements": "Requirements",
+      "alternativePaths": "Alternative Paths"
+    },
+    "charts": {
+      "salaryTrends": "Salary Progression",
+      "skillsRequired": "Skills Required",
+      "jobMarketTrends": "Job Market Trends",
+      "geographicDistribution": "Geographic Opportunities"
+    },
+    "noResults": {
+      "title": "No Recommendations Found",
+      "message": "We couldn't find suitable career recommendations based on your profile.",
+      "suggestion": "Try updating your interests or academic information for better matches."
+    }
+  },
+  "analytics": {
+    "title": "Analytics Dashboard",
+    "subtitle": "Insights and trends in career choices",
+    "loading": "Loading analytics data...",
+    "error": "Error loading analytics",
+    "retry": "Retry",
+    "refresh": "Refresh",
+    "autoRefresh": "Auto Refresh",
+    "exportCSV": "Export CSV",
+    "exportPDF": "Export PDF",
+    "allRegions": "All Regions",
+    "allBoards": "All Boards",
+    "timeRange": {
+      "7d": "Last 7 days",
+      "30d": "Last 30 days",
+      "90d": "Last 90 days",
+      "1y": "Last year"
+    },
+    "totalStudents": "Total Students",
+    "totalRecommendations": "Total Recommendations",
+    "activeRegions": "Active Regions",
+    "averageMatchScore": "Average Match Score",
+    "realtimeMetrics": "Real-time Metrics",
+    "activeUsers": "Active Users",
+    "responseTime": "Response Time",
+    "throughput": "Throughput",
+    "errorRate": "Error Rate",
+    "systemHealth": "System Health",
+    "popularCareers": "Popular Careers",
+    "regionalDistribution": "Regional Distribution",
+    "boardDistribution": "Board Distribution",
+    "gradeDistribution": "Grade Distribution",
+    "performanceMetrics": "Performance Metrics",
+    "recommendationAccuracy": "Recommendation Accuracy",
+    "processingTime": "Processing Time",
+    "userSatisfaction": "User Satisfaction",
+    "trendAnalysis": "Trend Analysis",
+    "insights": "Insights",
+    "predictions": "Predictions",
+    "recentActivity": "Recent Activity",
+    "totalUsers": "Total Users",
+    "demographics": "Demographic Breakdown",
+    "trends": "Trends Over Time",
+    "filters": {
+      "dateRange": "Date Range",
+      "gender": "Gender",
+      "category": "Category",
+      "board": "Education Board",
+      "location": "Location"
+    }
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Network error. Please check your connection and try again.",
+    "validation": "Please check the form for errors and correct them.",
+    "server": "Server error. Please try again later.",
+    "notFound": "Page Not Found",
+    "unauthorized": "Access Denied",
+    "timeout": "Request timed out. Please try again.",
+    "retry": "Retry",
+    "retryIn": "Retry in {{seconds}} seconds",
+    "maxRetriesReached": "Maximum retry attempts reached. Please try again later.",
+    "ai": {
+      "unavailable": "AI service is temporarily unavailable. Please try again in a few minutes.",
+      "processing": "Error processing your request with AI. Please try again.",
+      "quota": "AI service quota exceeded. Please try again later.",
+      "timeout": "AI processing is taking longer than expected. Please try again.",
+      "invalidResponse": "Received invalid response from AI service. Please try again.",
+      "fallback": "AI service is unavailable. Using fallback recommendations."
+    },
+    "database": {
+      "connection": "Database connection error. Please try again.",
+      "query": "Error retrieving data from database. Please try again."
+    },
+    "form": {
+      "submissionFailed": "Form submission failed. Please check your inputs and try again.",
+      "validationFailed": "Please correct the highlighted errors before submitting.",
+      "networkError": "Unable to submit form due to network issues. Please check your connection.",
+      "serverError": "Server error during form submission. Please try again later.",
+      "timeout": "Form submission timed out. Please try again."
+    },
+    "loading": {
+      "timeout": "Loading is taking longer than expected. Please refresh the page.",
+      "failed": "Failed to load content. Please try again."
+    }
+  },
+  "success": {
+    "profileSaved": "Profile saved successfully!",
+    "recommendationsGenerated": "Career recommendations generated successfully!",
+    "reportDownloaded": "Report downloaded successfully!",
+    "feedbackSubmitted": "Thank you for your feedback!"
+  },
+  "help": {
+    "title": "Help & Support",
+    "faq": "Frequently Asked Questions",
+    "contact": "Contact Support",
+    "guide": "User Guide",
+    "about": "About This Tool"
+  },
+  "footer": {
+    "copyright": "© 2024 AI Career Counseling Tool. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "support": "Support"
+  }
+}

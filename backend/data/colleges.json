@@ -1,0 +1,204 @@
+{
+  "colleges": [
+    {
+      "id": "iit-delhi",
+      "name": "Indian Institute of Technology Delhi",
+      "location": "New Delhi, Delhi",
+      "type": "government",
+      "courses": [
+        "Computer Science Engineering",
+        "Electrical Engineering",
+        "Mechanical Engineering",
+        "Civil Engineering",
+        "Chemical Engineering",
+        "Biotechnology",
+        "Mathematics and Computing"
+      ],
+      "entranceExams": ["JEE Advanced"],
+      "fees": {
+        "annual": 250000,
+        "currency": "INR"
+      },
+      "rankings": {
+        "nirf": 2,
+        "category": "Engineering"
+      },
+      "website": "https://home.iitd.ac.in/",
+      "established": 1961
+    },
+    {
+      "id": "iit-bombay",
+      "name": "Indian Institute of Technology Bombay",
+      "location": "Mumbai, Maharashtra",
+      "type": "government",
+      "courses": [
+        "Computer Science Engineering",
+        "Electrical Engineering",
+        "Mechanical Engineering",
+        "Aerospace Engineering",
+        "Chemical Engineering",
+        "Metallurgical Engineering"
+      ],
+      "entranceExams": ["JEE Advanced"],
+      "fees": {
+        "annual": 250000,
+        "currency": "INR"
+      },
+      "rankings": {
+        "nirf": 3,
+        "category": "Engineering"
+      },
+      "website": "https://www.iitb.ac.in/",
+      "established": 1958
+    },
+    {
+      "id": "aiims-delhi",
+      "name": "All India Institute of Medical Sciences Delhi",
+      "location": "New Delhi, Delhi",
+      "type": "government",
+      "courses": [
+        "MBBS",
+        "MD",
+        "MS",
+        "DM",
+        "MCh",
+        "BSc Nursing",
+        "MSc Nursing"
+      ],
+      "entranceExams": ["NEET UG", "NEET PG", "AIIMS INICET"],
+      "fees": {
+        "annual": 5846,
+        "currency": "INR"
+      },
+      "rankings": {
+        "nirf": 1,
+        "category": "Medical"
+      },
+      "website": "https://www.aiims.edu/",
+      "established": 1956
+    },
+    {
+      "id": "du-delhi",
+      "name": "University of Delhi",
+      "location": "New Delhi, Delhi",
+      "type": "government",
+      "courses": [
+        "BA Honours English",
+        "BA Honours Economics",
+        "BSc Honours Physics",
+        "BSc Honours Chemistry",
+        "BCom Honours",
+        "BBA",
+        "MA English",
+        "MSc Physics"
+      ],
+      "entranceExams": ["CUET UG", "CUET PG"],
+      "fees": {
+        "annual": 15000,
+        "currency": "INR"
+      },
+      "rankings": {
+        "nirf": 11,
+        "category": "University"
+      },
+      "website": "http://www.du.ac.in/",
+      "established": 1922
+    },
+    {
+      "id": "bits-pilani",
+      "name": "Birla Institute of Technology and Science Pilani",
+      "location": "Pilani, Rajasthan",
+      "type": "private",
+      "courses": [
+        "Computer Science Engineering",
+        "Electronics and Communication",
+        "Mechanical Engineering",
+        "Chemical Engineering",
+        "Biotechnology",
+        "Pharmacy"
+      ],
+      "entranceExams": ["BITSAT"],
+      "fees": {
+        "annual": 450000,
+        "currency": "INR"
+      },
+      "rankings": {
+        "nirf": 25,
+        "category": "Engineering"
+      },
+      "website": "https://www.bits-pilani.ac.in/",
+      "established": 1964
+    },
+    {
+      "id": "iisc-bangalore",
+      "name": "Indian Institute of Science Bangalore",
+      "location": "Bangalore, Karnataka",
+      "type": "government",
+      "courses": [
+        "BTech",
+        "MTech",
+        "PhD",
+        "Integrated PhD",
+        "MSc Engineering"
+      ],
+      "entranceExams": ["JEE Advanced", "KVPY", "JAM"],
+      "fees": {
+        "annual": 64000,
+        "currency": "INR"
+      },
+      "rankings": {
+        "nirf": 1,
+        "category": "Overall"
+      },
+      "website": "https://www.iisc.ac.in/",
+      "established": 1909
+    },
+    {
+      "id": "nlu-delhi",
+      "name": "National Law University Delhi",
+      "location": "New Delhi, Delhi",
+      "type": "government",
+      "courses": [
+        "BA LLB",
+        "LLM",
+        "PhD in Law"
+      ],
+      "entranceExams": ["CLAT", "AILET"],
+      "fees": {
+        "annual": 180000,
+        "currency": "INR"
+      },
+      "rankings": {
+        "nirf": 2,
+        "category": "Law"
+      },
+      "website": "https://nludelhi.ac.in/",
+      "established": 2008
+    },
+    {
+      "id": "jnu-delhi",
+      "name": "Jawaharlal Nehru University",
+      "location": "New Delhi, Delhi",
+      "type": "government",
+      "courses": [
+        "MA International Relations",
+        "MA Economics",
+        "MA History",
+        "MSc Life Sciences",
+        "MCA",
+        "MBA"
+      ],
+      "entranceExams": ["CUET PG", "JNU Entrance"],
+      "fees": {
+        "annual": 20000,
+        "currency": "INR"
+      },
+      "rankings": {
+        "nirf": 3,
+        "category": "University"
+      },
+      "website": "https://www.jnu.ac.in/",
+      "established": 1969
+    }
+  ]
+}

@@ -1,0 +1,214 @@
+{
+  "scholarships": [
+    {
+      "id": "pm-yasasvi",
+      "name": "PM YASASVI Scholarship",
+      "description": "Scholarship for OBC, EBC, and DNT students studying in Classes 9-12",
+      "provider": "Ministry of Social Justice and Empowerment",
+      "eligibility": {
+        "categories": ["OBC", "EBC", "DNT"],
+        "classes": ["9", "10", "11", "12"],
+        "incomeLimit": 250000,
+        "academicCriteria": "60% marks in previous class"
+      },
+      "amount": {
+        "class9_10": 75000,
+        "class11_12": 125000,
+        "currency": "INR"
+      },
+      "applicationPeriod": "July - September",
+      "website": "https://scholarships.gov.in/",
+      "renewable": true,
+      "type": "Merit-cum-Means"
+    },
+    {
+      "id": "inspire-scholarship",
+      "name": "INSPIRE Scholarship",
+      "description": "Scholarship for students pursuing Bachelor's and Master's degree in Natural and Basic Sciences",
+      "provider": "Department of Science and Technology",
+      "eligibility": {
+        "categories": ["General", "OBC", "SC", "ST"],
+        "courses": ["BSc", "MSc", "Integrated MSc"],
+        "subjects": ["Physics", "Chemistry", "Mathematics", "Biology"],
+        "academicCriteria": "Top 1% in Class 12 or KVPY qualified"
+      },
+      "amount": {
+        "monthly": 5000,
+        "annual": 20000,
+        "currency": "INR"
+      },
+      "applicationPeriod": "June - July",
+      "website": "https://online-inspire.gov.in/",
+      "renewable": true,
+      "type": "Merit-based"
+    },
+    {
+      "id": "central-sector-scholarship",
+      "name": "Central Sector Scholarship",
+      "description": "Scholarship for students from families with annual income below Rs. 8 lakh",
+      "provider": "Ministry of Education",
+      "eligibility": {
+        "categories": ["General", "OBC", "SC", "ST"],
+        "incomeLimit": 800000,
+        "academicCriteria": "80% marks in Class 12",
+        "courses": ["Undergraduate", "Postgraduate"]
+      },
+      "amount": {
+        "undergraduate": 12000,
+        "postgraduate": 20000,
+        "currency": "INR"
+      },
+      "applicationPeriod": "September - October",
+      "website": "https://scholarships.gov.in/",
+      "renewable": true,
+      "type": "Merit-cum-Means"
+    },
+    {
+      "id": "kishore-vaigyanik-protsahan-yojana",
+      "name": "Kishore Vaigyanik Protsahan Yojana (KVPY)",
+      "description": "Fellowship program for students with aptitude for research in science",
+      "provider": "Indian Institute of Science",
+      "eligibility": {
+        "categories": ["General", "OBC", "SC", "ST"],
+        "classes": ["11", "12", "1st year UG"],
+        "subjects": ["Science stream"],
+        "academicCriteria": "75% marks (65% for SC/ST/PwD)"
+      },
+      "amount": {
+        "monthly": 7000,
+        "annual": 28000,
+        "currency": "INR"
+      },
+      "applicationPeriod": "July - September",
+      "website": "http://kvpy.iisc.ernet.in/",
+      "renewable": true,
+      "type": "Merit-based"
+    },
+    {
+      "id": "post-matric-sc",
+      "name": "Post Matric Scholarship for SC Students",
+      "description": "Financial assistance for SC students pursuing higher education",
+      "provider": "Ministry of Social Justice and Empowerment",
+      "eligibility": {
+        "categories": ["SC"],
+        "courses": ["Undergraduate", "Postgraduate", "Professional"],
+        "incomeLimit": 250000,
+        "academicCriteria": "Pass in previous examination"
+      },
+      "amount": {
+        "maintenance": 380,
+        "tuitionFees": "Actual fees",
+        "currency": "INR"
+      },
+      "applicationPeriod": "August - December",
+      "website": "https://scholarships.gov.in/",
+      "renewable": true,
+      "type": "Need-based"
+    },
+    {
+      "id": "post-matric-st",
+      "name": "Post Matric Scholarship for ST Students",
+      "description": "Financial assistance for ST students pursuing higher education",
+      "provider": "Ministry of Tribal Affairs",
+      "eligibility": {
+        "categories": ["ST"],
+        "courses": ["Undergraduate", "Postgraduate", "Professional"],
+        "incomeLimit": 250000,
+        "academicCriteria": "Pass in previous examination"
+      },
+      "amount": {
+        "maintenance": 380,
+        "tuitionFees": "Actual fees",
+        "currency": "INR"
+      },
+      "applicationPeriod": "August - December",
+      "website": "https://scholarships.gov.in/",
+      "renewable": true,
+      "type": "Need-based"
+    },
+    {
+      "id": "merit-scholarship-minorities",
+      "name": "Merit Scholarship for Minorities",
+      "description": "Scholarship for minority community students with good academic record",
+      "provider": "Ministry of Minority Affairs",
+      "eligibility": {
+        "categories": ["Muslim", "Christian", "Sikh", "Buddhist", "Jain", "Parsi"],
+        "courses": ["Professional", "Technical"],
+        "incomeLimit": 250000,
+        "academicCriteria": "50% marks in previous examination"
+      },
+      "amount": {
+        "annual": 20000,
+        "currency": "INR"
+      },
+      "applicationPeriod": "September - December",
+      "website": "https://scholarships.gov.in/",
+      "renewable": true,
+      "type": "Merit-cum-Means"
+    },
+    {
+      "id": "jrf-net",
+      "name": "Junior Research Fellowship (JRF)",
+      "description": "Fellowship for research scholars pursuing PhD",
+      "provider": "University Grants Commission",
+      "eligibility": {
+        "categories": ["General", "OBC", "SC", "ST"],
+        "qualification": ["NET-JRF", "GATE", "SET"],
+        "courses": ["PhD", "MPhil"],
+        "ageLimit": 28
+      },
+      "amount": {
+        "monthly": 31000,
+        "hraContingency": 12000,
+        "currency": "INR"
+      },
+      "applicationPeriod": "Throughout the year",
+      "website": "https://www.ugc.ac.in/",
+      "renewable": true,
+      "type": "Merit-based"
+    },
+    {
+      "id": "pragati-scholarship",
+      "name": "PRAGATI Scholarship",
+      "description": "Scholarship for girl students pursuing technical education",
+      "provider": "All India Council for Technical Education",
+      "eligibility": {
+        "gender": "Female",
+        "categories": ["General", "OBC", "SC", "ST"],
+        "courses": ["Engineering", "Technology"],
+        "incomeLimit": 800000,
+        "academicCriteria": "Admission through JEE Main or State Engineering Entrance"
+      },
+      "amount": {
+        "tuitionFees": 30000,
+        "incidentalCharges": 2000,
+        "currency": "INR"
+      },
+      "applicationPeriod": "October - November",
+      "website": "https://www.aicte-india.org/",
+      "renewable": true,
+      "type": "Merit-cum-Means"
+    },
+    {
+      "id": "saksham-scholarship",
+      "name": "SAKSHAM Scholarship",
+      "description": "Scholarship for differently-abled students pursuing technical education",
+      "provider": "All India Council for Technical Education",
+      "eligibility": {
+        "categories": ["Differently-abled"],
+        "courses": ["Engineering", "Technology", "Architecture", "Pharmacy"],
+        "incomeLimit": 800000,
+        "disabilityPercentage": 40
+      },
+      "amount": {
+        "tuitionFees": 30000,
+        "incidentalCharges": 2000,
+        "currency": "INR"
+      },
+      "applicationPeriod": "October - November",
+      "website": "https://www.aicte-india.org/",
+      "renewable": true,
+      "type": "Need-based"
+    }
+  ]
+}

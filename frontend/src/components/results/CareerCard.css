@@ -1,0 +1,271 @@
+/**
+ * Career Card Styles
+ */
+
+.career-card {
+  position: relative;
+  background: white;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.career-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+.career-card.selected {
+  border-color: #667eea;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+}
+
+.career-card:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+/* Rank Badge */
+.rank-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.rank-number {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+/* Career Title */
+.career-title {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.3;
+  padding-right: 1rem; /* Space for rank badge */
+}
+
+/* Match Score */
+.match-score-container {
+  margin-bottom: 1rem;
+}
+
+.match-score-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.match-score-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 3px;
+  transition: width 0.8s ease;
+}
+
+.match-score-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #667eea;
+}
+
+/* Career Info */
+.career-info {
+  margin-bottom: 1rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-label {
+  font-size: 0.8rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 0.85rem;
+  color: #333;
+  font-weight: 600;
+  text-align: right;
+}
+
+.demand-indicator {
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+/* Quick Stats */
+.quick-stats {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.stat-number {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #667eea;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: #666;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Selection Indicator */
+.selection-indicator {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #667eea;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .career-card {
+    padding: 1rem;
+  }
+  
+  .career-title {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .rank-badge {
+    width: 28px;
+    height: 28px;
+    top: -6px;
+    right: -6px;
+  }
+  
+  .rank-number {
+    font-size: 0.8rem;
+  }
+  
+  .info-item {
+    margin-bottom: 0.4rem;
+  }
+  
+  .info-label, .info-value {
+    font-size: 0.75rem;
+  }
+  
+  .stat-number {
+    font-size: 1rem;
+  }
+  
+  .stat-label {
+    font-size: 0.65rem;
+  }
+  
+  .quick-stats {
+    padding-top: 0.75rem;
+  }
+}
+
+/* Animation for match score bar */
+@keyframes fillMatchScore {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(--match-score);
+  }
+}
+
+.career-card:hover .match-score-fill {
+  animation: fillMatchScore 0.8s ease;
+}
+
+/* Accessibility */
+.career-card:focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .career-card {
+    border-width: 3px;
+  }
+  
+  .career-card.selected {
+    border-color: #000;
+    background: #fff;
+  }
+  
+  .match-score-fill {
+    background: #000;
+  }
+  
+  .stat-number {
+    color: #000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .career-card {
+    transition: none;
+  }
+  
+  .career-card:hover {
+    transform: none;
+  }
+  
+  .match-score-fill {
+    transition: none;
+  }
+  
+  .career-card:hover .match-score-fill {
+    animation: none;
+  }
+}

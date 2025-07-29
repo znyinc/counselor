@@ -1,0 +1,281 @@
+{
+  "careers": [
+    {
+      "id": "software-engineer",
+      "title": "Software Engineer",
+      "description": "Design, develop, and maintain software applications and systems. Work with programming languages, databases, and modern development frameworks.",
+      "nepCategory": "Science and Technology",
+      "requiredEducation": [
+        "BTech Computer Science",
+        "BTech Information Technology",
+        "BCA",
+        "BSc Computer Science"
+      ],
+      "skills": [
+        "Programming Languages (Java, Python, JavaScript)",
+        "Database Management",
+        "Problem Solving",
+        "Software Development Life Cycle",
+        "Version Control (Git)"
+      ],
+      "averageSalary": {
+        "entry": 600000,
+        "mid": 1200000,
+        "senior": 2500000
+      },
+      "growthProjection": "25% growth expected by 2030",
+      "relatedExams": ["JEE Main", "JEE Advanced", "BITSAT", "VITEEE"],
+      "workEnvironment": "Office-based, Remote work options available",
+      "jobMarket": "High demand across IT hubs like Bangalore, Hyderabad, Pune"
+    },
+    {
+      "id": "doctor",
+      "title": "Medical Doctor",
+      "description": "Diagnose and treat patients, provide medical care, and promote health and wellness in communities.",
+      "nepCategory": "Healthcare and Medicine",
+      "requiredEducation": [
+        "MBBS",
+        "MD (Specialization)",
+        "MS (Surgical Specialization)"
+      ],
+      "skills": [
+        "Medical Knowledge",
+        "Patient Care",
+        "Diagnostic Skills",
+        "Communication",
+        "Emergency Response"
+      ],
+      "averageSalary": {
+        "entry": 800000,
+        "mid": 1500000,
+        "senior": 3000000
+      },
+      "growthProjection": "15% growth expected by 2030",
+      "relatedExams": ["NEET UG", "NEET PG", "AIIMS INICET"],
+      "workEnvironment": "Hospitals, Clinics, Private Practice",
+      "jobMarket": "Consistent demand, especially in rural and semi-urban areas"
+    },
+    {
+      "id": "data-scientist",
+      "title": "Data Scientist",
+      "description": "Analyze complex data to help organizations make informed decisions using statistical methods, machine learning, and data visualization.",
+      "nepCategory": "Science and Technology",
+      "requiredEducation": [
+        "BTech Computer Science",
+        "BSc Statistics",
+        "BSc Mathematics",
+        "MTech Data Science"
+      ],
+      "skills": [
+        "Python/R Programming",
+        "Machine Learning",
+        "Statistics",
+        "Data Visualization",
+        "SQL and Databases"
+      ],
+      "averageSalary": {
+        "entry": 800000,
+        "mid": 1600000,
+        "senior": 3500000
+      },
+      "growthProjection": "35% growth expected by 2030",
+      "relatedExams": ["JEE Main", "JAM", "GATE"],
+      "workEnvironment": "Tech companies, Consulting firms, Research institutions",
+      "jobMarket": "Rapidly growing field with high demand in metros"
+    },
+    {
+      "id": "civil-engineer",
+      "title": "Civil Engineer",
+      "description": "Design, construct, and maintain infrastructure projects like roads, bridges, buildings, and water systems.",
+      "nepCategory": "Engineering and Technology",
+      "requiredEducation": [
+        "BTech Civil Engineering",
+        "BE Civil Engineering",
+        "MTech Structural Engineering"
+      ],
+      "skills": [
+        "AutoCAD and Design Software",
+        "Project Management",
+        "Structural Analysis",
+        "Construction Management",
+        "Environmental Engineering"
+      ],
+      "averageSalary": {
+        "entry": 400000,
+        "mid": 800000,
+        "senior": 1800000
+      },
+      "growthProjection": "8% growth expected by 2030",
+      "relatedExams": ["JEE Main", "JEE Advanced", "State Engineering Entrance"],
+      "workEnvironment": "Construction sites, Government offices, Consulting firms",
+      "jobMarket": "Steady demand due to infrastructure development projects"
+    },
+    {
+      "id": "chartered-accountant",
+      "title": "Chartered Accountant",
+      "description": "Provide financial advice, audit accounts, and ensure compliance with financial regulations for businesses and individuals.",
+      "nepCategory": "Commerce and Finance",
+      "requiredEducation": [
+        "BCom",
+        "CA Foundation",
+        "CA Intermediate",
+        "CA Final"
+      ],
+      "skills": [
+        "Financial Analysis",
+        "Taxation Knowledge",
+        "Auditing",
+        "Accounting Software",
+        "Business Advisory"
+      ],
+      "averageSalary": {
+        "entry": 600000,
+        "mid": 1200000,
+        "senior": 2500000
+      },
+      "growthProjection": "10% growth expected by 2030",
+      "relatedExams": ["CA Foundation", "CA Intermediate", "CA Final"],
+      "workEnvironment": "Accounting firms, Corporate offices, Independent practice",
+      "jobMarket": "Consistent demand across all business sectors"
+    },
+    {
+      "id": "teacher",
+      "title": "Teacher/Educator",
+      "description": "Educate and inspire students, develop curriculum, and contribute to the academic and personal growth of learners.",
+      "nepCategory": "Education and Training",
+      "requiredEducation": [
+        "BEd",
+        "BA/BSc + BEd",
+        "MEd",
+        "Subject-specific Bachelor's degree"
+      ],
+      "skills": [
+        "Subject Matter Expertise",
+        "Communication",
+        "Classroom Management",
+        "Curriculum Development",
+        "Student Assessment"
+      ],
+      "averageSalary": {
+        "entry": 300000,
+        "mid": 600000,
+        "senior": 1200000
+      },
+      "growthProjection": "12% growth expected by 2030",
+      "relatedExams": ["CTET", "State TET", "UGC NET", "DSSSB"],
+      "workEnvironment": "Schools, Colleges, Educational institutions",
+      "jobMarket": "High demand due to NEP 2020 implementation and education reforms"
+    },
+    {
+      "id": "digital-marketing-specialist",
+      "title": "Digital Marketing Specialist",
+      "description": "Develop and execute online marketing strategies to promote products and services through digital channels.",
+      "nepCategory": "Business and Marketing",
+      "requiredEducation": [
+        "BBA",
+        "BCom",
+        "BA Mass Communication",
+        "Digital Marketing Certification"
+      ],
+      "skills": [
+        "SEO/SEM",
+        "Social Media Marketing",
+        "Content Creation",
+        "Analytics and Data Interpretation",
+        "Email Marketing"
+      ],
+      "averageSalary": {
+        "entry": 350000,
+        "mid": 700000,
+        "senior": 1500000
+      },
+      "growthProjection": "30% growth expected by 2030",
+      "relatedExams": ["Google Ads Certification", "Facebook Blueprint", "HubSpot Certification"],
+      "workEnvironment": "Marketing agencies, E-commerce companies, Startups",
+      "jobMarket": "Rapidly growing field with opportunities in all sectors"
+    },
+    {
+      "id": "psychologist",
+      "title": "Psychologist",
+      "description": "Study human behavior and mental processes, provide therapy and counseling services to help individuals overcome challenges.",
+      "nepCategory": "Healthcare and Social Sciences",
+      "requiredEducation": [
+        "BA Psychology",
+        "MA Psychology",
+        "MPhil Clinical Psychology",
+        "PhD Psychology"
+      ],
+      "skills": [
+        "Counseling Techniques",
+        "Psychological Assessment",
+        "Research Methods",
+        "Empathy and Communication",
+        "Crisis Intervention"
+      ],
+      "averageSalary": {
+        "entry": 400000,
+        "mid": 800000,
+        "senior": 1600000
+      },
+      "growthProjection": "20% growth expected by 2030",
+      "relatedExams": ["UGC NET Psychology", "State Psychology Entrance"],
+      "workEnvironment": "Hospitals, Clinics, Schools, Private practice",
+      "jobMarket": "Growing awareness of mental health increasing demand"
+    },
+    {
+      "id": "environmental-scientist",
+      "title": "Environmental Scientist",
+      "description": "Study environmental problems and develop solutions to protect human health and the environment.",
+      "nepCategory": "Environmental Sciences",
+      "requiredEducation": [
+        "BSc Environmental Science",
+        "BTech Environmental Engineering",
+        "MSc Environmental Science"
+      ],
+      "skills": [
+        "Environmental Monitoring",
+        "Data Analysis",
+        "Research Methods",
+        "Environmental Impact Assessment",
+        "Sustainability Planning"
+      ],
+      "averageSalary": {
+        "entry": 450000,
+        "mid": 900000,
+        "senior": 1800000
+      },
+      "growthProjection": "18% growth expected by 2030",
+      "relatedExams": ["GATE Environmental", "JAM Environmental Science"],
+      "workEnvironment": "Government agencies, Consulting firms, Research institutions",
+      "jobMarket": "Growing field due to environmental awareness and regulations"
+    },
+    {
+      "id": "graphic-designer",
+      "title": "Graphic Designer",
+      "description": "Create visual concepts and designs for various media including print, digital, and multimedia platforms.",
+      "nepCategory": "Arts and Design",
+      "requiredEducation": [
+        "BFA Graphic Design",
+        "BDes",
+        "Diploma in Graphic Design",
+        "BA Fine Arts"
+      ],
+      "skills": [
+        "Adobe Creative Suite",
+        "Typography",
+        "Color Theory",
+        "Brand Identity Design",
+        "User Interface Design"
+      ],
+      "averageSalary": {
+        "entry": 300000,
+        "mid": 600000,
+        "senior": 1200000
+      },
+      "growthProjection": "15% growth expected by 2030",
+      "relatedExams": ["NIFT Entrance", "NID Entrance", "CEED"],
+      "workEnvironment": "Design studios, Advertising agencies, Freelance",
+      "jobMarket": "Good opportunities in digital media and e-commerce sectors"
+    }
+  ]
+}

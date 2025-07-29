@@ -1,0 +1,265 @@
+/**
+ * Error Notification Component Styles
+ */
+
+.error-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  max-width: 400px;
+  min-width: 300px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10000;
+  overflow: hidden;
+  animation: slideIn 0.3s ease-out;
+  border-left: 4px solid;
+}
+
+.error-notification-error {
+  border-left-color: #ef4444;
+}
+
+.error-notification-warning {
+  border-left-color: #f59e0b;
+}
+
+.error-notification-info {
+  border-left-color: #3b82f6;
+}
+
+.error-notification-content {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px;
+  gap: 12px;
+}
+
+.error-notification-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.error-notification-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.error-notification-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.error-notification-message {
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.error-notification-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.error-notification-retry {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.error-notification-retry:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.error-notification-retry:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.error-notification-dismiss {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.error-notification-dismiss:hover {
+  color: #6b7280;
+  background: #f3f4f6;
+}
+
+.error-notification-progress {
+  height: 2px;
+  background: #f3f4f6;
+  position: relative;
+  overflow: hidden;
+}
+
+.error-notification-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+  width: 100%;
+  animation: progressBar linear;
+  transform-origin: left;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes progressBar {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* Multiple notifications stacking */
+.error-notification:nth-child(2) {
+  top: 90px;
+}
+
+.error-notification:nth-child(3) {
+  top: 160px;
+}
+
+.error-notification:nth-child(4) {
+  top: 230px;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .error-notification {
+    left: 20px;
+    right: 20px;
+    max-width: none;
+    min-width: auto;
+  }
+  
+  .error-notification-content {
+    padding: 12px;
+    gap: 8px;
+  }
+  
+  .error-notification-icon {
+    font-size: 18px;
+  }
+  
+  .error-notification-title {
+    font-size: 13px;
+  }
+  
+  .error-notification-message {
+    font-size: 12px;
+  }
+  
+  .error-notification-retry {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .error-notification {
+    background: #1f2937;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .error-notification-title {
+    color: #f9fafb;
+  }
+  
+  .error-notification-message {
+    color: #d1d5db;
+  }
+  
+  .error-notification-dismiss:hover {
+    background: #374151;
+  }
+  
+  .error-notification-progress {
+    background: #374151;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .error-notification {
+    border: 2px solid;
+  }
+  
+  .error-notification-error {
+    border-color: #dc2626;
+  }
+  
+  .error-notification-warning {
+    border-color: #d97706;
+  }
+  
+  .error-notification-info {
+    border-color: #2563eb;
+  }
+  
+  .error-notification-retry {
+    border: 1px solid #1d4ed8;
+  }
+  
+  .error-notification-dismiss {
+    border: 1px solid #9ca3af;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .error-notification {
+    animation: none;
+  }
+  
+  .error-notification-progress-bar {
+    animation: none;
+  }
+  
+  .error-notification-retry,
+  .error-notification-dismiss {
+    transition: none;
+  }
+}

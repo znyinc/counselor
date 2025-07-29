@@ -1,0 +1,254 @@
+/* Form Field Styles */
+
+.form-field {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  line-height: 1.25rem;
+}
+
+.form-label .required-indicator {
+  color: #ef4444;
+  margin-left: 0.25rem;
+}
+
+.form-input-container {
+  position: relative;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #111827;
+  background-color: #ffffff;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-input:disabled {
+  background-color: #f9fafb;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.form-input.error {
+  border-color: #ef4444;
+}
+
+.form-input.error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-input::placeholder {
+  color: #9ca3af;
+}
+
+/* Select specific styles */
+select.form-input {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  appearance: none;
+}
+
+/* Textarea specific styles */
+textarea.form-input {
+  resize: vertical;
+  min-height: 4rem;
+}
+
+/* Multiselect styles */
+.multiselect-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background-color: #ffffff;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.multiselect-option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.multiselect-option:hover {
+  background-color: #f3f4f6;
+}
+
+.multiselect-option input[type="checkbox"] {
+  margin-right: 0.5rem;
+  width: 1rem;
+  height: 1rem;
+  accent-color: #3b82f6;
+}
+
+.multiselect-label {
+  font-size: 0.875rem;
+  color: #374151;
+  user-select: none;
+}
+
+/* Radio button styles */
+.radio-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.radio-option:hover {
+  background-color: #f3f4f6;
+}
+
+.radio-option input[type="radio"] {
+  margin-right: 0.5rem;
+  width: 1rem;
+  height: 1rem;
+  accent-color: #3b82f6;
+}
+
+.radio-label {
+  font-size: 0.875rem;
+  color: #374151;
+  user-select: none;
+}
+
+/* Checkbox styles */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-right: 0.75rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: #3b82f6;
+}
+
+.checkbox-label {
+  font-size: 0.875rem;
+  color: #374151;
+  user-select: none;
+  font-weight: 500;
+}
+
+/* Help text styles */
+.form-help-text {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+  line-height: 1rem;
+}
+
+/* Error text styles */
+.form-error-text {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #ef4444;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+/* Error state styles */
+.form-field.has-error .form-label {
+  color: #ef4444;
+}
+
+.form-field.has-error .multiselect-container {
+  border-color: #ef4444;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .multiselect-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .radio-container {
+    gap: 0.75rem;
+  }
+  
+  .form-input {
+    font-size: 1rem; /* Prevent zoom on iOS */
+  }
+}
+
+/* Hindi font support */
+[lang="hi"] .form-input,
+[lang="hi"] .form-label,
+[lang="hi"] .multiselect-label,
+[lang="hi"] .radio-label,
+[lang="hi"] .checkbox-label,
+[lang="hi"] .form-help-text,
+[lang="hi"] .form-error-text {
+  font-family: "Noto Sans Devanagari", "Mangal", "Devanagari Sangam MN", sans-serif;
+}
+
+/* Focus styles for accessibility */
+.multiselect-option:focus-within,
+.radio-option:focus-within,
+.checkbox-container:focus-within {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .form-input {
+    border-width: 2px;
+  }
+  
+  .form-input:focus {
+    border-width: 3px;
+  }
+  
+  .form-error-text {
+    font-weight: 700;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .form-input,
+  .multiselect-option,
+  .radio-option {
+    transition: none;
+  }
+}
