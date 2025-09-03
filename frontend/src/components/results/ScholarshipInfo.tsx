@@ -91,15 +91,15 @@ export const ScholarshipInfo: React.FC<ScholarshipInfoProps> = ({
       <div className="scholarship-info empty">
         <div className="empty-state">
           <div className="empty-icon">🎓</div>
-          <h3>{t('results.noScholarships', 'No Scholarship Information')}</h3>
-          <p>{t('results.noScholarshipsDescription', 'We couldn\'t find specific scholarship information for this career path.')}</p>
+          <h3>{t('results.noScholarships') || 'No Scholarship Information'}</h3>
+          <p>{t('results.noScholarshipsDescription') || 'We couldn\'t find specific scholarship information for this career path.'}</p>
           <div className="general-advice">
-            <h4>{t('results.generalAdvice', 'General Scholarship Tips')}</h4>
+            <h4>{t('results.generalAdvice') || 'General Scholarship Tips'}</h4>
             <ul>
-              <li>{t('results.tip1', 'Check with your state government for local scholarships')}</li>
-              <li>{t('results.tip2', 'Look for merit-based scholarships from educational institutions')}</li>
-              <li>{t('results.tip3', 'Explore corporate scholarships in your field of interest')}</li>
-              <li>{t('results.tip4', 'Consider national scholarships like NSP (National Scholarship Portal)')}</li>
+              <li>{t('results.tip1') || 'Check with your state government for local scholarships'}</li>
+              <li>{t('results.tip2') || 'Look for merit-based scholarships from educational institutions'}</li>
+              <li>{t('results.tip3') || 'Explore corporate scholarships in your field of interest'}</li>
+              <li>{t('results.tip4') || 'Consider national scholarships like NSP (National Scholarship Portal)'}</li>
             </ul>
           </div>
         </div>
@@ -111,38 +111,38 @@ export const ScholarshipInfo: React.FC<ScholarshipInfoProps> = ({
     <div className="scholarship-info">
       <div className="scholarships-header">
         <div className="header-content">
-          <h3>{t('results.scholarshipsFor', 'Available Scholarships for {{career}}', { career: careerTitle })}</h3>
+          <h3>{t('results.scholarshipsFor', { career: careerTitle } as any) || `Available Scholarships for ${careerTitle}`}</h3>
           <p className="scholarships-description">
-            {t('results.scholarshipsDescription', 'These scholarships can help fund your education and reduce financial burden.')}
+            {t('results.scholarshipsDescription') || 'These scholarships can help fund your education and reduce financial burden.'}
           </p>
         </div>
 
         {/* Filters and Sorting */}
         <div className="scholarships-controls">
           <div className="filter-group">
-            <label>{t('results.filterByType', 'Filter by Type')}</label>
+            <label>{t('results.filterByType') || 'Filter by Type'}</label>
             <select 
               value={filterType} 
               onChange={(e) => setFilterType(e.target.value as any)}
               className="filter-select"
             >
-              <option value="all">{t('results.allTypes', 'All Types')}</option>
-              <option value="Merit-based">{t('results.meritBased', 'Merit-based')}</option>
-              <option value="Need-based">{t('results.needBased', 'Need-based')}</option>
-              <option value="Merit-cum-Means">{t('results.meritCumMeans', 'Merit-cum-Means')}</option>
+              <option value="all">{t('results.allTypes') || 'All Types'}</option>
+              <option value="Merit-based">{t('results.meritBased') || 'Merit-based'}</option>
+              <option value="Need-based">{t('results.needBased') || 'Need-based'}</option>
+              <option value="Merit-cum-Means">{t('results.meritCumMeans') || 'Merit-cum-Means'}</option>
             </select>
           </div>
 
           <div className="sort-group">
-            <label>{t('results.sortBy', 'Sort by')}</label>
+            <label>{t('results.sortBy') || 'Sort by'}</label>
             <select 
               value={sortBy} 
               onChange={(e) => setSortBy(e.target.value as any)}
               className="sort-select"
             >
-              <option value="amount">{t('results.amount', 'Amount')}</option>
-              <option value="name">{t('results.name', 'Name')}</option>
-              <option value="deadline">{t('results.deadline', 'Deadline')}</option>
+              <option value="amount">{t('results.amount') || 'Amount'}</option>
+              <option value="name">{t('results.name') || 'Name'}</option>
+              <option value="deadline">{t('results.deadline') || 'Deadline'}</option>
             </select>
           </div>
         </div>
@@ -167,11 +167,11 @@ export const ScholarshipInfo: React.FC<ScholarshipInfoProps> = ({
                   className="type-badge"
                   style={{ backgroundColor: getTypeColor(scholarship.type) }}
                 >
-                  {t(`results.${scholarship.type.toLowerCase().replace('-', '')}`, scholarship.type)}
+                  {t(`results.${scholarship.type.toLowerCase().replace('-', '')}`) || scholarship.type}
                 </span>
                 {scholarship.renewable && (
                   <span className="renewable-badge">
-                    {t('results.renewable', 'Renewable')}
+                    {t('results.renewable') || 'Renewable'}
                   </span>
                 )}
               </div>
@@ -181,7 +181,7 @@ export const ScholarshipInfo: React.FC<ScholarshipInfoProps> = ({
             <div className="scholarship-amount">
               <div className="amount-display">
                 <span className="amount-value">{formatAmount(scholarship.amount)}</span>
-                <span className="amount-label">{t('results.scholarshipAmount', 'Scholarship Amount')}</span>
+                <span className="amount-label">{t('results.scholarshipAmount') || 'Scholarship Amount'}</span>
               </div>
             </div>
 
@@ -194,13 +194,13 @@ export const ScholarshipInfo: React.FC<ScholarshipInfoProps> = ({
 
             {/* Eligibility Criteria */}
             <div className="eligibility-section">
-              <h5>{t('results.eligibilityCriteria', 'Eligibility Criteria')}</h5>
+              <h5>{t('results.eligibilityCriteria') || 'Eligibility Criteria'}</h5>
               <div className="eligibility-grid">
                 {scholarship.eligibility.categories && (
                   <div className="eligibility-item">
                     <span className="eligibility-label">
                       <span className="eligibility-icon">👥</span>
-                      {t('results.categories', 'Categories')}
+                      {t('results.categories') || 'Categories'}
                     </span>
                     <div className="eligibility-tags">
                       {scholarship.eligibility.categories.map((category, index) => (
@@ -216,10 +216,10 @@ export const ScholarshipInfo: React.FC<ScholarshipInfoProps> = ({
                   <div className="eligibility-item">
                     <span className="eligibility-label">
                       <span className="eligibility-icon">💰</span>
-                      {t('results.incomeLimit', 'Income Limit')}
+                      {t('results.incomeLimit') || 'Income Limit'}
                     </span>
                     <span className="eligibility-value">
-                      {formatSingleAmount(scholarship.eligibility.incomeLimit)} {t('results.perAnnum', 'per annum')}
+                      {formatSingleAmount(scholarship.eligibility.incomeLimit)} {t('results.perAnnum') || 'per annum'}
                     </span>
                   </div>
                 )}
@@ -228,7 +228,7 @@ export const ScholarshipInfo: React.FC<ScholarshipInfoProps> = ({
                   <div className="eligibility-item">
                     <span className="eligibility-label">
                       <span className="eligibility-icon">📊</span>
-                      {t('results.academicCriteria', 'Academic Criteria')}
+                      {t('results.academicCriteria') || 'Academic Criteria'}
                     </span>
                     <span className="eligibility-value">
                       {scholarship.eligibility.academicCriteria}
@@ -240,7 +240,7 @@ export const ScholarshipInfo: React.FC<ScholarshipInfoProps> = ({
                   <div className="eligibility-item">
                     <span className="eligibility-label">
                       <span className="eligibility-icon">📚</span>
-                      {t('results.eligibleCourses', 'Eligible Courses')}
+                      {t('results.eligibleCourses') || 'Eligible Courses'}
                     </span>
                     <div className="eligibility-tags">
                       {scholarship.eligibility.courses.slice(0, 3).map((course, index) => (
@@ -261,7 +261,7 @@ export const ScholarshipInfo: React.FC<ScholarshipInfoProps> = ({
                   <div className="eligibility-item">
                     <span className="eligibility-label">
                       <span className="eligibility-icon">⚧️</span>
-                      {t('results.gender', 'Gender')}
+                      {t('results.gender') || 'Gender'}
                     </span>
                     <span className="eligibility-value">
                       {scholarship.eligibility.gender}
@@ -276,7 +276,7 @@ export const ScholarshipInfo: React.FC<ScholarshipInfoProps> = ({
               <div className="application-period">
                 <span className="period-label">
                   <span className="period-icon">📅</span>
-                  {t('results.applicationPeriod', 'Application Period')}
+                  {t('results.applicationPeriod') || 'Application Period'}
                 </span>
                 <span className="period-value">{scholarship.applicationPeriod}</span>
               </div>
@@ -292,12 +292,12 @@ export const ScholarshipInfo: React.FC<ScholarshipInfoProps> = ({
                   className="scholarship-link"
                 >
                   <span className="link-icon">🌐</span>
-                  {t('results.applyNow', 'Apply Now')}
+                  {t('results.applyNow') || 'Apply Now'}
                 </a>
               )}
               <button className="scholarship-save">
                 <span className="save-icon">💾</span>
-                {t('results.saveForLater', 'Save for Later')}
+                {t('results.saveForLater') || 'Save for Later'}
               </button>
             </div>
 
@@ -310,7 +310,7 @@ export const ScholarshipInfo: React.FC<ScholarshipInfoProps> = ({
                 ></div>
               </div>
               <span className="score-text">
-                {t('results.eligibilityMatch', 'Eligibility Match')}: {Math.min(getEligibilityScore(scholarship) * 10, 100)}%
+                {t('results.eligibilityMatch') || 'Eligibility Match'}: {Math.min(getEligibilityScore(scholarship) * 10, 100)}%
               </span>
             </div>
           </div>
@@ -319,27 +319,27 @@ export const ScholarshipInfo: React.FC<ScholarshipInfoProps> = ({
 
       {/* Scholarship Tips */}
       <div className="scholarship-tips">
-        <h4>{t('results.applicationTips', 'Application Tips')}</h4>
+        <h4>{t('results.applicationTips') || 'Application Tips'}</h4>
         <div className="tips-grid">
           <div className="tip-card">
             <div className="tip-icon">📝</div>
             <div className="tip-content">
-              <h5>{t('results.tip1Title', 'Start Early')}</h5>
-              <p>{t('results.tip1Content', 'Begin your application process well before the deadline to gather all required documents.')}</p>
+              <h5>{t('results.tip1Title') || 'Start Early'}</h5>
+              <p>{t('results.tip1Content') || 'Begin your application process well before the deadline to gather all required documents.'}</p>
             </div>
           </div>
           <div className="tip-card">
             <div className="tip-icon">📋</div>
             <div className="tip-content">
-              <h5>{t('results.tip2Title', 'Complete Documentation')}</h5>
-              <p>{t('results.tip2Content', 'Ensure all required documents are properly attested and submitted in the correct format.')}</p>
+              <h5>{t('results.tip2Title') || 'Complete Documentation'}</h5>
+              <p>{t('results.tip2Content') || 'Ensure all required documents are properly attested and submitted in the correct format.'}</p>
             </div>
           </div>
           <div className="tip-card">
             <div className="tip-icon">🎯</div>
             <div className="tip-content">
-              <h5>{t('results.tip3Title', 'Multiple Applications')}</h5>
-              <p>{t('results.tip3Content', 'Apply to multiple scholarships to increase your chances of receiving financial aid.')}</p>
+              <h5>{t('results.tip3Title') || 'Multiple Applications'}</h5>
+              <p>{t('results.tip3Content') || 'Apply to multiple scholarships to increase your chances of receiving financial aid.'}</p>
             </div>
           </div>
         </div>
@@ -350,19 +350,19 @@ export const ScholarshipInfo: React.FC<ScholarshipInfoProps> = ({
         <div className="summary-stats">
           <div className="summary-stat">
             <span className="summary-value">{sortedAndFilteredScholarships.length}</span>
-            <span className="summary-label">{t('results.totalScholarships', 'Total Scholarships')}</span>
+            <span className="summary-label">{t('results.totalScholarships') || 'Total Scholarships'}</span>
           </div>
           <div className="summary-stat">
             <span className="summary-value">
               {sortedAndFilteredScholarships.filter(s => s.type === 'Merit-based').length}
             </span>
-            <span className="summary-label">{t('results.meritBased', 'Merit-based')}</span>
+            <span className="summary-label">{t('results.meritBased') || 'Merit-based'}</span>
           </div>
           <div className="summary-stat">
             <span className="summary-value">
               {sortedAndFilteredScholarships.filter(s => s.renewable).length}
             </span>
-            <span className="summary-label">{t('results.renewable', 'Renewable')}</span>
+            <span className="summary-label">{t('results.renewable') || 'Renewable'}</span>
           </div>
           <div className="summary-stat">
             <span className="summary-value">
@@ -372,7 +372,7 @@ export const ScholarshipInfo: React.FC<ScholarshipInfoProps> = ({
                   : Number(s.amount) || 0
               )))}
             </span>
-            <span className="summary-label">{t('results.maxAmount', 'Max Amount')}</span>
+            <span className="summary-label">{t('results.maxAmount') || 'Max Amount'}</span>
           </div>
         </div>
       </div>

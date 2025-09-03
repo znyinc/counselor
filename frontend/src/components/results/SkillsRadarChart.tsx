@@ -46,45 +46,45 @@ export const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
   const generateSkillData = () => {
     const skillCategories = [
       { 
-        label: t('results.technical', 'Technical'), 
+        label: t('results.technical') || 'Technical', 
         score: Math.min(recommendation.requirements.skills.length * 15, 100),
-        description: t('results.technicalDesc', 'Technical expertise required')
+        description: t('results.technicalDesc') || 'Technical expertise required'
       },
       { 
-        label: t('results.communication', 'Communication'), 
+        label: t('results.communication') || 'Communication', 
         score: recommendation.prospects.workLifeBalance === 'excellent' ? 90 : 
                recommendation.prospects.workLifeBalance === 'good' ? 75 : 60,
-        description: t('results.communicationDesc', 'Communication and interpersonal skills')
+        description: t('results.communicationDesc') || 'Communication and interpersonal skills'
       },
       { 
-        label: t('results.analytical', 'Analytical'), 
+        label: t('results.analytical') || 'Analytical', 
         score: recommendation.requirements.skills.some(skill => 
           skill.toLowerCase().includes('analysis') || 
           skill.toLowerCase().includes('problem') ||
           skill.toLowerCase().includes('research')
         ) ? 85 : 60,
-        description: t('results.analyticalDesc', 'Analytical and problem-solving abilities')
+        description: t('results.analyticalDesc') || 'Analytical and problem-solving abilities'
       },
       { 
-        label: t('results.creativity', 'Creativity'), 
+        label: t('results.creativity') || 'Creativity', 
         score: recommendation.requirements.skills.some(skill => 
           skill.toLowerCase().includes('creative') || 
           skill.toLowerCase().includes('design') ||
           skill.toLowerCase().includes('innovation')
         ) ? 80 : 50,
-        description: t('results.creativityDesc', 'Creative thinking and innovation')
+        description: t('results.creativityDesc') || 'Creative thinking and innovation'
       },
       { 
-        label: t('results.leadership', 'Leadership'), 
+        label: t('results.leadership') || 'Leadership', 
         score: recommendation.prospects.demandLevel === 'high' ? 75 : 
                recommendation.prospects.demandLevel === 'medium' ? 60 : 45,
-        description: t('results.leadershipDesc', 'Leadership and management capabilities')
+        description: t('results.leadershipDesc') || 'Leadership and management capabilities'
       },
       { 
-        label: t('results.adaptability', 'Adaptability'), 
+        label: t('results.adaptability') || 'Adaptability', 
         score: recommendation.prospects.growthRate ? 
                Math.min(parseInt(recommendation.prospects.growthRate.replace(/[^\d]/g, '')) * 3, 90) : 70,
-        description: t('results.adaptabilityDesc', 'Ability to adapt to change')
+        description: t('results.adaptabilityDesc') || 'Ability to adapt to change'
       }
     ];
 
@@ -97,7 +97,7 @@ export const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
     labels: skillData.map(skill => skill.label),
     datasets: [
       {
-        label: t('results.skillLevel', 'Skill Level'),
+        label: t('results.skillLevel') || 'Skill Level',
         data: skillData.map(skill => skill.score),
         backgroundColor: 'rgba(102, 126, 234, 0.2)',
         borderColor: '#667eea',
@@ -137,7 +137,7 @@ export const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
           label: (context) => {
             const index = context.dataIndex;
             return [
-              `${t('results.importance', 'Importance')}: ${context.parsed.r}%`,
+              `${t('results.importance') || 'Importance'}: ${context.parsed.r}%`,
               skillData[index].description
             ];
           }
@@ -167,7 +167,7 @@ export const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
           color: '#333',
           font: {
             size: 11,
-            weight: '500'
+            weight: 500
           }
         }
       }
@@ -186,7 +186,7 @@ export const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
 
       {/* Skills Breakdown */}
       <div className="skills-breakdown">
-        <h5>{t('results.skillsBreakdown', 'Skills Breakdown')}</h5>
+        <h5>{t('results.skillsBreakdown') || 'Skills Breakdown'}</h5>
         <div className="skills-list">
           {skillData.map((skill, index) => (
             <div key={index} className="skill-item">
@@ -210,7 +210,7 @@ export const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
 
       {/* Key Skills from Requirements */}
       <div className="key-skills">
-        <h5>{t('results.keySkills', 'Key Skills Required')}</h5>
+        <h5>{t('results.keySkills') || 'Key Skills Required'}</h5>
         <div className="skills-tags">
           {recommendation.requirements.skills.slice(0, 6).map((skill, index) => (
             <span key={index} className="skill-tag">
@@ -219,7 +219,7 @@ export const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
           ))}
           {recommendation.requirements.skills.length > 6 && (
             <span className="skill-tag more">
-              +{recommendation.requirements.skills.length - 6} {t('results.more', 'more')}
+              +{recommendation.requirements.skills.length - 6} {t('results.more') || 'more'}
             </span>
           )}
         </div>

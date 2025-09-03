@@ -40,7 +40,7 @@ const TestComponent: React.FC = () => {
       <div data-testid="current-language">{language}</div>
       <div data-testid="direction">{direction}</div>
       <div data-testid="loading">{isLoading.toString()}</div>
-      <div data-testid="translation">{t('test.key', 'Default Value')}</div>
+      <div data-testid="translation">{t('test.key') || 'Default Value'}</div>
       <button 
         data-testid="change-to-hindi" 
         onClick={() => setLanguage('hindi')}

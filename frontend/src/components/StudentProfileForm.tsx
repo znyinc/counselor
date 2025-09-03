@@ -764,27 +764,27 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
   const steps: FormStep[] = useMemo(() => [
     {
       id: 'personal',
-      title: t('form.progress.personalInfo', 'Personal Info'),
+      title: t('form.progress.personalInfo') || 'Personal Info',
       component: <PersonalInfoStep />,
     },
     {
       id: 'academic',
-      title: t('form.progress.academicInfo', 'Academic Info'),
+      title: t('form.progress.academicInfo') || 'Academic Info',
       component: <AcademicInfoStep />,
     },
     {
       id: 'background',
-      title: t('form.progress.backgroundInfo', 'Background Info'),
+      title: t('form.progress.backgroundInfo') || 'Background Info',
       component: <SocioeconomicInfoStep />,
     },
     {
       id: 'aspirations',
-      title: t('form.progress.aspirations', 'Aspirations'),
+      title: t('form.progress.aspirations') || 'Aspirations',
       component: <AspirationsStep />,
     },
     {
       id: 'constraints',
-      title: t('form.progress.review', 'Review'),
+      title: t('form.progress.review') || 'Review',
       component: <ConstraintsStep />,
     },
   ], [t]);
@@ -835,7 +835,7 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
           disabled={currentStep === 0}
           className="btn btn-secondary"
         >
-          {t('common.previous', 'Previous')}
+          {t('common.previous') || 'Previous'}
         </button>
 
         <div className="nav-spacer" />
@@ -847,7 +847,7 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
             className="btn btn-primary"
             disabled={isLoading}
           >
-            {t('common.next', 'Next')}
+            {t('common.next') || 'Next'}
           </button>
         ) : (
           <button
@@ -856,7 +856,7 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
             className="btn btn-primary"
             disabled={isLoading}
           >
-            {isLoading ? t('common.loading', 'Loading...') : t('common.submit', 'Submit')}
+            {isLoading ? t('common.loading') || 'Loading...' : t('common.submit') || 'Submit'}
           </button>
         )}
       </div>
@@ -864,7 +864,7 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
       {/* Error summary */}
       {FormValidator.hasErrors(errors) && (
         <div className="error-summary">
-          <h3>{t('errors.validation', 'Please check the form for errors.')}</h3>
+          <h3>{t('errors.validation') || 'Please check the form for errors.'}</h3>
           <ul>
             {Object.entries(errors).map(([field, fieldErrors]) => (
               fieldErrors?.map((error, index) => (

@@ -57,40 +57,40 @@ export const FormValidationFeedback: React.FC<FormValidationFeedbackProps> = ({
   const getSuggestion = (error: ValidationError): string | null => {
     switch (error.type) {
       case 'required':
-        return t('form.validation.suggestions.required', 'This field is required to continue.');
+        return t('form.validation.suggestions.required') || 'This field is required to continue.';
       case 'minLength':
-        return t('form.validation.suggestions.minLength', `Please enter at least ${error.constraint} characters.`, { interpolation: { min: error.constraint } });
+        return t('form.validation.suggestions.minLength', { min: error.constraint } as any) || `Please enter at least ${error.constraint} characters.`;
       case 'maxLength':
-        return t('form.validation.suggestions.maxLength', `Please enter no more than ${error.constraint} characters.`, { interpolation: { max: error.constraint } });
+        return t('form.validation.suggestions.maxLength', { max: error.constraint } as any) || `Please enter no more than ${error.constraint} characters.`;
       case 'pattern':
         if (field.includes('email')) {
-          return t('form.validation.suggestions.email', 'Please enter a valid email address (e.g., user@example.com).');
+          return t('form.validation.suggestions.email') || 'Please enter a valid email address (e.g., user@example.com).';
         }
         if (field.includes('phone')) {
-          return t('form.validation.suggestions.phone', 'Please enter a valid phone number (e.g., +91 9876543210).');
+          return t('form.validation.suggestions.phone') || 'Please enter a valid phone number (e.g., +91 9876543210).';
         }
         if (field.includes('name')) {
-          return t('form.validation.suggestions.name', 'Use only letters and spaces in your name.');
+          return t('form.validation.suggestions.name') || 'Use only letters and spaces in your name.';
         }
         if (field.includes('location')) {
-          return t('form.validation.suggestions.location', 'Enter your city and state (e.g., Mumbai, Maharashtra).');
+          return t('form.validation.suggestions.location') || 'Enter your city and state (e.g., Mumbai, Maharashtra).';
         }
-        return t('form.validation.suggestions.pattern', 'Please check the format of your input.');
+        return t('form.validation.suggestions.pattern') || 'Please check the format of your input.';
       case 'invalid':
         if (field.includes('age')) {
-          return t('form.validation.suggestions.age', 'Please enter a valid age between 10 and 25.');
+          return t('form.validation.suggestions.age') || 'Please enter a valid age between 10 and 25.';
         }
         if (field.includes('familyBackground')) {
-          return t('form.validation.suggestions.familyBackground', 'Briefly describe your family\'s educational and professional background.');
+          return t('form.validation.suggestions.familyBackground') || 'Briefly describe your family\'s educational and professional background.';
         }
-        return t('form.validation.suggestions.invalid', 'Please enter a valid value.');
+        return t('form.validation.suggestions.invalid') || 'Please enter a valid value.';
       case 'custom':
         // Handle custom validation suggestions
         if (field.includes('interests') || field.includes('subjects')) {
-          return t('form.validation.suggestions.selectMultiple', 'You can select multiple options that apply to you.');
+          return t('form.validation.suggestions.selectMultiple') || 'You can select multiple options that apply to you.';
         }
         if (field.includes('grade') || field.includes('board') || field.includes('language')) {
-          return t('form.validation.suggestions.selectOne', 'Please select one option from the list.');
+          return t('form.validation.suggestions.selectOne') || 'Please select one option from the list.';
         }
         return null;
       default:
@@ -152,7 +152,7 @@ export const EmailValidationFeedback: React.FC<{
       {showStrength && value && isValid && (
         <div className="email-strength">
           <div className="strength-label">
-            {t('validation.email.strength', 'Email strength:')}
+            {t('validation.email.strength') || 'Email strength:'}
           </div>
           <div className={`strength-indicator strength-${getEmailStrength(value)}`}>
             <div className="strength-bar"></div>
@@ -178,11 +178,11 @@ export const PasswordValidationFeedback: React.FC<{
     checks: Array<{ label: string; passed: boolean }>;
   } => {
     const checks = [
-      { label: t('validation.password.minLength', 'At least 8 characters'), passed: password.length >= 8 },
-      { label: t('validation.password.uppercase', 'Contains uppercase letter'), passed: /[A-Z]/.test(password) },
-      { label: t('validation.password.lowercase', 'Contains lowercase letter'), passed: /[a-z]/.test(password) },
-      { label: t('validation.password.number', 'Contains number'), passed: /\d/.test(password) },
-      { label: t('validation.password.special', 'Contains special character'), passed: /[!@#$%^&*(),.?":{}|<>]/.test(password) }
+      { label: t('validation.password.minLength') || 'At least 8 characters', passed: password.length >= 8 },
+      { label: t('validation.password.uppercase') || 'Contains uppercase letter', passed: /[A-Z]/.test(password) },
+      { label: t('validation.password.lowercase') || 'Contains lowercase letter', passed: /[a-z]/.test(password) },
+      { label: t('validation.password.number') || 'Contains number', passed: /\d/.test(password) },
+      { label: t('validation.password.special') || 'Contains special character', passed: /[!@#$%^&*(),.?":{}|<>]/.test(password) }
     ];
     
     const score = checks.filter(check => check.passed).length;
@@ -204,10 +204,10 @@ export const PasswordValidationFeedback: React.FC<{
         <div className="password-strength">
           <div className="strength-header">
             <span className="strength-label">
-              {t('validation.password.strength', 'Password strength:')}
+              {t('validation.password.strength') || 'Password strength:'}
             </span>
             <span className={`strength-level strength-level-${strength.level}`}>
-              {t(`validation.password.${strength.level}`, strength.level)}
+              {t(`validation.password.${strength.level}`) || strength.level}
             </span>
           </div>
           
@@ -272,7 +272,7 @@ export const PhoneValidationFeedback: React.FC<{
         <div className="phone-format-suggestion">
           <span className="format-icon">📱</span>
           <span className="format-text">
-            {t('validation.phone.formatted', 'Formatted:')} {formatPhoneNumber(value, countryCode)}
+            {t('validation.phone.formatted') || 'Formatted:'} {formatPhoneNumber(value, countryCode)}
           </span>
         </div>
       )}
