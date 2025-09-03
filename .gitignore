@@ -125,3 +125,25 @@ stats.json
 # Performance logs
 profile.txt
 isolate-*.log
+
+# AWS and Terraform
+*.tfplan
+*.tfstate
+*.tfstate.backup
+.terraform/
+terraform.tfvars.local
+*.auto.tfvars
+
+# Docker
+.dockerignore
+
+# AWS deployment outputs
+outputs/
+*.pem
+
+# CI/CD
+.github/secrets/
+
+# Local development
+docker-compose.override.yml
+.env.docker

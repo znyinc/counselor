@@ -25,7 +25,7 @@ export const AppRouter: React.FC = () => {
           <Navigation />
           <main className="main-content">
             <ErrorBoundary>
-              <Suspense fallback={<LoadingIndicator message="Loading page..." />}>
+              <Suspense fallback={<LoadingIndicator isLoading={true} message="Loading page..." />}>
                 <Routes>
                   {/* Home route - redirects to profile form */}
                   <Route path="/" element={<Navigate to="/profile" replace />} />
@@ -99,7 +99,7 @@ const ResultsPageContainer: React.FC = React.memo(() => {
   );
 });
 
-const ProtectedRouteContainer: React.FC<{ requiredRole: string; children: React.ReactNode }> = React.memo(({ requiredRole, children }) => {
+const ProtectedRouteContainer: React.FC<{ requiredRole: "admin" | "user"; children: React.ReactNode }> = React.memo(({ requiredRole, children }) => {
   return (
     <ProtectedRoute requiredRole={requiredRole}>
       {children}

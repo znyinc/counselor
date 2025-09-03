@@ -165,14 +165,17 @@ export const getLineChartOptions = (
 // Doughnut/Pie chart specific options
 export const getDoughnutChartOptions = (
   cutout = '60%'
-): Partial<ChartOptions<'doughnut'>> => ({
-  ...getBaseChartOptions(),
+) => ({
   cutout,
+  responsive: true,
+  maintainAspectRatio: false,
   plugins: {
-    ...getBaseChartOptions().plugins,
     legend: {
-      ...getBaseChartOptions().plugins?.legend,
-      position: 'bottom' as const
+      position: 'bottom' as const,
+      display: true
+    },
+    tooltip: {
+      enabled: true
     }
   }
 });
