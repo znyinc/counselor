@@ -30,7 +30,7 @@ export const chartColorPalette = [
 ];
 
 // Common chart options
-export const getBaseChartOptions = (responsive = true): Partial<ChartOptions> => ({
+export const getBaseChartOptions = (responsive = true): Partial<ChartOptions<any>> => ({
   responsive,
   maintainAspectRatio: false,
   plugins: {
@@ -165,14 +165,28 @@ export const getLineChartOptions = (
 // Doughnut/Pie chart specific options
 export const getDoughnutChartOptions = (
   cutout = '60%'
-): Partial<ChartOptions<'doughnut'>> => ({
-  ...getBaseChartOptions(),
+): any => ({
+  responsive: true,
+  maintainAspectRatio: false,
   cutout,
   plugins: {
-    ...getBaseChartOptions().plugins,
     legend: {
-      ...getBaseChartOptions().plugins?.legend,
-      position: 'bottom' as const
+      position: 'bottom' as const,
+      labels: {
+        usePointStyle: true,
+        padding: 20,
+        font: {
+          size: 12,
+          family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+        }
+      }
+    },
+    tooltip: {
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      titleColor: '#ffffff',
+      bodyColor: '#ffffff',
+      borderColor: '#ffffff',
+      borderWidth: 1
     }
   }
 });

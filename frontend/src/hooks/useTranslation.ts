@@ -39,13 +39,14 @@ export const useTranslation = (): UseTranslationReturn => {
     const { defaultValue, interpolation, ...i18nOptions } = options;
     
     try {
-      const translation = i18nT(key, {
+      const translation = (i18nT as any)(key, {
         ...i18nOptions,
         ...interpolation,
         defaultValue: defaultValue || key,
       });
       
-      return translation;
+      // Ensure we always return a string
+      return String(translation || defaultValue || key);
     } catch (error) {
       console.warn(`Translation error for key "${key}":`, error);
       return defaultValue || key;
@@ -94,7 +95,7 @@ export const useTranslation = (): UseTranslationReturn => {
   ): T[] => {
     return options.map(option => ({
       ...option,
-      label: t(`${labelKey}.${option.value}`, { defaultValue: option.label }),
+      label: t(`${labelKey}.${option.value}`) || { defaultValue: option.label },
     }));
   };
 
@@ -117,16 +118,12 @@ export const useTranslation = (): UseTranslationReturn => {
 export const useFormTranslation = (sectionKey: string) => {
   const { t } = useTranslation();
 
-  const getFieldTranslation = (fieldName: string, type: 'label' | 'placeholder' | 'error' | 'helpText') => {
-    return t(`form.${sectionKey}.${fieldName}.${type}`, { 
-      defaultValue: `${sectionKey}.${fieldName}.${type}` 
-    });
+  const getFieldTranslation = (fieldName: string, type: 'label' | 'placeholder' | 'error' | 'helpText'): string => {
+    return t(`form.${sectionKey}.${fieldName}.${type}`) || `${sectionKey}.${fieldName}.${type}`;
   };
 
-  const getOptionTranslation = (fieldName: string, optionValue: string) => {
-    return t(`form.${sectionKey}.${fieldName}.options.${optionValue}`, { 
-      defaultValue: optionValue 
-    });
+  const getOptionTranslation = (fieldName: string, optionValue: string): string => {
+    return t(`form.${sectionKey}.${fieldName}.options.${optionValue}`) || optionValue;
   };
 
   return {
@@ -146,10 +143,7 @@ export const useValidationTranslation = () => {
     type: 'required' | 'minLength' | 'maxLength' | 'invalidEmail' | 'invalidPhone' | 'selectAtLeastOne' | 'invalidAge',
     options?: Record<string, any>
   ): string => {
-    return t(`form.validation.${type}`, { 
-      defaultValue: `Validation error: ${type}`,
-      interpolation: options 
-    });
+    return t(`form.validation.${type}`) || `Validation error: ${type}`;
   };
 
   return {
@@ -185,7 +179,7 @@ export const useSuccessTranslation = () => {
   const getSuccessMessage = (
     type: 'profileSaved' | 'recommendationsGenerated' | 'reportDownloaded' | 'feedbackSubmitted'
   ): string => {
-    return t(`success.${type}`, { defaultValue: 'Operation completed successfully' });
+    return t(`success.${type}`) || 'Operation completed successfully';
   };
 
   return {

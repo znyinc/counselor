@@ -71,7 +71,7 @@ export const CareerCard: React.FC<CareerCardProps> = ({
           ></div>
         </div>
         <span className="match-score-text">
-          {recommendation.matchScore}% {t('results.match', 'Match')}
+          {recommendation.matchScore}% {t('results.match') || 'Match'}
         </span>
       </div>
 
@@ -79,7 +79,7 @@ export const CareerCard: React.FC<CareerCardProps> = ({
       <div className="career-info">
         {/* Salary Range */}
         <div className="info-item">
-          <span className="info-label">{t('results.salary', 'Salary')}</span>
+          <span className="info-label">{t('results.salary') || 'Salary'}</span>
           <span className="info-value">
             {formatSalary(recommendation.prospects.averageSalary.entry)} - {formatSalary(recommendation.prospects.averageSalary.senior)}
           </span>
@@ -87,18 +87,18 @@ export const CareerCard: React.FC<CareerCardProps> = ({
 
         {/* Demand Level */}
         <div className="info-item">
-          <span className="info-label">{t('results.demand', 'Demand')}</span>
+          <span className="info-label">{t('results.demand') || 'Demand'}</span>
           <span 
             className="info-value demand-indicator"
             style={{ color: getDemandLevelColor(recommendation.prospects.demandLevel) }}
           >
-            {t(`results.demand.${recommendation.prospects.demandLevel}`, recommendation.prospects.demandLevel)}
+            {t(`results.demand.${recommendation.prospects.demandLevel}`) || recommendation.prospects.demandLevel}
           </span>
         </div>
 
         {/* Growth Rate */}
         <div className="info-item">
-          <span className="info-label">{t('results.growth', 'Growth')}</span>
+          <span className="info-label">{t('results.growth') || 'Growth'}</span>
           <span className="info-value">{recommendation.prospects.growthRate}</span>
         </div>
       </div>
@@ -107,22 +107,22 @@ export const CareerCard: React.FC<CareerCardProps> = ({
       <div className="quick-stats">
         <div className="stat-item">
           <span className="stat-number">{recommendation.recommendedColleges.length}</span>
-          <span className="stat-label">{t('results.colleges', 'Colleges')}</span>
+          <span className="stat-label">{t('results.colleges') || 'Colleges'}</span>
         </div>
         <div className="stat-item">
           <span className="stat-number">{recommendation.scholarships.length}</span>
-          <span className="stat-label">{t('results.scholarships', 'Scholarships')}</span>
+          <span className="stat-label">{t('results.scholarships') || 'Scholarships'}</span>
         </div>
         <div className="stat-item">
           <span className="stat-number">{recommendation.requirements.entranceExams.length}</span>
-          <span className="stat-label">{t('results.exams', 'Exams')}</span>
+          <span className="stat-label">{t('results.exams') || 'Exams'}</span>
         </div>
       </div>
 
       {/* Selection Indicator */}
       {isSelected && (
         <div className="selection-indicator">
-          <span className="selection-text">{t('results.selected', 'Selected')}</span>
+          <span className="selection-text">{t('results.selected') || 'Selected'}</span>
         </div>
       )}
     </div>

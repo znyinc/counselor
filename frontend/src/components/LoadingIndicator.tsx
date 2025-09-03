@@ -176,16 +176,16 @@ export const AIProcessingLoader: React.FC<{
   const { t } = useTranslation();
   
   const stageMessages = {
-    analyzing: t('loading.ai.analyzing', 'Analyzing your profile...'),
-    matching: t('loading.ai.matching', 'Finding career matches...'),
-    generating: t('loading.ai.generating', 'Generating recommendations...'),
-    finalizing: t('loading.ai.finalizing', 'Finalizing results...')
+    analyzing: t('loading.ai.analyzing') || 'Analyzing your profile...',
+    matching: t('loading.ai.matching') || 'Finding career matches...',
+    generating: t('loading.ai.generating') || 'Generating recommendations...',
+    finalizing: t('loading.ai.finalizing') || 'Finalizing results...'
   };
 
   return (
     <LoadingIndicator
       isLoading={isLoading}
-      message={stageMessages[stage as keyof typeof stageMessages] || t('loading.ai.processing', 'Processing with AI...')}
+      message={stageMessages[stage as keyof typeof stageMessages] || t('loading.ai.processing') || 'Processing with AI...'}
       stage={stage}
       progress={progress}
       showProgress={true}
@@ -205,7 +205,7 @@ export const FormValidationLoader: React.FC<{
   return (
     <LoadingIndicator
       isLoading={isLoading}
-      message={t('loading.validation', 'Validating form data...')}
+      message={t('loading.validation') || 'Validating form data...'}
       variant="spinner"
       size="small"
     />
@@ -221,7 +221,7 @@ export const DataFetchingLoader: React.FC<{
   return (
     <LoadingIndicator
       isLoading={isLoading}
-      message={message || t('loading.fetching', 'Loading data...')}
+      message={message || t('loading.fetching') || 'Loading data...'}
       variant="dots"
       size="medium"
     />

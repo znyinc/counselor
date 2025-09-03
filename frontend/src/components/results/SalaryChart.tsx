@@ -69,7 +69,7 @@ export const SalaryChart: React.FC<SalaryChartProps> = ({
         displayColors: false,
         callbacks: {
           label: (context) => {
-            return `${t('results.salary', 'Salary')}: ${formatSalary(context.parsed.y)}`;
+            return `${t('results.salary') || 'Salary'}: ${formatSalary(context.parsed.y)}`;
           }
         }
       }
@@ -83,16 +83,15 @@ export const SalaryChart: React.FC<SalaryChartProps> = ({
           color: '#666',
           font: {
             size: 12,
-            weight: '500'
+            weight: 500 as any
           }
         }
       },
       y: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(0, 0, 0, 0.1)',
-          drawBorder: false
-        },
+          color: 'rgba(0, 0, 0, 0.1)'
+        } as any,
         ticks: {
           color: '#666',
           font: {
@@ -156,30 +155,30 @@ export const SalaryChart: React.FC<SalaryChartProps> = ({
       <div className="chart-legend">
         <div className="legend-item">
           <div className="legend-color" style={{ backgroundColor: '#667eea' }}></div>
-          <span>{t('results.entryLevel', 'Entry Level')}</span>
+          <span>{t('results.entryLevel') || 'Entry Level'}</span>
         </div>
         <div className="legend-item">
           <div className="legend-color" style={{ backgroundColor: '#10b981' }}></div>
-          <span>{t('results.midLevel', 'Mid Level')}</span>
+          <span>{t('results.midLevel') || 'Mid Level'}</span>
         </div>
         <div className="legend-item">
           <div className="legend-color" style={{ backgroundColor: '#f59e0b' }}></div>
-          <span>{t('results.seniorLevel', 'Senior Level')}</span>
+          <span>{t('results.seniorLevel') || 'Senior Level'}</span>
         </div>
       </div>
 
       {/* Salary Insights */}
       <div className="salary-insights">
         <div className="insight-item">
-          <span className="insight-label">{t('results.startingSalary', 'Starting Salary')}</span>
+          <span className="insight-label">{t('results.startingSalary') || 'Starting Salary'}</span>
           <span className="insight-value">{formatSalary(data.datasets[0]?.data[0] || 0)}</span>
         </div>
         <div className="insight-item">
-          <span className="insight-label">{t('results.peakSalary', 'Peak Salary')}</span>
+          <span className="insight-label">{t('results.peakSalary') || 'Peak Salary'}</span>
           <span className="insight-value">{formatSalary(Math.max(...(data.datasets[0]?.data || [0])))}</span>
         </div>
         <div className="insight-item">
-          <span className="insight-label">{t('results.growthPotential', 'Growth Potential')}</span>
+          <span className="insight-label">{t('results.growthPotential') || 'Growth Potential'}</span>
           <span className="insight-value">
             {data.datasets[0]?.data.length > 1 
               ? `${Math.round(((data.datasets[0].data[data.datasets[0].data.length - 1] / data.datasets[0].data[0]) - 1) * 100)}%`
