@@ -6,6 +6,8 @@
 import { StudentProfile } from '../../../types';
 
 export const mockStudentProfile: StudentProfile = {
+  id: 'test-profile-1',
+  timestamp: new Date('2024-01-01T10:00:00Z'),
   personalInfo: {
     name: 'Test Student',
     grade: '12',
@@ -49,7 +51,7 @@ export const mockStudentProfile: StudentProfile = {
   constraints: {
     financialConstraints: false,
     locationConstraints: [],
-    familyExpectations: 'Family expects me to pursue engineering or technology field',
+    familyExpectations: ['Family expects me to pursue engineering or technology field'],
     timeConstraints: 'None',
   },
 };

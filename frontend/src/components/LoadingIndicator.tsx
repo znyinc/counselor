@@ -34,7 +34,6 @@ export const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({
   estimatedTime = null,
   elapsedTime = 0
 }) => {
-  const { t } = useTranslation();
 
   if (!isLoading) {
     return null;

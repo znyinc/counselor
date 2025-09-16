@@ -3,11 +3,10 @@
  * Displays career recommendations with visual data and charts
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { CareerRecommendation, SupportedLanguage } from '../types';
 import { useTranslation } from '../hooks/useTranslation';
 import { useNavigationState } from '../hooks/useNavigationState';
-import { useParams } from 'react-router-dom';
 import { CareerCard } from './results/CareerCard';
 import { SalaryChart } from './results/SalaryChart';
 import { EducationPathChart } from './results/EducationPathChart';
@@ -38,14 +37,16 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
   onShareResults
 }) => {
   const { t } = useTranslation();
-  const { profileId } = useParams<{ profileId?: string }>();
-  const { getProfileData, getResultsData, navigateBack, saveResultsData } = useNavigationState();
+  const { getProfileData, getResultsData, navigateBack } = useNavigationState();
   
   // Use navigation state data if available, otherwise use props
   const savedProfileData = getProfileData();
   const savedResultsData = getResultsData();
   
-  const recommendations = propRecommendations || savedResultsData?.recommendations || [];
+  const recommendations = useMemo(() => {
+    return propRecommendations || savedResultsData?.recommendations || [];
+  }, [propRecommendations, savedResultsData?.recommendations]);
+  
   const studentName = propStudentName || savedProfileData?.personalInfo?.name || 'Student';
   const [selectedRecommendation, setSelectedRecommendation] = useState<CareerRecommendation | null>(
     recommendations.length > 0 ? recommendations[0] : null

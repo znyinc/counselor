@@ -5,9 +5,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { 
   StudentProfile, 
-  PersonalInfo, 
-  AcademicData, 
-  SocioeconomicData,
   FormErrors,
   EDUCATION_BOARDS,
   GRADE_LEVELS,
@@ -41,7 +38,7 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
   initialData,
   isLoading = false,
 }) => {
-  const { t, language, formatNumber } = useTranslation();
+  const { t, language } = useTranslation();
   const personalFormT = useFormTranslation('personalInfo');
   const academicFormT = useFormTranslation('academicInfo');
   const socioFormT = useFormTranslation('socioeconomicInfo');
@@ -101,6 +98,7 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
   // Initialize form data with initial data if provided
@@ -250,7 +248,7 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
   };
 
   // Form step components
-  const PersonalInfoStep: React.FC = () => (
+  const PersonalInfoStep: React.FC = useCallback(() => (
     <div className="form-step">
       <h2>{personalFormT.t('form.personalInfo.title')}</h2>
       <p className="step-description">{personalFormT.t('form.personalInfo.description')}</p>
@@ -354,9 +352,9 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
         />
       </div>
     </div>
-  );
+  ), [personalFormT, formData, handleFieldChange, errors]);
 
-  const AcademicInfoStep: React.FC = () => (
+  const AcademicInfoStep: React.FC = useCallback(() => (
     <div className="form-step">
       <h2>{academicFormT.t('form.academicInfo.title')}</h2>
       <p className="step-description">{academicFormT.t('form.academicInfo.description')}</p>
@@ -468,7 +466,7 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
         rows={4}
       />
     </div>
-  );
+  ), [academicFormT, formData, handleFieldChange, errors]);
 
   const SocioeconomicInfoStep: React.FC = () => (
     <div className="form-step">
@@ -782,6 +780,7 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
       title: t('form.progress.review') || 'Review',
       component: <ConstraintsStep />,
     },
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   ], [t]);
 
   const calculateProgress = useMemo((): number => {

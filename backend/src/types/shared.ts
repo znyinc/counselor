@@ -212,7 +212,7 @@ export interface SearchResult<T> {
 // UI Component types
 export interface ComponentProps {
   className?: string;
-  children?: React.ReactNode;
+  children?: any;
   testId?: string;
 }
 

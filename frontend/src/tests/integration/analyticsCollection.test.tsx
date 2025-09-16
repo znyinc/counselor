@@ -306,8 +306,8 @@ describe('Analytics Collection Integration Tests', () => {
 
           return res(
             ctx.status(200),
-            ctx.set('Content-Type') || 'text/csv',
-            ctx.set('Content-Disposition') || 'attachment; filename="analytics.csv"',
+            ctx.set('Content-Type', 'text/csv'),
+            ctx.set('Content-Disposition', 'attachment; filename="analytics.csv"'),
             ctx.text('Grade,Board,Count\n12,CBSE,450\n11,CBSE,320')
           );
         })

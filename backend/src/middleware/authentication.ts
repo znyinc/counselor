@@ -38,10 +38,10 @@ export class AuthenticationService {
    */
   static generateAccessToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): string {
     return jwt.sign(payload, this.JWT_SECRET, {
-      expiresIn: this.JWT_EXPIRES_IN,
+      expiresIn: this.JWT_EXPIRES_IN as string,
       issuer: 'ai-career-counseling',
       audience: 'ai-career-counseling-users',
-    });
+    } as jwt.SignOptions);
   }
 
   /**
@@ -262,7 +262,7 @@ export const rateLimitByUser = (maxRequests: number, windowMs: number) => {
 
   return (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
     try {
-      const userId = req.user?.id || req.ip;
+      const userId = req.user?.id || req.ip || 'anonymous';
       const now = Date.now();
       
       const userLimit = userRequests.get(userId);
