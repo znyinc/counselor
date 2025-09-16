@@ -4,7 +4,7 @@
  */
 
 import { Request, Response } from 'express';
-import { NotificationService, WebhookPayload } from '../services/notificationService';
+import { NotificationService } from '../services/notificationService';
 import { StudentProfile } from '../types/studentProfile';
 import { CareerRecommendation } from '../types/careerRecommendation';
 import { CustomError } from '../middleware/errorHandler';
