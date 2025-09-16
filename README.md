@@ -55,11 +55,26 @@ cp backend/.env.example backend/.env
 npm run dev
 ```
 
-### Access the Application
+## 🚀 Deployment Options
 
-- **Frontend (Student Interface)**: http://localhost:3000
-- **Backend API**: http://localhost:3001
-- **API Health Check**: http://localhost:3001/health
+### Local Development
+- **Frontend**: http://localhost:3000
+- **Backend**: http://localhost:3001
+- **Development Server**: `npm run dev`
+
+### AWS Cloud Production
+- **Scalable Infrastructure**: ECS Fargate, RDS, ElastiCache
+- **Managed Services**: Load balancer, auto-scaling, monitoring
+- **Security**: VPC, secrets management, encryption
+- **Cost Optimized**: Starting from ~$158/month
+
+See the [AWS Deployment Guide](docs/AWS_DEPLOYMENT.md) for complete instructions.
+
+### Docker Local Testing
+```bash
+# Test AWS-like environment locally
+docker-compose -f docker-compose.aws.yml up
+```
 
 ## 📋 Available Scripts
 
@@ -84,6 +99,15 @@ npm run test:coverage    # Generate coverage reports
 npm run build            # Build both frontend and backend
 npm run build:frontend   # Build React app for production
 npm run build:backend    # Compile TypeScript backend
+```
+
+### AWS Cloud Deployment
+```bash
+# Quick deployment to AWS
+./aws/deploy.sh deploy
+
+# Or use Docker Compose for local AWS-like environment
+docker-compose -f docker-compose.aws.yml up
 ```
 
 ### Code Quality
@@ -240,6 +264,7 @@ npm run test:coverage
 ## 📚 Documentation
 
 - **[Development Guide](DEVELOPMENT_GUIDE.md)**: Detailed implementation documentation
+- **[AWS Deployment Guide](docs/AWS_DEPLOYMENT.md)**: Complete AWS cloud deployment instructions
 - **[Performance Guide](docs/PERFORMANCE.md)**: Performance optimization details
 - **[Webhook Integration](backend/docs/WEBHOOK_INTEGRATION.md)**: Notification system setup
 - **[Error Handling](frontend/src/docs/error-handling-implementation.md)**: Error handling implementation

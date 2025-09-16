@@ -125,3 +125,24 @@ stats.json
 # Performance logs
 profile.txt
 isolate-*.log
+
+# AWS and Terraform
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate*
+terraform.tfvars
+*.tfplan
+aws-exports.js
+
+# Docker
+.dockerignore
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+
+# Secrets and sensitive files
+secrets/
+.secrets
+credentials.json

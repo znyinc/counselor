@@ -1,0 +1,108 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database (replacing JSON files for production)
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: counselor_db
+      POSTGRES_USER: counselor_user
+      POSTGRES_PASSWORD: counselor_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./aws/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - counselor-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U counselor_user -d counselor_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - counselor-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: postgres://counselor_user:counselor_password@postgres:5432/counselor_db
+      REDIS_URL: redis://redis:6379
+      FRONTEND_URL: http://localhost:3000
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      JWT_SECRET: ${JWT_SECRET}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      SESSION_SECRET: ${SESSION_SECRET}
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "3001:3001"
+    networks:
+      - counselor-network
+    volumes:
+      - ./backend/logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    environment:
+      REACT_APP_API_URL: http://localhost:3001
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "3000:80"
+    networks:
+      - counselor-network
+
+  # Nginx Load Balancer
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./aws/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./aws/nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - counselor-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  counselor-network:
+    driver: bridge

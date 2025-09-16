@@ -1,0 +1,147 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  AWS_REGION: us-east-1
+  ECR_BACKEND_REPOSITORY: counselor-prod-backend
+  ECR_FRONTEND_REPOSITORY: counselor-prod-frontend
+  ECS_CLUSTER: counselor-prod
+  ECS_BACKEND_SERVICE: counselor-prod-backend
+  ECS_FRONTEND_SERVICE: counselor-prod-frontend
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: |
+        npm ci
+        cd backend && npm ci
+        cd ../frontend && npm ci
+
+    - name: Run backend tests
+      run: |
+        cd backend
+        npm run test:unit
+
+    - name: Run frontend tests
+      run: |
+        cd frontend
+        npm run test:unit
+
+    - name: Run linting
+      run: |
+        npm run lint
+
+  build-and-deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Build, tag, and push backend image to Amazon ECR
+      id: build-backend-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build backend image
+        docker build -f Dockerfile.backend -t $ECR_REGISTRY/$ECR_BACKEND_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_BACKEND_REPOSITORY:$IMAGE_TAG
+        docker tag $ECR_REGISTRY/$ECR_BACKEND_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_BACKEND_REPOSITORY:latest
+        docker push $ECR_REGISTRY/$ECR_BACKEND_REPOSITORY:latest
+        echo "image=$ECR_REGISTRY/$ECR_BACKEND_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+    - name: Build, tag, and push frontend image to Amazon ECR
+      id: build-frontend-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build frontend image
+        docker build -f Dockerfile.frontend -t $ECR_REGISTRY/$ECR_FRONTEND_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_FRONTEND_REPOSITORY:$IMAGE_TAG
+        docker tag $ECR_REGISTRY/$ECR_FRONTEND_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_FRONTEND_REPOSITORY:latest
+        docker push $ECR_REGISTRY/$ECR_FRONTEND_REPOSITORY:latest
+        echo "image=$ECR_REGISTRY/$ECR_FRONTEND_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+    - name: Download backend task definition
+      run: |
+        aws ecs describe-task-definition --task-definition ${{ env.ECS_CLUSTER }}-backend --query taskDefinition > backend-task-definition.json
+
+    - name: Fill in the new backend image ID in the Amazon ECS task definition
+      id: backend-task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: backend-task-definition.json
+        container-name: backend
+        image: ${{ steps.build-backend-image.outputs.image }}
+
+    - name: Deploy Amazon ECS backend task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.backend-task-def.outputs.task-definition }}
+        service: ${{ env.ECS_BACKEND_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
+
+    - name: Download frontend task definition
+      run: |
+        aws ecs describe-task-definition --task-definition ${{ env.ECS_CLUSTER }}-frontend --query taskDefinition > frontend-task-definition.json
+
+    - name: Fill in the new frontend image ID in the Amazon ECS task definition
+      id: frontend-task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: frontend-task-definition.json
+        container-name: frontend
+        image: ${{ steps.build-frontend-image.outputs.image }}
+
+    - name: Deploy Amazon ECS frontend task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.frontend-task-def.outputs.task-definition }}
+        service: ${{ env.ECS_FRONTEND_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
+
+    - name: Health check
+      run: |
+        # Wait for deployment to be healthy
+        sleep 30
+        
+        # Get ALB DNS name
+        ALB_DNS=$(aws elbv2 describe-load-balancers --names counselor-prod-alb --query 'LoadBalancers[0].DNSName' --output text)
+        
+        # Health check
+        curl -f http://$ALB_DNS/health || exit 1
+        echo "Deployment successful! Application is healthy."
