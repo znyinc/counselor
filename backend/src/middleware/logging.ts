@@ -39,7 +39,7 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
     requestId,
     method: req.method,
     url: req.originalUrl,
-    userAgent: req.get('User-Agent'),
+    userAgent: req.get('User-Agent') || undefined,
     ip: req.ip || req.connection.remoteAddress || 'unknown',
     timestamp: new Date(),
   };

@@ -387,7 +387,7 @@ export const logProfileSubmission = (req: Request, res: Response, next: NextFunc
     clientId,
     userAgent,
     timestamp,
-    requestId: req.id || 'unknown'
+    requestId: (req.headers['x-request-id'] as string) || 'unknown'
   };
   
   next();

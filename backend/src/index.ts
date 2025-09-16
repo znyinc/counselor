@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import { DataController } from './controllers/dataController';
 import { ProfileController } from './controllers/profileController';
@@ -61,7 +62,7 @@ app.use(securityHeaders);
 app.use(requestSizeLimit);
 
 // CORS configuration
-app.use('/health', healthCheckCorsOptions);
+app.use('/health', cors(healthCheckCorsOptions));
 app.use('/api', configureCors());
 app.use(configureCors()); // Default CORS for other routes
 

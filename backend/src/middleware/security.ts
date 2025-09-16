@@ -118,12 +118,12 @@ export const sanitizeInput = (req: Request, res: Response, next: NextFunction): 
 /**
  * Request size limiting middleware
  */
-export const requestSizeLimit = (req: Request, res: Response, next: NextFunction): void => {
+export const requestSizeLimit = (req: Request, res: Response, next: NextFunction) => {
   const contentLength = req.get('content-length');
   const maxSize = 1024 * 1024; // 1MB
 
   if (contentLength && parseInt(contentLength) > maxSize) {
-    return res.status(413).json({
+    res.status(413).json({
       success: false,
       error: {
         code: 'REQUEST_TOO_LARGE',
@@ -131,6 +131,7 @@ export const requestSizeLimit = (req: Request, res: Response, next: NextFunction
       },
       timestamp: new Date().toISOString(),
     });
+    return;
   }
 
   next();

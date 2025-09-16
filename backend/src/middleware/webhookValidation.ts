@@ -245,7 +245,7 @@ export const logWebhookRequest = (req: Request, res: Response, next: NextFunctio
     clientId,
     userAgent,
     contentLength: parseInt(contentLength),
-    requestId: req.id || 'unknown'
+    requestId: (req.headers['x-request-id'] as string) || 'unknown'
   };
 
   next();
