@@ -34,9 +34,9 @@ export const EducationPathChart: React.FC<EducationPathChartProps> = ({
       {/* Main Path Timeline */}
       <div className="path-timeline">
         <div className="timeline-header">
-          <h4>{t('results.educationPath', 'Education Path')}</h4>
+          <h4>{t('results.educationPath') || 'Education Path'}</h4>
           <div className="total-duration">
-            <span className="duration-label">{t('results.totalDuration', 'Total Duration')}</span>
+            <span className="duration-label">{t('results.totalDuration') || 'Total Duration'}</span>
             <span className="duration-value">{data.totalDuration}</span>
           </div>
         </div>
@@ -65,7 +65,7 @@ export const EducationPathChart: React.FC<EducationPathChartProps> = ({
                 {step.requirements.length > 0 && (
                   <div className="step-requirements">
                     <span className="requirements-label">
-                      {t('results.requirements', 'Requirements')}:
+                      {t('results.requirements') || 'Requirements'}:
                     </span>
                     <ul className="requirements-list">
                       {step.requirements.map((req, reqIndex) => (
@@ -83,14 +83,14 @@ export const EducationPathChart: React.FC<EducationPathChartProps> = ({
       {/* Alternative Paths */}
       {data.alternativePaths && data.alternativePaths.length > 0 && (
         <div className="alternative-paths">
-          <h5>{t('results.alternativePaths', 'Alternative Paths')}</h5>
+          <h5>{t('results.alternativePaths') || 'Alternative Paths'}</h5>
           
           {data.alternativePaths.map((altPath, pathIndex) => (
             <div key={pathIndex} className="alternative-path">
               <div className="alt-path-header">
                 <h6 className="alt-path-title">{altPath.title}</h6>
                 <span className="alt-path-badge">
-                  {t('results.alternative', 'Alternative')}
+                  {t('results.alternative') || 'Alternative'}
                 </span>
               </div>
               
@@ -111,13 +111,13 @@ export const EducationPathChart: React.FC<EducationPathChartProps> = ({
 
       {/* Path Comparison */}
       <div className="path-comparison">
-        <h5>{t('results.pathComparison', 'Path Comparison')}</h5>
+        <h5>{t('results.pathComparison') || 'Path Comparison'}</h5>
         
         <div className="comparison-grid">
           <div className="comparison-item">
             <div className="comparison-header">
               <span className="comparison-icon">⏱️</span>
-              <span className="comparison-label">{t('results.timeToComplete', 'Time to Complete')}</span>
+              <span className="comparison-label">{t('results.timeToComplete') || 'Time to Complete'}</span>
             </div>
             <div className="comparison-value">{data.totalDuration}</div>
           </div>
@@ -125,7 +125,7 @@ export const EducationPathChart: React.FC<EducationPathChartProps> = ({
           <div className="comparison-item">
             <div className="comparison-header">
               <span className="comparison-icon">📋</span>
-              <span className="comparison-label">{t('results.totalSteps', 'Total Steps')}</span>
+              <span className="comparison-label">{t('results.totalSteps') || 'Total Steps'}</span>
             </div>
             <div className="comparison-value">{data.steps.length}</div>
           </div>
@@ -133,22 +133,22 @@ export const EducationPathChart: React.FC<EducationPathChartProps> = ({
           <div className="comparison-item">
             <div className="comparison-header">
               <span className="comparison-icon">🎯</span>
-              <span className="comparison-label">{t('results.complexity', 'Complexity')}</span>
+              <span className="comparison-label">{t('results.complexity') || 'Complexity'}</span>
             </div>
             <div className="comparison-value">
-              {data.steps.length <= 3 ? t('results.low', 'Low') :
-               data.steps.length <= 5 ? t('results.medium', 'Medium') :
-               t('results.high', 'High')}
+              {data.steps.length <= 3 ? t('results.low') || 'Low' :
+               data.steps.length <= 5 ? t('results.medium') || 'Medium' :
+               t('results.high') || 'High'}
             </div>
           </div>
           
           <div className="comparison-item">
             <div className="comparison-header">
               <span className="comparison-icon">💡</span>
-              <span className="comparison-label">{t('results.alternatives', 'Alternatives')}</span>
+              <span className="comparison-label">{t('results.alternatives') || 'Alternatives'}</span>
             </div>
             <div className="comparison-value">
-              {data.alternativePaths?.length || 0} {t('results.available', 'Available')}
+              {data.alternativePaths?.length || 0} {t('results.available') || 'Available'}
             </div>
           </div>
         </div>
@@ -157,14 +157,14 @@ export const EducationPathChart: React.FC<EducationPathChartProps> = ({
       {/* Progress Indicator */}
       <div className="progress-indicator">
         <div className="progress-header">
-          <span>{t('results.yourProgress', 'Your Current Progress')}</span>
+          <span>{t('results.yourProgress') || 'Your Current Progress'}</span>
           <span className="progress-percentage">0%</span>
         </div>
         <div className="progress-bar">
           <div className="progress-fill" style={{ width: '0%' }}></div>
         </div>
         <div className="progress-note">
-          {t('results.progressNote', 'Start your journey by completing the first step!')}
+          {t('results.progressNote') || 'Start your journey by completing the first step!'}
         </div>
       </div>
     </div>

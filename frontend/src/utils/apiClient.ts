@@ -207,7 +207,7 @@ class ApiClient {
 
   async getAnalytics(filters?: any, config?: RequestConfig) {
     const queryParams = filters ? `?${new URLSearchParams(filters).toString()}` : '';
-    return this.get(`/analytics${queryParams}`, config);
+    return this.get(`/analytics${queryParams}`) || config;
   }
 
   async sendNotification(notificationData: any, config?: RequestConfig) {

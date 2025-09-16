@@ -249,11 +249,6 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
     }
   };
 
-  const calculateProgress = useMemo((): number => {
-    const totalSteps = steps.length;
-    return Math.round(((currentStep + 1) / totalSteps) * 100);
-  }, [currentStep, steps.length]);
-
   // Form step components
   const PersonalInfoStep: React.FC = () => (
     <div className="form-step">
@@ -353,8 +348,8 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
           value={formData.personalInfo?.physicallyDisabled ? 'yes' : 'no'}
           onChange={(name, value) => handleFieldChange(name, value === 'yes')}
           options={[
-            { value: 'no', label: personalFormT.getFieldTranslation('physicallyDisabled', 'no') },
-            { value: 'yes', label: personalFormT.getFieldTranslation('physicallyDisabled', 'yes') },
+            { value: 'no', label: personalFormT.getOptionTranslation('physicallyDisabled', 'no') },
+            { value: 'yes', label: personalFormT.getOptionTranslation('physicallyDisabled', 'yes') },
           ]}
         />
       </div>
@@ -611,8 +606,8 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
         value={formData.socioeconomicData?.internetAccess ? 'yes' : 'no'}
         onChange={(name, value) => handleFieldChange(name, value === 'yes')}
         options={[
-          { value: 'yes', label: socioFormT.getFieldTranslation('internetAccess', 'yes') },
-          { value: 'no', label: socioFormT.getFieldTranslation('internetAccess', 'no') },
+          { value: 'yes', label: socioFormT.getOptionTranslation('internetAccess', 'yes') },
+          { value: 'no', label: socioFormT.getOptionTranslation('internetAccess', 'no') },
         ]}
         error={FormValidator.getFirstError(errors, 'internetAccess')}
         required
@@ -719,8 +714,8 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
         value={formData.constraints?.financialConstraints ? 'yes' : 'no'}
         onChange={(name, value) => handleFieldChange(name, value === 'yes')}
         options={[
-          { value: 'no', label: constraintsFormT.getFieldTranslation('financialConstraints', 'no') },
-          { value: 'yes', label: constraintsFormT.getFieldTranslation('financialConstraints', 'yes') },
+          { value: 'no', label: constraintsFormT.getOptionTranslation('financialConstraints', 'no') },
+          { value: 'yes', label: constraintsFormT.getOptionTranslation('financialConstraints', 'yes') },
         ]}
       />
 
@@ -764,30 +759,35 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
   const steps: FormStep[] = useMemo(() => [
     {
       id: 'personal',
-      title: t('form.progress.personalInfo', 'Personal Info'),
+      title: t('form.progress.personalInfo') || 'Personal Info',
       component: <PersonalInfoStep />,
     },
     {
       id: 'academic',
-      title: t('form.progress.academicInfo', 'Academic Info'),
+      title: t('form.progress.academicInfo') || 'Academic Info',
       component: <AcademicInfoStep />,
     },
     {
       id: 'background',
-      title: t('form.progress.backgroundInfo', 'Background Info'),
+      title: t('form.progress.backgroundInfo') || 'Background Info',
       component: <SocioeconomicInfoStep />,
     },
     {
       id: 'aspirations',
-      title: t('form.progress.aspirations', 'Aspirations'),
+      title: t('form.progress.aspirations') || 'Aspirations',
       component: <AspirationsStep />,
     },
     {
       id: 'constraints',
-      title: t('form.progress.review', 'Review'),
+      title: t('form.progress.review') || 'Review',
       component: <ConstraintsStep />,
     },
   ], [t]);
+
+  const calculateProgress = useMemo((): number => {
+    const totalSteps = steps.length;
+    return Math.round(((currentStep + 1) / totalSteps) * 100);
+  }, [currentStep, steps.length]);
 
   return (
     <div className="student-profile-form">
@@ -800,12 +800,12 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
           />
         </div>
         <div className="progress-text">
-          {t('form.progress.step', 'Step {{current}} of {{total}}', {
-            current: currentStep + 1,
-            total: steps.length,
-          })} - {t('form.progress.completion', '{{percentage}}% Complete', {
-            percentage: calculateProgress,
-          })}
+          {(t('form.progress.step') || 'Step {{current}} of {{total}}')
+            .replace('{{current}}', (currentStep + 1).toString())
+            .replace('{{total}}', steps.length.toString())
+          } - {(t('form.progress.completion') || '{{percentage}}% Complete')
+            .replace('{{percentage}}', calculateProgress.toString())
+          }
         </div>
       </div>
 
@@ -835,7 +835,7 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
           disabled={currentStep === 0}
           className="btn btn-secondary"
         >
-          {t('common.previous', 'Previous')}
+          {t('common.previous') || 'Previous'}
         </button>
 
         <div className="nav-spacer" />
@@ -847,7 +847,7 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
             className="btn btn-primary"
             disabled={isLoading}
           >
-            {t('common.next', 'Next')}
+            {t('common.next') || 'Next'}
           </button>
         ) : (
           <button
@@ -856,7 +856,7 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
             className="btn btn-primary"
             disabled={isLoading}
           >
-            {isLoading ? t('common.loading', 'Loading...') : t('common.submit', 'Submit')}
+            {isLoading ? t('common.loading') || 'Loading...' : t('common.submit') || 'Submit'}
           </button>
         )}
       </div>
@@ -864,7 +864,7 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
       {/* Error summary */}
       {FormValidator.hasErrors(errors) && (
         <div className="error-summary">
-          <h3>{t('errors.validation', 'Please check the form for errors.')}</h3>
+          <h3>{t('errors.validation') || 'Please check the form for errors.'}</h3>
           <ul>
             {Object.entries(errors).map(([field, fieldErrors]) => (
               fieldErrors?.map((error, index) => (

@@ -368,9 +368,9 @@ export class FormValidator {
   /**
    * Get first error message for a field
    */
-  static getFirstError(errors: FormErrors, fieldName: string): string | null {
+  static getFirstError(errors: FormErrors, fieldName: string): string | undefined {
     const fieldErrors = errors[fieldName];
-    return fieldErrors && fieldErrors.length > 0 ? fieldErrors[0] : null;
+    return fieldErrors && fieldErrors.length > 0 ? fieldErrors[0] : undefined;
   }
 
   /**
