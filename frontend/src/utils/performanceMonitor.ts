@@ -3,6 +3,8 @@
  * Tracks and reports performance metrics
  */
 
+import React from 'react';
+
 interface PerformanceMetric {
   name: string;
   value: number;
@@ -260,7 +262,11 @@ class PerformanceMonitor {
   exportMetrics(): {
     metrics: PerformanceMetric[];
     componentMetrics: ComponentMetric[];
-    summary: ReturnType<typeof this.getPerformanceSummary>;
+    summary: {
+      webVitals: Record<string, number>;
+      slowComponents: ComponentMetric[];
+      resourceIssues: PerformanceMetric[];
+    };
   } {
     return {
       metrics: [...this.metrics],
@@ -340,7 +346,7 @@ export function withPerformanceTracking<P extends object>(
       trackRender(props);
     });
 
-    return <WrappedComponent {...props} />;
+    return React.createElement(WrappedComponent, props);
   };
 
   PerformanceTrackedComponent.displayName = `withPerformanceTracking(${displayName})`;

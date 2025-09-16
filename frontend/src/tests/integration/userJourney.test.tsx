@@ -128,7 +128,7 @@ describe('Complete User Journey Integration Tests', () => {
       const softwareEngineerCard = screen.getByText(/Software Engineer/i).closest('.career-card');
       expect(softwareEngineerCard).toBeInTheDocument();
 
-      await user.click(within(softwareEngineerCard!).getByText(/View Details/i));
+      await user.click(within(softwareEngineerCard as HTMLElement).getByText(/View Details/i));
 
       // Step 15: Verify detailed career information
       await waitFor(() => {

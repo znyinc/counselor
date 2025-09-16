@@ -69,7 +69,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
       return defaultValue;
     }
     
-    return translation;
+    return String(translation);
   };
 
   // Initialize i18n language on mount

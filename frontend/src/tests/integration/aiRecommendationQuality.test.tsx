@@ -124,7 +124,7 @@ describe('AI Recommendation Quality Integration Tests', () => {
 
       // Verify recommendations include scholarship information
       expect(screen.getByText(/Available Scholarships/i)).toBeInTheDocument();
-      expect(screen.getByText(/SC/ST Scholarship/i)).toBeInTheDocument();
+      expect(screen.getByText(/SC\/ST Scholarship/i)).toBeInTheDocument();
 
       // Verify recommendations consider financial constraints
       const careerCards = screen.getAllByText(/View Details/i);
