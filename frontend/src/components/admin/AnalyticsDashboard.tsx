@@ -2,7 +2,7 @@
  * Analytics Dashboard Component
  * Displays comprehensive analytics for educational administrators
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -107,7 +107,7 @@ export const AnalyticsDashboard: React.FC = () => {
   const [autoRefresh, setAutoRefresh] = useState(true);
 
   // Fetch dashboard metrics
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       const params = new URLSearchParams({
         timeRange: selectedTimeRange,
@@ -123,10 +123,10 @@ export const AnalyticsDashboard: React.FC = () => {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
     }
-  };
+  }, [selectedTimeRange, selectedRegion, selectedBoard]);
 
   // Fetch trend analysis
-  const fetchTrendData = async () => {
+  const fetchTrendData = useCallback(async () => {
     try {
       const params = new URLSearchParams({
         type: 'student',
@@ -142,10 +142,10 @@ export const AnalyticsDashboard: React.FC = () => {
     } catch (err) {
       console.error('Failed to fetch trend data:', err);
     }
-  };
+  }, [selectedTimeRange]);
 
   // Fetch realtime metrics
-  const fetchRealtimeData = async () => {
+  const fetchRealtimeData = useCallback(async () => {
     try {
       const response = await fetch('/api/analytics/realtime');
       if (!response.ok) throw new Error('Failed to fetch realtime data');
@@ -155,10 +155,10 @@ export const AnalyticsDashboard: React.FC = () => {
     } catch (err) {
       console.error('Failed to fetch realtime data:', err);
     }
-  };
+  }, []);
 
   // Load all data
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     setError(null);
     
@@ -173,7 +173,7 @@ export const AnalyticsDashboard: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [fetchDashboardData, fetchTrendData, fetchRealtimeData]);
 
   // Export analytics report
   const exportReport = async (format: 'csv' | 'pdf' | 'json') => {
@@ -215,7 +215,7 @@ export const AnalyticsDashboard: React.FC = () => {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [selectedTimeRange, selectedRegion, selectedBoard, autoRefresh]);
+  }, [selectedTimeRange, selectedRegion, selectedBoard, autoRefresh, loadData, fetchRealtimeData]);
 
   if (loading) {
     return (

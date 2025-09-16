@@ -3,7 +3,6 @@
  */
 
 import React from 'react';
-import { useTranslation } from '../../hooks/useTranslation';
 import './FormField.css';
 
 export interface FormFieldOption {
@@ -46,7 +45,6 @@ export const FormField: React.FC<FormFieldProps> = ({
   min,
   max,
 }) => {
-  const { language } = useTranslation();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>): void => {
     const { value: inputValue, type: inputType } = e.target;
