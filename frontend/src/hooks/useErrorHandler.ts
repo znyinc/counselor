@@ -217,15 +217,15 @@ function getErrorMessage(
   
   switch (errorType) {
     case 'network':
-      return t('errors.network', 'Network error. Please check your connection.');
+      return t('errors.network') || 'Network error. Please check your connection.';
     case 'validation':
-      return t('errors.validation', 'Please check the form for errors.');
+      return t('errors.validation') || 'Please check the form for errors.';
     case 'ai':
-      return t('errors.ai.processing', 'Error processing your request with AI.');
+      return t('errors.ai.processing') || 'Error processing your request with AI.';
     case 'server':
-      return t('errors.server', 'Server error. Please try again later.');
+      return t('errors.server') || 'Server error. Please try again later.';
     default:
-      return t('errors.generic', 'Something went wrong. Please try again.');
+      return t('errors.generic') || 'Something went wrong. Please try again.';
   }
 }
 
