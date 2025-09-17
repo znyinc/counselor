@@ -4,7 +4,7 @@
  */
 
 import crypto from 'crypto';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 export interface EncryptionConfig {
   algorithm: string;
@@ -82,12 +82,13 @@ export class SecureStorage {
       key = this.encryptionKey!;
     }
 
-    const cipher = crypto.createCipherGCM(config.algorithm, key, iv);
-    
-    let encrypted = cipher.update(data, 'utf8', 'hex');
-    encrypted += cipher.final('hex');
-    
-    const tag = cipher.getAuthTag();
+  const cipher = crypto.createCipheriv(config.algorithm, key, iv);
+
+  let encrypted = cipher.update(data, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+
+  // AES-GCM tag
+  const tag = (cipher as any).getAuthTag ? (cipher as any).getAuthTag() : Buffer.alloc(0);
 
     return {
       encrypted,
@@ -118,8 +119,10 @@ export class SecureStorage {
       key = this.encryptionKey!;
     }
 
-    const decipher = crypto.createDecipherGCM(config.algorithm, key, iv);
-    decipher.setAuthTag(tag);
+    const decipher = crypto.createDecipheriv(config.algorithm, key, iv);
+    if ((decipher as any).setAuthTag && tag.length) {
+      (decipher as any).setAuthTag(tag);
+    }
 
     let decrypted = decipher.update(encryptedData.encrypted, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
@@ -175,16 +178,28 @@ export class SecureStorage {
       let current = encrypted;
       
       for (let i = 0; i < keys.length - 1; i++) {
-        if (current[keys[i]]) {
-          current = current[keys[i]];
+        if (current && typeof current === 'object' && keys[i] in current) {
+          current = current[keys[i]] as any;
         } else {
           return; // Field doesn't exist
         }
+        }
+        if (current && typeof current === 'object') {
+          const key = keys[i] as string | undefined;
+          if (key && key in current) {
+            current = (current as any)[key] as any;
+          } else {
+            current = undefined as any;
+            break;
+          }
       }
 
       const finalKey = keys[keys.length - 1];
-      if (current[finalKey] && typeof current[finalKey] === 'string') {
+      if (current && typeof current === 'object' && typeof current[finalKey] === 'string') {
         current[finalKey] = this.encrypt(current[finalKey]);
+      }
+      if (current && typeof current === 'object' && finalKey && typeof (current as any)[finalKey] === 'string') {
+        (current as any)[finalKey] = this.encrypt((current as any)[finalKey]);
       }
     });
 
@@ -210,16 +225,28 @@ export class SecureStorage {
       let current = decrypted;
       
       for (let i = 0; i < keys.length - 1; i++) {
-        if (current[keys[i]]) {
-          current = current[keys[i]];
+        if (current && typeof current === 'object' && keys[i] in current) {
+          current = current[keys[i]] as any;
         } else {
           return; // Field doesn't exist
         }
+        }
+        if (current && typeof current === 'object') {
+          const key = keys[i] as string | undefined;
+          if (key && key in current) {
+            current = (current as any)[key] as any;
+          } else {
+            current = undefined as any;
+            break;
+          }
       }
 
       const finalKey = keys[keys.length - 1];
-      if (current[finalKey] && typeof current[finalKey] === 'object' && current[finalKey].encrypted) {
+      if (current && typeof current === 'object' && current[finalKey] && typeof current[finalKey] === 'object' && (current[finalKey] as any).encrypted) {
         current[finalKey] = this.decrypt(current[finalKey]);
+      }
+      if (current && typeof current === 'object' && finalKey && (current as any)[finalKey] && typeof (current as any)[finalKey] === 'object' && ((current as any)[finalKey] as any).encrypted) {
+        (current as any)[finalKey] = this.decrypt((current as any)[finalKey]);
       }
     });
 
@@ -277,7 +304,7 @@ export class SecureStorage {
   /**
    * Extract state from location string
    */
-  private static extractState(location: string): string {
+  public static extractState(location?: string): string {
     if (!location) return 'Unknown';
 
     // Common Indian state patterns

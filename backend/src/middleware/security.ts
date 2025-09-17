@@ -123,7 +123,7 @@ export const requestSizeLimit = (req: Request, res: Response, next: NextFunction
   const maxSize = 1024 * 1024; // 1MB
 
   if (contentLength && parseInt(contentLength) > maxSize) {
-    return res.status(413).json({
+    res.status(413).json({
       success: false,
       error: {
         code: 'REQUEST_TOO_LARGE',
@@ -131,6 +131,7 @@ export const requestSizeLimit = (req: Request, res: Response, next: NextFunction
       },
       timestamp: new Date().toISOString(),
     });
+    return;
   }
 
   next();

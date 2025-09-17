@@ -14,7 +14,7 @@ interface TranslationOptions {
 }
 
 interface UseTranslationReturn {
-  t: (key: string, options?: TranslationOptions) => string;
+  t: (key: string, optionsOrFallback?: TranslationOptions | string, legacyInterpolation?: Record<string, any>) => string;
   language: SupportedLanguage;
   setLanguage: (lang: SupportedLanguage) => void;
   isLoading: boolean;
@@ -34,21 +34,38 @@ export const useTranslation = (): UseTranslationReturn => {
 
   /**
    * Enhanced translation function with better error handling and fallbacks
+   * Supports both new options format and legacy string fallback format
    */
-  const t = (key: string, options: TranslationOptions = {}): string => {
-    const { defaultValue, interpolation, ...i18nOptions } = options;
-    
+  const t = (key: string, optionsOrFallback?: TranslationOptions | string, legacyInterpolation?: Record<string, any>): string => {
     try {
+      // Handle legacy format: t(key, fallback, interpolation)
+      if (typeof optionsOrFallback === 'string') {
+        const fallback = optionsOrFallback;
+        const interpolation = legacyInterpolation || {};
+        
+        const translation = i18nT(key, {
+          ...interpolation,
+          defaultValue: fallback,
+        });
+        
+        return translation || fallback || key;
+      }
+      
+      // Handle new format: t(key, options)
+      const options = optionsOrFallback || {};
+      const { defaultValue, interpolation, ...i18nOptions } = options;
+      
       const translation = i18nT(key, {
         ...i18nOptions,
         ...interpolation,
         defaultValue: defaultValue || key,
       });
       
-      return translation;
+      return translation || defaultValue || key;
     } catch (error) {
       console.warn(`Translation error for key "${key}":`, error);
-      return defaultValue || key;
+      const fallback = typeof optionsOrFallback === 'string' ? optionsOrFallback : optionsOrFallback?.defaultValue;
+      return fallback || key;
     }
   };
 
@@ -117,7 +134,14 @@ export const useTranslation = (): UseTranslationReturn => {
 export const useFormTranslation = (sectionKey: string) => {
   const { t } = useTranslation();
 
-  const getFieldTranslation = (fieldName: string, type: 'label' | 'placeholder' | 'error' | 'helpText') => {
+  const getFieldTranslation = (fieldName: string, type: 'label' | 'placeholder' | 'error' | 'helpText' | 'yes' | 'no') => {
+    // Handle special cases for yes/no options
+    if (type === 'yes' || type === 'no') {
+      return t(`form.${sectionKey}.${fieldName}.${type}`, { 
+        defaultValue: type === 'yes' ? 'Yes' : 'No'
+      });
+    }
+    
     return t(`form.${sectionKey}.${fieldName}.${type}`, { 
       defaultValue: `${sectionKey}.${fieldName}.${type}` 
     });

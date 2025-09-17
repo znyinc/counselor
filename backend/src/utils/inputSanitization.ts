@@ -3,8 +3,10 @@
  * Provides comprehensive input sanitization and validation
  */
 
-import validator from 'validator';
-import DOMPurify from 'isomorphic-dompurify';
+// validator and isomorphic-dompurify may not have @types installed in this environment.
+// Use require with type any to avoid build-time declaration errors under strict TS config.
+const validator: any = require('validator');
+const DOMPurify: any = require('isomorphic-dompurify');
 
 export interface SanitizationOptions {
   allowHtml?: boolean;
@@ -198,8 +200,8 @@ export class InputSanitizer {
       if (key in input) {
         try {
           sanitized[key] = sanitizer(input[key]);
-        } catch (error) {
-          throw new Error(`Validation failed for field '${key}': ${error.message}`);
+        } catch (error: any) {
+          throw new Error(`Validation failed for field '${key}': ${error?.message || String(error)}`);
         }
       }
     }

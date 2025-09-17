@@ -209,7 +209,7 @@ function getErrorMessage(
   error: Error,
   errorType: ErrorState['errorType'],
   fallbackMessage: string | undefined,
-  t: (key: string, fallback?: string) => string
+  t: (key: string, optionsOrFallback?: any, legacyInterpolation?: Record<string, any>) => string
 ): string {
   if (fallbackMessage) {
     return fallbackMessage;

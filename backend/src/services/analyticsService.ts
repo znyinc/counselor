@@ -18,10 +18,10 @@ export interface AnalyticsEntry {
       grade: string;
       board: string;
       location: string;
-      ruralUrban: 'rural' | 'urban';
+  ruralUrban: 'rural' | 'urban' | 'semi-urban';
       languagePreference: 'hindi' | 'english';
-      category?: string;
-      gender?: string;
+  category?: string | undefined;
+  gender?: string | undefined;
     };
     socioeconomic: {
       incomeRange: string;
@@ -87,6 +87,7 @@ export interface AnalyticsAggregation {
       byGrade: Record<string, number>;
       byBoard: Record<string, number>;
       byLocation: Record<string, number>;
+      byIncomeRange: Record<string, number>;
     };
     demandLevelDistribution: Record<string, number>;
     salaryTrends: {
@@ -109,7 +110,7 @@ export interface AnalyticsFilter {
   grade?: string;
   board?: string;
   location?: string;
-  ruralUrban?: 'rural' | 'urban';
+  ruralUrban?: 'rural' | 'urban' | 'semi-urban';
   languagePreference?: 'hindi' | 'english';
   incomeRange?: string;
   limit?: number;
@@ -160,7 +161,7 @@ export class AnalyticsService {
   /**
    * Initialize analytics storage directory
    */
-  private async initializeStorage(): Promise<void> {
+  public async initializeStorage(): Promise<void> {
     try {
       await fs.mkdir(this.dataPath, { recursive: true });
       this.initialized = true;
@@ -194,14 +195,14 @@ export class AnalyticsService {
         timestamp: new Date().toISOString(),
         anonymizedData: {
           profileHash: this.anonymizeProfileId(profile.id),
-          demographics: {
-            grade: profile.personalInfo.grade,
-            board: profile.personalInfo.board,
-            location: this.anonymizeLocation(profile.socioeconomicData.location),
-            ruralUrban: profile.socioeconomicData.ruralUrban,
-            languagePreference: profile.personalInfo.languagePreference,
-            category: profile.personalInfo.category,
-            gender: profile.personalInfo.gender
+      demographics: {
+        grade: profile.personalInfo.grade,
+        board: profile.personalInfo.board,
+        location: this.anonymizeLocation(profile.socioeconomicData.location),
+        ruralUrban: profile.socioeconomicData.ruralUrban,
+        languagePreference: profile.personalInfo.languagePreference,
+        category: profile.personalInfo.category ?? undefined,
+        gender: profile.personalInfo.gender ?? undefined
           },
           socioeconomic: {
             incomeRange: profile.familyIncome,
@@ -262,103 +263,296 @@ export class AnalyticsService {
    */
   async getDashboardData(filter: AnalyticsFilter = {}): Promise<DashboardData> {
     try {
-      const aggregatedData = await this.getAggregatedData(filter);
-      return this.generateDashboardData(aggregatedData);
+      const entries = await this.loadAnalyticsEntries(filter);
+      const aggregatedData = this.aggregateData(entries, filter);
+      return await this.generateDashboardData(aggregatedData, entries);
     } catch (error) {
       console.error('Failed to generate dashboard data:', error);
       throw error;
     }
   }
 
-  /**
-   * Get analytics statistics
-   */
-  async getAnalyticsStats(): Promise<{
-    totalEntries: number;
-    dateRange: { from: string; to: string };
-    storageSize: number;
-    lastUpdated: string;
-  }> {
-    try {
-      const entries = await this.loadAnalyticsEntries();
-      const stats = await fs.stat(this.dataPath);
-      
-      const dates = entries.map(e => e.timestamp).sort();
-      
-      return {
-        totalEntries: entries.length,
-        dateRange: {
-          from: dates[0] || new Date().toISOString(),
-          to: dates[dates.length - 1] || new Date().toISOString()
+  public aggregateData(entries: AnalyticsEntry[], filter: AnalyticsFilter): AnalyticsAggregation {
+    const aggregation: AnalyticsAggregation = {
+      totalProfiles: entries.length,
+      dateRange: {
+        from: filter.dateFrom || (entries[0]?.timestamp || new Date().toISOString()),
+        to: filter.dateTo || (entries[entries.length - 1]?.timestamp || new Date().toISOString())
+      },
+      demographics: {
+        byGrade: {},
+        byBoard: {},
+        byLocation: {},
+        byRuralUrban: {},
+        byLanguage: {},
+        byCategory: {},
+        byGender: {}
+      },
+      socioeconomic: {
+        byIncomeRange: {},
+        byInternetAccess: {},
+        byDeviceAccess: {},
+        economicFactorsTrends: {}
+      },
+      academic: {
+        popularInterests: {},
+        popularSubjects: {},
+        performanceDistribution: {},
+        extracurricularTrends: {}
+      },
+      recommendations: {
+        topCareers: {},
+        averageMatchScores: {
+          overall: 0,
+          byGrade: {},
+          byBoard: {},
+          byLocation: {},
+          byIncomeRange: {}
         },
-        storageSize: stats.size,
-        lastUpdated: stats.mtime.toISOString()
-      };
-    } catch (error) {
-      console.error('Failed to get analytics stats:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Clean up old analytics data (privacy compliance)
-   */
-  async cleanupOldData(retentionDays: number = 365): Promise<number> {
-    try {
-      const cutoffDate = new Date();
-      cutoffDate.setDate(cutoffDate.getDate() - retentionDays);
-      
-      const entries = await this.loadAnalyticsEntries();
-      const filteredEntries = entries.filter(entry => 
-        new Date(entry.timestamp) > cutoffDate
-      );
-      
-      const removedCount = entries.length - filteredEntries.length;
-      
-      if (removedCount > 0) {
-        await this.saveAnalyticsEntries(filteredEntries);
-        console.log(`Cleaned up ${removedCount} old analytics entries`);
+        demandLevelDistribution: {},
+        salaryTrends: {
+          averageEntry: 0,
+          averageMid: 0,
+          averageSenior: 0,
+          byCareer: {}
+        }
+      },
+      processing: {
+        averageProcessingTime: 0,
+        aiModelUsage: {},
+        successRate: 100
       }
+    };
+
+    // Process each entry
+    let totalMatchScore = 0;
+    let totalProcessingTime = 0;
+    let totalEntrySalary = 0;
+    let salaryCount = 0;
+
+    entries.forEach(entry => {
+      const { demographics, socioeconomic, academic, recommendations, processing } = entry.anonymizedData;
+
+      // Skip entries with missing required data
+      if (!demographics || !socioeconomic || !academic || !recommendations || !processing) {
+        console.warn('Skipping analytics entry with missing data:', entry.id);
+        return;
+      }
+
+      // Demographics aggregation
+      this.incrementCount(aggregation.demographics.byGrade, demographics.grade);
+      this.incrementCount(aggregation.demographics.byBoard, demographics.board);
+      this.incrementCount(aggregation.demographics.byLocation, demographics.location);
+      this.incrementCount(aggregation.demographics.byRuralUrban, demographics.ruralUrban);
+      this.incrementCount(aggregation.demographics.byLanguage, demographics.languagePreference);
+      if (demographics.category) this.incrementCount(aggregation.demographics.byCategory, demographics.category);
+      if (demographics.gender) this.incrementCount(aggregation.demographics.byGender, demographics.gender);
+
+      // Socioeconomic aggregation
+      if (socioeconomic.incomeRange) this.incrementCount(aggregation.socioeconomic.byIncomeRange, socioeconomic.incomeRange);
+      if (socioeconomic.internetAccess !== undefined) this.incrementCount(aggregation.socioeconomic.byInternetAccess, socioeconomic.internetAccess.toString());
       
-      return removedCount;
-    } catch (error) {
-      console.error('Failed to cleanup old analytics data:', error);
-      throw error;
+      socioeconomic.deviceAccess?.forEach(device => {
+        this.incrementCount(aggregation.socioeconomic.byDeviceAccess, device);
+      });
+      
+      socioeconomic.economicFactors.forEach(factor => {
+        this.incrementCount(aggregation.socioeconomic.economicFactorsTrends, factor);
+      });
+
+      // Academic aggregation
+      academic.interests.forEach(interest => {
+        this.incrementCount(aggregation.academic.popularInterests, interest);
+      });
+      
+      academic.subjects.forEach(subject => {
+        this.incrementCount(aggregation.academic.popularSubjects, subject);
+      });
+      
+      this.incrementCount(aggregation.academic.performanceDistribution, academic.performance);
+      
+      academic.extracurricularActivities.forEach(activity => {
+        this.incrementCount(aggregation.academic.extracurricularTrends, activity);
+      });
+
+      // Recommendations aggregation
+      recommendations.topCareerTitles.forEach(career => {
+        this.incrementCount(aggregation.recommendations.topCareers, career);
+      });
+      
+      recommendations.demandLevels.forEach(level => {
+        this.incrementCount(aggregation.recommendations.demandLevelDistribution, level);
+      });
+      
+      totalMatchScore += recommendations.averageMatchScore;
+      
+      // Match scores by demographics
+      this.addToAverage(aggregation.recommendations.averageMatchScores.byGrade, demographics.grade, recommendations.averageMatchScore);
+      this.addToAverage(aggregation.recommendations.averageMatchScores.byBoard, demographics.board, recommendations.averageMatchScore);
+      this.addToAverage(aggregation.recommendations.averageMatchScores.byLocation, demographics.location, recommendations.averageMatchScore);
+      this.addToAverage(aggregation.recommendations.averageMatchScores.byIncomeRange, socioeconomic.incomeRange, recommendations.averageMatchScore);
+      
+      // Salary trends
+      recommendations.averageSalaryRanges.forEach(salary => {
+        totalEntrySalary += salary;
+        salaryCount++;
+      });
+
+      // Processing aggregation
+      totalProcessingTime += processing.processingTime;
+      this.incrementCount(aggregation.processing.aiModelUsage, processing.aiModel);
+    });
+
+    // Calculate averages
+    aggregation.recommendations.averageMatchScores.overall = entries.length > 0 ? Math.round(totalMatchScore / entries.length) : 0;
+    aggregation.processing.averageProcessingTime = entries.length > 0 ? Math.round(totalProcessingTime / entries.length) : 0;
+    aggregation.recommendations.salaryTrends.averageEntry = salaryCount > 0 ? Math.round(totalEntrySalary / salaryCount) : 0;
+
+    return aggregation;
+  }
+
+  public async generateDashboardData(aggregatedData: AnalyticsAggregation, entries: AnalyticsEntry[]): Promise<DashboardData> {
+    const topCareers = Object.entries(aggregatedData.recommendations.topCareers)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 10);
+    
+    const locationDistribution = Object.entries(aggregatedData.demographics.byLocation)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 10);
+    
+    const gradeDistribution = Object.entries(aggregatedData.demographics.byGrade)
+      .sort(([, a], [, b]) => b - a);
+
+    // Calculate daily user trends
+    const dailyUsersMap = new Map<string, number>();
+    entries.forEach(entry => {
+      const date = entry.timestamp.split('T')[0];
+      if (date) {
+        dailyUsersMap.set(date, (dailyUsersMap.get(date) || 0) + 1);
+      }
+    });
+    const dailyUsers = Array.from(dailyUsersMap.entries()).map(([date, count]) => ({ date, count })).sort((a, b) => a.date.localeCompare(b.date));
+
+    // Calculate growth rate
+    let growthRate = 0;
+    const { from, to } = aggregatedData.dateRange;
+    if (from && to) {
+        const fromDate = new Date(from);
+        const toDate = new Date(to);
+        const diffTime = Math.abs(toDate.getTime() - fromDate.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays > 0) {
+            const prevToDate = new Date(fromDate);
+            prevToDate.setDate(prevToDate.getDate() - 1);
+            const prevFromDate = new Date(prevToDate);
+            prevFromDate.setDate(prevFromDate.getDate() - diffDays);
+
+            const prevEntries = await this.loadAnalyticsEntries({
+                dateFrom: prevFromDate.toISOString().split('T')[0] || '',
+                dateTo: prevToDate.toISOString().split('T')[0] || ''
+            });
+            const previousUserCount = prevEntries.length;
+            const currentUserCount = aggregatedData.totalProfiles;
+
+            if (previousUserCount > 0) {
+                growthRate = Math.round(((currentUserCount - previousUserCount) / previousUserCount) * 100);
+            } else if (currentUserCount > 0) {
+                growthRate = 100;
+            }
+        }
+    }
+
+
+    return {
+      summary: {
+        totalUsers: aggregatedData.totalProfiles,
+        totalRecommendations: Object.values(aggregatedData.recommendations.topCareers).reduce((sum, count) => sum + count, 0),
+        averageMatchScore: aggregatedData.recommendations.averageMatchScores.overall,
+        topCareer: topCareers[0]?.[0] || 'N/A',
+        growthRate,
+      },
+      trends: {
+        dailyUsers,
+        popularCareers: topCareers.map(([career, count]) => ({
+          career,
+          count,
+          percentage: Math.round((count / aggregatedData.totalProfiles) * 100)
+        })),
+        locationDistribution: locationDistribution.map(([location, count]) => ({
+          location,
+          count,
+          percentage: Math.round((count / aggregatedData.totalProfiles) * 100)
+        })),
+        gradeDistribution: gradeDistribution.map(([grade, count]) => ({
+          grade,
+          count,
+          percentage: Math.round((count / aggregatedData.totalProfiles) * 100)
+        }))
+      },
+      insights: {
+        ruralVsUrban: {
+          rural: {
+            count: aggregatedData.demographics.byRuralUrban.rural || 0,
+            topCareers: topCareers.slice(0, 3).map(([career]) => career)
+          },
+          urban: {
+            count: aggregatedData.demographics.byRuralUrban.urban || 0,
+            topCareers: topCareers.slice(0, 3).map(([career]) => career)
+          }
+        },
+        languagePreference: {
+          hindi: {
+            count: aggregatedData.demographics.byLanguage.hindi || 0,
+            percentage: Math.round(((aggregatedData.demographics.byLanguage.hindi || 0) / aggregatedData.totalProfiles) * 100)
+          },
+          english: {
+            count: aggregatedData.demographics.byLanguage.english || 0,
+            percentage: Math.round(((aggregatedData.demographics.byLanguage.english || 0) / aggregatedData.totalProfiles) * 100)
+          }
+        },
+        incomeImpact: Object.entries(aggregatedData.socioeconomic.byIncomeRange).map(([range, count]) => ({
+          range,
+          count,
+          averageMatchScore: aggregatedData.recommendations.averageMatchScores.byIncomeRange[range] || 0,
+          topCareers: topCareers.slice(0, 3).map(([career]) => career)
+        }))
+      }
+    };
+  }
+
+  public incrementCount(obj: Record<string, number>, key: string): void {
+    obj[key] = (obj[key] || 0) + 1;
+  }
+
+  public addToAverage(obj: Record<string, number>, key: string, value: number): void {
+    if (!obj[key]) {
+      obj[key] = value;
+    } else {
+      obj[key] = Math.round((obj[key] + value) / 2);
     }
   }
 
-  /**
-   * Export analytics data (for compliance or backup)
-   */
-  async exportData(filter: AnalyticsFilter = {}): Promise<AnalyticsEntry[]> {
-    try {
-      return await this.loadAnalyticsEntries(filter);
-    } catch (error) {
-      console.error('Failed to export analytics data:', error);
-      throw error;
-    }
-  }
-
-  // Private helper methods
-
-  private generateAnalyticsId(): string {
+  public generateAnalyticsId(): string {
     return `analytics_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
   }
 
-  private anonymizeProfileId(profileId: string): string {
+  public anonymizeProfileId(profileId: string): string {
     return crypto.createHash('sha256').update(profileId).digest('hex').substring(0, 16);
   }
 
-  private anonymizeLocation(location: string): string {
+  public anonymizeLocation(location?: string): string {
     // Keep state/region but remove specific city details
+    if (!location) return '';
     const locationParts = location.split(',');
     if (locationParts.length > 1) {
-      return locationParts[locationParts.length - 1].trim(); // Return state/region
+      const last = locationParts[locationParts.length - 1];
+      return last ? last.trim() : '';
     }
     return location;
   }
 
-  private anonymizeFamilyBackground(background: string): string {
+  public anonymizeFamilyBackground(background: string): string {
     // Categorize family background into general categories
     const categories = {
       'business': ['business', 'entrepreneur', 'shop', 'trade'],
@@ -377,13 +571,13 @@ export class AnalyticsService {
     return 'other';
   }
 
-  private calculateAverageMatchScore(recommendations: CareerRecommendation[]): number {
+  public calculateAverageMatchScore(recommendations: CareerRecommendation[]): number {
     if (recommendations.length === 0) return 0;
     const total = recommendations.reduce((sum, rec) => sum + rec.matchScore, 0);
     return Math.round(total / recommendations.length);
   }
 
-  private async storeAnalyticsEntry(entry: AnalyticsEntry): Promise<void> {
+  public async storeAnalyticsEntry(entry: AnalyticsEntry): Promise<void> {
     const filename = `analytics_${new Date().toISOString().split('T')[0]}.json`;
     const filepath = path.join(this.dataPath, filename);
     
@@ -408,7 +602,7 @@ export class AnalyticsService {
     }
   }
 
-  private async loadAnalyticsEntries(filter: AnalyticsFilter = {}): Promise<AnalyticsEntry[]> {
+  public async loadAnalyticsEntries(filter: AnalyticsFilter = {}): Promise<AnalyticsEntry[]> {
     try {
       const files = await fs.readdir(this.dataPath);
       const analyticsFiles = files.filter(file => file.startsWith('analytics_') && file.endsWith('.json'));
@@ -417,7 +611,7 @@ export class AnalyticsService {
       
       for (const file of analyticsFiles) {
         try {
-          const filepath = path.join(this.dataPath, file);
+          const filepath = path.join(this.dataPath, file as string);
           const data = await fs.readFile(filepath, 'utf-8');
           const entries: AnalyticsEntry[] = JSON.parse(data);
           allEntries.push(...entries);
@@ -434,12 +628,15 @@ export class AnalyticsService {
     }
   }
 
-  private async saveAnalyticsEntries(entries: AnalyticsEntry[]): Promise<void> {
+  public async saveAnalyticsEntries(entries: AnalyticsEntry[]): Promise<void> {
     // Group entries by date
     const entriesByDate = new Map<string, AnalyticsEntry[]>();
     
     entries.forEach(entry => {
-      const date = entry.timestamp.split('T')[0];
+      if (!entry.timestamp) return; // skip malformed
+      const dateParts = entry.timestamp.split('T');
+      const date = dateParts && dateParts[0] ? dateParts[0] : undefined;
+      if (!date) return;
       if (!entriesByDate.has(date)) {
         entriesByDate.set(date, []);
       }
@@ -454,7 +651,7 @@ export class AnalyticsService {
     }
   }
 
-  private applyFilters(entries: AnalyticsEntry[], filter: AnalyticsFilter): AnalyticsEntry[] {
+  public applyFilters(entries: AnalyticsEntry[], filter: AnalyticsFilter): AnalyticsEntry[] {
     let filtered = entries;
     
     if (filter.dateFrom) {
@@ -501,215 +698,63 @@ export class AnalyticsService {
     return filtered;
   }
 
-  private aggregateData(entries: AnalyticsEntry[], filter: AnalyticsFilter): AnalyticsAggregation {
-    const aggregation: AnalyticsAggregation = {
-      totalProfiles: entries.length,
-      dateRange: {
-        from: filter.dateFrom || (entries[0]?.timestamp || new Date().toISOString()),
-        to: filter.dateTo || (entries[entries.length - 1]?.timestamp || new Date().toISOString())
-      },
-      demographics: {
-        byGrade: {},
-        byBoard: {},
-        byLocation: {},
-        byRuralUrban: {},
-        byLanguage: {},
-        byCategory: {},
-        byGender: {}
-      },
-      socioeconomic: {
-        byIncomeRange: {},
-        byInternetAccess: {},
-        byDeviceAccess: {},
-        economicFactorsTrends: {}
-      },
-      academic: {
-        popularInterests: {},
-        popularSubjects: {},
-        performanceDistribution: {},
-        extracurricularTrends: {}
-      },
-      recommendations: {
-        topCareers: {},
-        averageMatchScores: {
-          overall: 0,
-          byGrade: {},
-          byBoard: {},
-          byLocation: {}
-        },
-        demandLevelDistribution: {},
-        salaryTrends: {
-          averageEntry: 0,
-          averageMid: 0,
-          averageSenior: 0,
-          byCareer: {}
-        }
-      },
-      processing: {
-        averageProcessingTime: 0,
-        aiModelUsage: {},
-        successRate: 100
+  public async cleanupOldData(retentionDays: number = 365): Promise<number> {
+    try {
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - retentionDays);
+      
+      const entries = await this.loadAnalyticsEntries();
+      const filteredEntries = entries.filter(entry => 
+        new Date(entry.timestamp) > cutoffDate
+      );
+      
+      const removedCount = entries.length - filteredEntries.length;
+      
+      if (removedCount > 0) {
+        await this.saveAnalyticsEntries(filteredEntries);
+        console.log(`Cleaned up ${removedCount} old analytics entries`);
       }
-    };
-
-    // Process each entry
-    let totalMatchScore = 0;
-    let totalProcessingTime = 0;
-    let totalEntrySalary = 0;
-    let salaryCount = 0;
-
-    entries.forEach(entry => {
-      const { demographics, socioeconomic, academic, recommendations, processing } = entry.anonymizedData;
-
-      // Demographics aggregation
-      this.incrementCount(aggregation.demographics.byGrade, demographics.grade);
-      this.incrementCount(aggregation.demographics.byBoard, demographics.board);
-      this.incrementCount(aggregation.demographics.byLocation, demographics.location);
-      this.incrementCount(aggregation.demographics.byRuralUrban, demographics.ruralUrban);
-      this.incrementCount(aggregation.demographics.byLanguage, demographics.languagePreference);
-      if (demographics.category) this.incrementCount(aggregation.demographics.byCategory, demographics.category);
-      if (demographics.gender) this.incrementCount(aggregation.demographics.byGender, demographics.gender);
-
-      // Socioeconomic aggregation
-      this.incrementCount(aggregation.socioeconomic.byIncomeRange, socioeconomic.incomeRange);
-      this.incrementCount(aggregation.socioeconomic.byInternetAccess, socioeconomic.internetAccess.toString());
       
-      socioeconomic.deviceAccess.forEach(device => {
-        this.incrementCount(aggregation.socioeconomic.byDeviceAccess, device);
-      });
-      
-      socioeconomic.economicFactors.forEach(factor => {
-        this.incrementCount(aggregation.socioeconomic.economicFactorsTrends, factor);
-      });
-
-      // Academic aggregation
-      academic.interests.forEach(interest => {
-        this.incrementCount(aggregation.academic.popularInterests, interest);
-      });
-      
-      academic.subjects.forEach(subject => {
-        this.incrementCount(aggregation.academic.popularSubjects, subject);
-      });
-      
-      this.incrementCount(aggregation.academic.performanceDistribution, academic.performance);
-      
-      academic.extracurricularActivities.forEach(activity => {
-        this.incrementCount(aggregation.academic.extracurricularTrends, activity);
-      });
-
-      // Recommendations aggregation
-      recommendations.topCareerTitles.forEach(career => {
-        this.incrementCount(aggregation.recommendations.topCareers, career);
-      });
-      
-      recommendations.demandLevels.forEach(level => {
-        this.incrementCount(aggregation.recommendations.demandLevelDistribution, level);
-      });
-      
-      totalMatchScore += recommendations.averageMatchScore;
-      
-      // Match scores by demographics
-      this.addToAverage(aggregation.recommendations.averageMatchScores.byGrade, demographics.grade, recommendations.averageMatchScore);
-      this.addToAverage(aggregation.recommendations.averageMatchScores.byBoard, demographics.board, recommendations.averageMatchScore);
-      this.addToAverage(aggregation.recommendations.averageMatchScores.byLocation, demographics.location, recommendations.averageMatchScore);
-      
-      // Salary trends
-      recommendations.averageSalaryRanges.forEach(salary => {
-        totalEntrySalary += salary;
-        salaryCount++;
-      });
-
-      // Processing aggregation
-      totalProcessingTime += processing.processingTime;
-      this.incrementCount(aggregation.processing.aiModelUsage, processing.aiModel);
-    });
-
-    // Calculate averages
-    aggregation.recommendations.averageMatchScores.overall = entries.length > 0 ? Math.round(totalMatchScore / entries.length) : 0;
-    aggregation.processing.averageProcessingTime = entries.length > 0 ? Math.round(totalProcessingTime / entries.length) : 0;
-    aggregation.recommendations.salaryTrends.averageEntry = salaryCount > 0 ? Math.round(totalEntrySalary / salaryCount) : 0;
-
-    return aggregation;
+      return removedCount;
+    } catch (error) {
+      console.error('Failed to cleanup old analytics data:', error);
+      throw error;
+    }
   }
 
-  private generateDashboardData(aggregatedData: AnalyticsAggregation): DashboardData {
-    const topCareers = Object.entries(aggregatedData.recommendations.topCareers)
-      .sort(([, a], [, b]) => b - a)
-      .slice(0, 10);
-    
-    const locationDistribution = Object.entries(aggregatedData.demographics.byLocation)
-      .sort(([, a], [, b]) => b - a)
-      .slice(0, 10);
-    
-    const gradeDistribution = Object.entries(aggregatedData.demographics.byGrade)
-      .sort(([, a], [, b]) => b - a);
-
-    return {
-      summary: {
-        totalUsers: aggregatedData.totalProfiles,
-        totalRecommendations: Object.values(aggregatedData.recommendations.topCareers).reduce((sum, count) => sum + count, 0),
-        averageMatchScore: aggregatedData.recommendations.averageMatchScores.overall,
-        topCareer: topCareers[0]?.[0] || 'N/A',
-        growthRate: 0 // TODO: Calculate based on historical data
-      },
-      trends: {
-        dailyUsers: [], // TODO: Implement daily user trends
-        popularCareers: topCareers.map(([career, count]) => ({
-          career,
-          count,
-          percentage: Math.round((count / aggregatedData.totalProfiles) * 100)
-        })),
-        locationDistribution: locationDistribution.map(([location, count]) => ({
-          location,
-          count,
-          percentage: Math.round((count / aggregatedData.totalProfiles) * 100)
-        })),
-        gradeDistribution: gradeDistribution.map(([grade, count]) => ({
-          grade,
-          count,
-          percentage: Math.round((count / aggregatedData.totalProfiles) * 100)
-        }))
-      },
-      insights: {
-        ruralVsUrban: {
-          rural: {
-            count: aggregatedData.demographics.byRuralUrban.rural || 0,
-            topCareers: topCareers.slice(0, 3).map(([career]) => career)
-          },
-          urban: {
-            count: aggregatedData.demographics.byRuralUrban.urban || 0,
-            topCareers: topCareers.slice(0, 3).map(([career]) => career)
-          }
+  public async getAnalyticsStats(): Promise<{
+    totalEntries: number;
+    dateRange: { from: string; to: string };
+    storageSize: number;
+    lastUpdated: string;
+  }> {
+    try {
+      const entries = await this.loadAnalyticsEntries();
+      const stats = await fs.stat(this.dataPath);
+      
+      const dates = entries.map(e => e.timestamp).sort();
+      
+      return {
+        totalEntries: entries.length,
+        dateRange: {
+          from: dates[0] || new Date().toISOString(),
+          to: dates[dates.length - 1] || new Date().toISOString()
         },
-        languagePreference: {
-          hindi: {
-            count: aggregatedData.demographics.byLanguage.hindi || 0,
-            percentage: Math.round(((aggregatedData.demographics.byLanguage.hindi || 0) / aggregatedData.totalProfiles) * 100)
-          },
-          english: {
-            count: aggregatedData.demographics.byLanguage.english || 0,
-            percentage: Math.round(((aggregatedData.demographics.byLanguage.english || 0) / aggregatedData.totalProfiles) * 100)
-          }
-        },
-        incomeImpact: Object.entries(aggregatedData.socioeconomic.byIncomeRange).map(([range, count]) => ({
-          range,
-          count,
-          averageMatchScore: aggregatedData.recommendations.averageMatchScores.overall, // TODO: Calculate by income range
-          topCareers: topCareers.slice(0, 3).map(([career]) => career)
-        }))
-      }
-    };
+        storageSize: stats.size,
+        lastUpdated: stats.mtime.toISOString()
+      };
+    } catch (error) {
+      console.error('Failed to get analytics stats:', error);
+      throw error;
+    }
   }
 
-  private incrementCount(obj: Record<string, number>, key: string): void {
-    obj[key] = (obj[key] || 0) + 1;
-  }
-
-  private addToAverage(obj: Record<string, number>, key: string, value: number): void {
-    if (!obj[key]) {
-      obj[key] = value;
-    } else {
-      obj[key] = Math.round((obj[key] + value) / 2);
+  public async exportData(filter: AnalyticsFilter = {}): Promise<AnalyticsEntry[]> {
+    try {
+      return await this.loadAnalyticsEntries(filter);
+    } catch (error) {
+      console.error('Failed to export analytics data:', error);
+      throw error;
     }
   }
 }

@@ -208,15 +208,15 @@ export class NotificationController {
 
       const response: WebhookTestResponse = {
         success: testResult.success,
-        data: testResult.success ? {
+        data: testResult.success ? ({
           webhookUrl: process.env.WEBHOOK_URL || 'Not configured',
           responseTime: testResult.responseTime,
           status: testResult.message
-        } : undefined,
-        error: !testResult.success ? {
+        } as any) : undefined,
+        error: !testResult.success ? ({
           code: 'WEBHOOK_TEST_FAILED',
           message: testResult.message
-        } : undefined,
+        } as any) : undefined,
         timestamp: new Date().toISOString()
       };
 

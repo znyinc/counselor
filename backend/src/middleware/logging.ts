@@ -11,7 +11,7 @@ export interface LogEntry {
   url: string;
   statusCode?: number;
   responseTime?: number;
-  userAgent?: string;
+  userAgent?: string | undefined;
   ip: string;
   timestamp: Date;
   error?: any;
@@ -55,7 +55,7 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
 
   // Override res.end to log response
   const originalEnd = res.end;
-  res.end = function(chunk?: any, encoding?: any) {
+  res.end = function(chunk?: any, encoding?: any): any {
     const responseTime = Date.now() - startTime;
     
     const responseLog = {
@@ -74,8 +74,8 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
       timestamp: new Date().toISOString(),
     });
 
-    // Call original end method
-    originalEnd.call(this, chunk, encoding);
+  // Call original end method
+  return (originalEnd as any).call(this, chunk, encoding);
   };
 
   next();
@@ -128,7 +128,7 @@ export const apiUsageLogger = (req: Request, res: Response, next: NextFunction):
 
   // Override res.end to capture response data
   const originalEnd = res.end;
-  res.end = function(chunk?: any, encoding?: any) {
+  res.end = function(chunk?: any, encoding?: any): any {
     const responseTime = Date.now() - startTime;
     
     const usageLog = {
@@ -151,7 +151,7 @@ export const apiUsageLogger = (req: Request, res: Response, next: NextFunction):
       // storeApiUsage(usageLog);
     }
 
-    originalEnd.call(this, chunk, encoding);
+  return (originalEnd as any).call(this, chunk, encoding);
   };
 
   next();

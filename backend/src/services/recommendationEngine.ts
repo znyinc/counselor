@@ -18,6 +18,8 @@ export interface RecommendationEngineConfig {
   maxRecommendations: number;
   minMatchScore: number;
   enableDatabaseEnrichment: boolean;
+  provider?: 'openai' | 'gemini' | 'mock';
+  geminiConfig?: import('./geminiClient').GeminiConfig;
 }
 
 export class RecommendationEngine {
@@ -30,8 +32,14 @@ export class RecommendationEngine {
     this.databaseService = DatabaseService.getInstance();
     
     // Initialize AI client based on configuration
-    if (config.useOpenAI && config.openAIConfig) {
+    const provider = config.provider || (config.useOpenAI ? 'openai' : 'mock');
+
+    if (provider === 'openai' && config.openAIConfig) {
       this.aiClient = new OpenAIClient(config.openAIConfig);
+    } else if (provider === 'gemini') {
+      const { GeminiClient } = require('./geminiClient');
+      this.aiClient = new GeminiClient(config.geminiConfig || {} as any);
+      console.log('Using Gemini Client for AI provider');
     } else {
       this.aiClient = new MockOpenAIClient();
       console.log('Using Mock OpenAI Client for development/testing');
@@ -60,6 +68,12 @@ export class RecommendationEngine {
       const validatedRecommendations = this.validateAndFilterRecommendations(
         enrichedRecommendations
       );
+
+      // If validation/filtering removed all recommendations, fallback to mock recommendations
+      if (!validatedRecommendations || validatedRecommendations.length === 0) {
+        console.warn('No valid recommendations after validation/filtering. Falling back to mock recommendations');
+        return await this.generateFallbackRecommendations(profile);
+      }
       
       // Step 4: Generate recommendation context
       const context = this.generateRecommendationContext(profile, validatedRecommendations);

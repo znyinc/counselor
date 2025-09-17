@@ -10,7 +10,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from '../../App';
 import { LanguageProvider } from '../../contexts/LanguageContext';
 import { server } from './mocks/server';
-import { rest } from 'msw';
+import { http } from 'msw';
 import './setup';
 
 const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -124,7 +124,7 @@ describe('AI Recommendation Quality Integration Tests', () => {
 
       // Verify recommendations include scholarship information
       expect(screen.getByText(/Available Scholarships/i)).toBeInTheDocument();
-      expect(screen.getByText(/SC/ST Scholarship/i)).toBeInTheDocument();
+      expect(screen.getByText(/SC\/ST Scholarship/i)).toBeInTheDocument();
 
       // Verify recommendations consider financial constraints
       const careerCards = screen.getAllByText(/View Details/i);

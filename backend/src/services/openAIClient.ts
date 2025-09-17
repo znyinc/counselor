@@ -344,13 +344,33 @@ Respond ONLY with the JSON format specified above. Do not include any additional
       }
 
       if (parsed.recommendations.length !== 3) {
-        throw new Error(`Expected 3 recommendations, got ${parsed.recommendations.length}`);
+        // Collect diagnostic info and throw a detailed error
+        const details = {
+          expected: 3,
+          received: parsed.recommendations.length,
+          sample: parsed.recommendations.slice(0, 3)
+        };
+        const err = new CustomError(`Expected 3 recommendations, got ${parsed.recommendations.length}`, 502, 'AI_INVALID_RECOMMENDATION_COUNT');
+        (err as any).details = details;
+        throw err;
       }
 
-      // Validate each recommendation
+      // Validate each recommendation and collect per-item errors
+      const validationErrors: Array<{ index: number; errors: string[] }> = [];
       parsed.recommendations.forEach((rec: any, index: number) => {
-        this.validateRecommendation(rec, index);
+        try {
+          this.validateRecommendation(rec, index);
+        } catch (vErr: any) {
+          validationErrors.push({ index, errors: [vErr.message] });
+        }
       });
+
+      if (validationErrors.length > 0) {
+        const err = new CustomError('AI returned invalid recommendation items', 502, 'AI_INVALID_RECOMMENDATIONS');
+        (err as any).details = { validationErrors, rawResponse: parsed };
+        console.error('AI recommendation validation errors:', (err as any).details);
+        throw err;
+      }
 
       // Enrich recommendations with additional data
       const enrichedRecommendations = parsed.recommendations.map((rec: any) => ({
@@ -367,11 +387,14 @@ Respond ONLY with the JSON format specified above. Do not include any additional
       };
     } catch (error) {
       console.error('Failed to parse OpenAI response:', error);
-      throw new CustomError(
+      if (error instanceof CustomError) throw error;
+      const ce = new CustomError(
         'Failed to parse AI response',
         500,
         'AI_RESPONSE_PARSE_ERROR'
       );
+      (ce as any).details = { raw: response, parseError: (error as any).message };
+      throw ce;
     }
   }
 

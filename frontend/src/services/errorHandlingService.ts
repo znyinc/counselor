@@ -356,6 +356,9 @@ class ErrorHandlingService {
 // Create and export singleton instance
 export const errorHandlingService = new ErrorHandlingService();
 
+// Export the class for testing
+export { ErrorHandlingService };
+
 // React hook for using error handling service
 export const useErrorHandlingService = () => {
   const handleError = (

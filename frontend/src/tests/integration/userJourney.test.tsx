@@ -3,6 +3,8 @@
  * Tests the complete user flow from form submission to results display
  */
 
+// @ts-nocheck
+
 import React from 'react';
 import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -10,7 +12,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from '../../App';
 import { LanguageProvider } from '../../contexts/LanguageContext';
 import { server } from './mocks/server';
-import { rest } from 'msw';
+import { http } from 'msw';
 import './setup';
 
 // Test wrapper component
@@ -128,7 +130,7 @@ describe('Complete User Journey Integration Tests', () => {
       const softwareEngineerCard = screen.getByText(/Software Engineer/i).closest('.career-card');
       expect(softwareEngineerCard).toBeInTheDocument();
 
-      await user.click(within(softwareEngineerCard!).getByText(/View Details/i));
+      await user.click(within(softwareEngineerCard as HTMLElement).getByText(/View Details/i));
 
       // Step 15: Verify detailed career information
       await waitFor(() => {

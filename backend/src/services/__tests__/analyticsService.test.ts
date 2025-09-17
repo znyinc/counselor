@@ -32,7 +32,7 @@ describe('AnalyticsService', () => {
         board: 'CBSE',
         languagePreference: 'english' as const,
         category: 'General',
-        gender: 'Female'
+        gender: 'female'
       },
       familyIncome: '5-10 lakhs',
       academicData: {
@@ -70,31 +70,34 @@ describe('AnalyticsService', () => {
           averageSalary: {
             entry: 600000,
             mid: 1200000,
-            senior: 2500000
+            senior: 2500000,
+            currency: 'INR'
           },
-          growthRate: 'High',
+          growthRate: 'high',
           jobMarket: 'Excellent',
-          demandLevel: 'High'
+          demandLevel: 'high',
+          futureOutlook: 'Excellent',
+          workLifeBalance: 'good'
         },
         recommendedColleges: [],
         scholarships: [],
         visualData: {
           salaryTrends: { labels: [], datasets: [] },
-          educationPath: { steps: [] },
-          requirements: { categories: [] }
+          educationPath: { steps: [], totalDuration: '0' },
+          requirements: {
+            education: { level: '', subjects: [], minimumMarks: '', preferredBoards: [] },
+            skills: { technical: [], soft: [], certifications: [] },
+            experience: { internships: [], projects: [], competitions: [] }
+          }
         },
-        metadata: {
-          aiModel: 'gpt-4',
-          confidence: 0.85,
-          processingTime: 1500,
-          generatedAt: '2024-01-15T10:01:30Z'
-        }
+        pros: [],
+        cons: []
       }
     ];
 
     // Mock fs operations
     mockFs.mkdir.mockResolvedValue(undefined);
-    mockFs.readdir.mockResolvedValue([]);
+    mockFs.readdir.mockResolvedValue([] as any);
     mockFs.readFile.mockResolvedValue('[]');
     mockFs.writeFile.mockResolvedValue(undefined);
     mockFs.stat.mockResolvedValue({
@@ -124,6 +127,7 @@ describe('AnalyticsService', () => {
       expect(mockFs.writeFile).toHaveBeenCalled();
 
       const writeCall = mockFs.writeFile.mock.calls[0];
+      if (!writeCall) throw new Error('writeFile was not called');
       const analyticsData = JSON.parse(writeCall[1] as string);
       
       expect(analyticsData).toHaveLength(1);
@@ -139,7 +143,7 @@ describe('AnalyticsService', () => {
             ruralUrban: 'urban',
             languagePreference: 'english',
             category: 'General',
-            gender: 'Female'
+            gender: 'female'
           },
           socioeconomic: {
             incomeRange: '5-10 lakhs',
@@ -160,7 +164,7 @@ describe('AnalyticsService', () => {
             totalCount: 1,
             averageMatchScore: 85,
             topCareerTitles: ['Software Engineer'],
-            demandLevels: ['High'],
+            demandLevels: ['high'],
             averageSalaryRanges: [600000]
           },
           processing: {
@@ -203,6 +207,7 @@ describe('AnalyticsService', () => {
       );
 
       const writeCall = mockFs.writeFile.mock.calls[0];
+      if (!writeCall) throw new Error('writeFile was not called');
       const analyticsData = JSON.parse(writeCall[1] as string);
       
       expect(analyticsData[0].anonymizedData.demographics.location).toBe('Maharashtra');
@@ -222,6 +227,7 @@ describe('AnalyticsService', () => {
       );
 
       const writeCall = mockFs.writeFile.mock.calls[0];
+      if (!writeCall) throw new Error('writeFile was not called');
       const analyticsData = JSON.parse(writeCall[1] as string);
       
       expect(analyticsData[0].anonymizedData.socioeconomic.familyBackground).toBe('service');
@@ -231,7 +237,7 @@ describe('AnalyticsService', () => {
   describe('getAggregatedData', () => {
     beforeEach(() => {
       // Mock analytics files
-      mockFs.readdir.mockResolvedValue(['analytics_2024-01-15.json']);
+      mockFs.readdir.mockResolvedValue(['analytics_2024-01-15.json'] as any);
       mockFs.readFile.mockResolvedValue(JSON.stringify([
         {
           id: 'analytics_1',
@@ -245,7 +251,7 @@ describe('AnalyticsService', () => {
               ruralUrban: 'urban',
               languagePreference: 'english',
               category: 'General',
-              gender: 'Female'
+              gender: 'female'
             },
             socioeconomic: {
               incomeRange: '5-10 lakhs',
@@ -266,7 +272,7 @@ describe('AnalyticsService', () => {
               totalCount: 3,
               averageMatchScore: 85,
               topCareerTitles: ['Software Engineer'],
-              demandLevels: ['High'],
+              demandLevels: ['high'],
               averageSalaryRanges: [600000]
             },
             processing: {
@@ -295,7 +301,7 @@ describe('AnalyticsService', () => {
           byRuralUrban: { 'urban': 1 },
           byLanguage: { 'english': 1 },
           byCategory: { 'General': 1 },
-          byGender: { 'Female': 1 }
+          byGender: { 'female': 1 }
         },
         socioeconomic: {
           byIncomeRange: { '5-10 lakhs': 1 },
@@ -317,7 +323,7 @@ describe('AnalyticsService', () => {
             byBoard: { 'CBSE': 85 },
             byLocation: { 'Maharashtra': 85 }
           },
-          demandLevelDistribution: { 'High': 1 },
+          demandLevelDistribution: { 'high': 1 },
           salaryTrends: {
             averageEntry: 600000,
             averageMid: 0,
@@ -338,7 +344,8 @@ describe('AnalyticsService', () => {
         grade: '12',
         board: 'CBSE',
         dateFrom: '2024-01-01T00:00:00Z',
-        dateTo: '2024-01-31T23:59:59Z'
+        dateTo: '2024-01-31T23:59:59Z',
+        ruralUrban: 'urban'
       };
 
       const result = await analyticsService.getAggregatedData(filter);
@@ -348,7 +355,7 @@ describe('AnalyticsService', () => {
     });
 
     it('should handle empty data gracefully', async () => {
-      mockFs.readdir.mockResolvedValue([]);
+      mockFs.readdir.mockResolvedValue([] as any);
 
       const result = await analyticsService.getAggregatedData();
 
@@ -359,7 +366,7 @@ describe('AnalyticsService', () => {
 
   describe('getDashboardData', () => {
     beforeEach(() => {
-      mockFs.readdir.mockResolvedValue(['analytics_2024-01-15.json']);
+      mockFs.readdir.mockResolvedValue(['analytics_2024-01-15.json'] as any);
       mockFs.readFile.mockResolvedValue(JSON.stringify([
         {
           id: 'analytics_1',
@@ -425,7 +432,7 @@ describe('AnalyticsService', () => {
       const oldDate = new Date();
       oldDate.setDate(oldDate.getDate() - 400); // 400 days old
 
-      mockFs.readdir.mockResolvedValue(['analytics_2024-01-15.json']);
+      mockFs.readdir.mockResolvedValue(['analytics_2024-01-15.json'] as any);
       mockFs.readFile.mockResolvedValue(JSON.stringify([
         {
           id: 'analytics_old',
@@ -439,14 +446,14 @@ describe('AnalyticsService', () => {
         }
       ]));
 
-      const removedCount = await analyticsService.cleanupOldData(365);
+      const removedCount = await (analyticsService as any).cleanupOldData(365);
 
       expect(removedCount).toBe(1);
       expect(mockFs.writeFile).toHaveBeenCalled();
     });
 
     it('should not remove recent data', async () => {
-      mockFs.readdir.mockResolvedValue(['analytics_2024-01-15.json']);
+      mockFs.readdir.mockResolvedValue(['analytics_2024-01-15.json'] as any);
       mockFs.readFile.mockResolvedValue(JSON.stringify([
         {
           id: 'analytics_recent',
@@ -455,7 +462,7 @@ describe('AnalyticsService', () => {
         }
       ]));
 
-      const removedCount = await analyticsService.cleanupOldData(365);
+      const removedCount = await (analyticsService as any).cleanupOldData(365);
 
       expect(removedCount).toBe(0);
     });
@@ -463,12 +470,12 @@ describe('AnalyticsService', () => {
 
   describe('getAnalyticsStats', () => {
     it('should return analytics statistics', async () => {
-      mockFs.readdir.mockResolvedValue(['analytics_2024-01-15.json']);
+      mockFs.readdir.mockResolvedValue(['analytics_2024-01-15.json'] as any);
       mockFs.readFile.mockResolvedValue(JSON.stringify([
         { id: 'analytics_1', timestamp: '2024-01-15T10:00:00Z', anonymizedData: {} }
       ]));
 
-      const stats = await analyticsService.getAnalyticsStats();
+      const stats = await (analyticsService as any).getAnalyticsStats();
 
       expect(stats).toMatchObject({
         totalEntries: 1,
@@ -484,7 +491,7 @@ describe('AnalyticsService', () => {
 
   describe('exportData', () => {
     it('should export analytics data with filters', async () => {
-      mockFs.readdir.mockResolvedValue(['analytics_2024-01-15.json']);
+      mockFs.readdir.mockResolvedValue(['analytics_2024-01-15.json'] as any);
       mockFs.readFile.mockResolvedValue(JSON.stringify([
         {
           id: 'analytics_1',
@@ -495,8 +502,8 @@ describe('AnalyticsService', () => {
         }
       ]));
 
-      const filter: AnalyticsFilter = { grade: '12' };
-      const result = await analyticsService.exportData(filter);
+      const filter: AnalyticsFilter = { grade: '12', ruralUrban: 'urban' };
+      const result = await (analyticsService as any).exportData(filter);
 
       expect(result).toHaveLength(1);
       expect(result[0].id).toBe('analytics_1');
@@ -518,6 +525,7 @@ describe('AnalyticsService', () => {
       );
 
       const writeCall = mockFs.writeFile.mock.calls[0];
+      if (!writeCall) throw new Error('writeFile was not called');
       const analyticsData = JSON.parse(writeCall[1] as string);
       
       expect(analyticsData[0].anonymizedData.profileHash).not.toBe(mockStudentProfile.id);
@@ -538,6 +546,7 @@ describe('AnalyticsService', () => {
       );
 
       const writeCall = mockFs.writeFile.mock.calls[0];
+      if (!writeCall) throw new Error('writeFile was not called');
       const analyticsData = JSON.parse(writeCall[1] as string);
       const storedData = JSON.stringify(analyticsData);
       
@@ -560,6 +569,7 @@ describe('AnalyticsService', () => {
       );
 
       const writeCall = mockFs.writeFile.mock.calls[0];
+      if (!writeCall) throw new Error('writeFile was not called');
       const analyticsData = JSON.parse(writeCall[1] as string);
       
       // Family background should be categorized, not specific

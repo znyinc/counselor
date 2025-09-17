@@ -101,6 +101,81 @@ npm run lint:fix         # Fix linting issues
 - **Data Storage**: JSON-based databases for static data
 - **Testing**: Jest, React Testing Library, Supertest
 
+## ☁️ AWS Deployment & Scaling Strategy
+
+### Why the Counselor App Needs LLMs
+
+- **Natural-language intake & Q&A** on curricula, careers, exams
+- **Personalized guidance** from student context & local datasets
+- **RAG over trusted content** to minimize hallucinations
+- **Multilingual support** + structured outputs for reports
+- **Human-in-the-loop escalation** for low-confidence responses
+
+### AWS Deployment Strategy
+
+#### Accounts & Network
+- **Three accounts** (dev/stage/prod) under Control Tower org
+- **VPC-only Bedrock** via VPC endpoints; no public egress
+- **Private S3, OpenSearch Serverless, Aurora Serverless v2**
+
+#### Data Layer
+- **S3 data lake** (raw/clean/curated) with Lake Formation
+- **Aurora** for app data; **DynamoDB** for session state
+- **KMS CMKs** for all data; Lake Formation tags for fine-grained access
+
+#### Retrieval (RAG)
+- **Curate** NCERT/CBSE/state, ASER/NSSO, policy docs
+- **Chunk + embed** with Titan Embeddings; vectors in OpenSearch
+- **Automated refresh** with Glue jobs + Step Functions
+
+#### Orchestration
+- **API Gateway** → Lambda/ECS backend
+- **Step Functions**: intent → profile → RAG → LLM → validate → redact → persist
+- **Bedrock Agents** for tool use (calendar, CRM, reporting)
+
+#### Inference
+- **Claude 3.5/Opus** for reasoning; fallback Llama 3; Titan for simple tasks
+- **Policy-based router** (latency/cost/complexity/PII)
+- **Prompt templates** in SSM Parameter Store
+- **Prefer RAG**; fine-tune only approved tasks
+
+#### Safety & Compliance
+- **Bedrock Guardrails**: blocklists, topic filters, PII redaction
+- **Pre-prompt** hash/redact; **post-prompt** validator (schema, toxicity, citations)
+- **A2I human review** for low-confidence/high-risk
+- **CloudTrail, Config, Audit Manager**; DPR/DSR workflows
+
+#### Observability
+- **CloudWatch/X-Ray** for tracing
+- **Prompt/response metadata** to OpenSearch; QuickSight KPIs
+- **Canary tests** with Synthetics; drift detection via Config
+
+#### CI/CD & IaC
+- **CDK/Terraform** mono-repo; CodePipeline with unit/contract/red-team tests
+- **Feature flags** via AppConfig; blue/green or canary deployments
+
+#### Tenancy & Access
+- **Multi-tenant** via Cognito + org IdP
+- **Row/column security** in Lake Formation; ABAC in IAM
+
+#### Resilience & DR
+- **Cross-AZ HA**; cross-Region S3 replication, Aurora global DB
+- **RTO 15m / RPO ≤1m**; quarterly game-day tests
+
+### Phased Rollout Strategy
+
+#### Phase 0 (2–4 weeks, one board)
+- **RAG Q&A** + report generator
+
+#### Phase 1
+- Add **profiles, multilingual, counseling workflows, A2I**
+
+#### Phase 2
+- **Analytics, career simulations, cost router**
+
+#### Phase 3
+- **District scale, offline batch packs, partner integrations**
+
 ### Project Structure
 ```
 ├── frontend/              # React frontend application

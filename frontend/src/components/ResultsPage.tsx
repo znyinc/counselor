@@ -83,8 +83,8 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
       <div className="results-page loading">
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <h2>{t('results.loading', 'Generating your career recommendations...')}</h2>
-          <p>{t('results.loadingDescription', 'Please wait while we prepare your personalized career insights.')}</p>
+          <h2>{t('results.loading')}</h2>
+          <p>{t('results.loadingDescription')}</p>
         </div>
       </div>
     );
@@ -94,10 +94,10 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
     return (
       <div className="results-page error">
         <div className="error-container">
-          <h2>{t('results.noRecommendations', 'No Recommendations Available')}</h2>
-          <p>{t('results.noRecommendationsDescription', 'We were unable to generate career recommendations. Please try again.')}</p>
+          <h2>{t('results.noRecommendations')}</h2>
+          <p>{t('results.noRecommendationsDescription')}</p>
           <button onClick={() => onBackToForm ? onBackToForm() : navigateBack()} className="btn btn-primary">
-            {t('results.backToForm', 'Back to Form')}
+            {t('results.backToForm')}
           </button>
         </div>
       </div>
@@ -110,16 +110,16 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
       <header className="results-header">
         <div className="header-content">
           <div className="header-left">
-            <h1>{t('results.title', 'Your Career Recommendations')}</h1>
+            <h1>{t('results.title')}</h1>
             <p className="student-greeting">
-              {t('results.greeting', 'Hello {{name}}, here are your personalized career recommendations based on your profile.', { name: studentName })}
+              {t('results.greeting', { 
+                defaultValue: `Hello ${studentName}, here are your personalized career recommendations.`,
+                interpolation: { name: studentName }
+              })}
             </p>
           </div>
           <div className="header-right">
-            <LanguageSwitcher 
-              currentLanguage={language} 
-              onLanguageChange={onLanguageChange}
-            />
+            <LanguageSwitcher />
           </div>
         </div>
       </header>
@@ -136,7 +136,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
       <div className="results-content">
         {/* Sidebar - Career Cards */}
         <aside className="results-sidebar">
-          <h3>{t('results.yourRecommendations', 'Your Recommendations')}</h3>
+          <h3>{t('results.yourRecommendations')}</h3>
           <div className="career-cards-list">
             {recommendations.map((recommendation, index) => (
               <CareerCard
@@ -153,16 +153,16 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
           {/* Action Buttons */}
           <div className="sidebar-actions">
             <button onClick={() => onBackToForm ? onBackToForm() : navigateBack()} className="btn btn-secondary">
-              {t('results.backToForm', 'Back to Form')}
+              {t('results.backToForm')}
             </button>
             {onDownloadReport && (
               <button onClick={onDownloadReport} className="btn btn-outline">
-                {t('results.downloadReport', 'Download Report')}
+                {t('results.downloadReport')}
               </button>
             )}
             {onShareResults && (
               <button onClick={onShareResults} className="btn btn-outline">
-                {t('results.shareResults', 'Share Results')}
+                {t('results.shareResults')}
               </button>
             )}
           </div>
@@ -178,25 +178,25 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                   className={`tab ${activeTab === 'overview' ? 'active' : ''}`}
                   onClick={() => handleTabChange('overview')}
                 >
-                  {t('results.tabs.overview', 'Overview')}
+                  {t('results.tabs.overview')}
                 </button>
                 <button 
                   className={`tab ${activeTab === 'details' ? 'active' : ''}`}
                   onClick={() => handleTabChange('details')}
                 >
-                  {t('results.tabs.details', 'Details')}
+                  {t('results.tabs.details')}
                 </button>
                 <button 
                   className={`tab ${activeTab === 'colleges' ? 'active' : ''}`}
                   onClick={() => handleTabChange('colleges')}
                 >
-                  {t('results.tabs.colleges', 'Colleges')} ({selectedRecommendation.recommendedColleges.length})
+                  {t('results.tabs.colleges')} ({selectedRecommendation.recommendedColleges.length})
                 </button>
                 <button 
                   className={`tab ${activeTab === 'scholarships' ? 'active' : ''}`}
                   onClick={() => handleTabChange('scholarships')}
                 >
-                  {t('results.tabs.scholarships', 'Scholarships')} ({selectedRecommendation.scholarships.length})
+                  {t('results.tabs.scholarships')} ({selectedRecommendation.scholarships.length})
                 </button>
               </nav>
 
@@ -209,13 +209,13 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                       <div className="career-header">
                         <h2>{selectedRecommendation.title}</h2>
                         <div className="match-score">
-                          <span className="score-label">{t('results.matchScore', 'Match Score')}</span>
+                          <span className="score-label">{t('results.matchScore')}</span>
                           <span className="score-value">{selectedRecommendation.matchScore}%</span>
                         </div>
                       </div>
                       <p className="career-description">{selectedRecommendation.description}</p>
                       <div className="nep-alignment">
-                        <h4>{t('results.nepAlignment', 'NEP 2020 Alignment')}</h4>
+                        <h4>{t('results.nepAlignment')}</h4>
                         <p>{selectedRecommendation.nepAlignment}</p>
                       </div>
                     </section>
@@ -224,14 +224,14 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                     <section className="visual-charts">
                       <div className="charts-grid">
                         <div className="chart-container">
-                          <h4>{t('results.salaryTrends', 'Salary Progression')}</h4>
+                          <h4>{t('results.salaryTrends')}</h4>
                           <SalaryChart 
                             data={selectedRecommendation.visualData.salaryTrends}
                             language={language}
                           />
                         </div>
                         <div className="chart-container">
-                          <h4>{t('results.skillsRequired', 'Skills Required')}</h4>
+                          <h4>{t('results.skillsRequired')}</h4>
                           <SkillsRadarChart 
                             recommendation={selectedRecommendation}
                             language={language}
@@ -242,7 +242,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
 
                     {/* Education Path */}
                     <section className="education-path">
-                      <h4>{t('results.educationPath', 'Education Path')}</h4>
+                      <h4>{t('results.educationPath')}</h4>
                       <EducationPathChart 
                         data={selectedRecommendation.visualData.educationPath}
                         language={language}
@@ -253,7 +253,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                     <section className="pros-cons">
                       <div className="pros-cons-grid">
                         <div className="pros">
-                          <h4>{t('results.pros', 'Advantages')}</h4>
+                          <h4>{t('results.pros')}</h4>
                           <ul>
                             {selectedRecommendation.pros.map((pro, index) => (
                               <li key={index}>{pro}</li>
@@ -261,7 +261,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                           </ul>
                         </div>
                         <div className="cons">
-                          <h4>{t('results.cons', 'Challenges')}</h4>
+                          <h4>{t('results.cons')}</h4>
                           <ul>
                             {selectedRecommendation.cons.map((con, index) => (
                               <li key={index}>{con}</li>
@@ -280,9 +280,9 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                       <div className="details-grid">
                         {/* Requirements */}
                         <div className="requirements-section">
-                          <h4>{t('results.requirements', 'Requirements')}</h4>
+                          <h4>{t('results.requirements')}</h4>
                           <div className="requirement-category">
-                            <h5>{t('results.education', 'Education')}</h5>
+                            <h5>{t('results.education')}</h5>
                             <ul>
                               {selectedRecommendation.requirements.education.map((edu, index) => (
                                 <li key={index}>{edu}</li>
@@ -290,7 +290,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                             </ul>
                           </div>
                           <div className="requirement-category">
-                            <h5>{t('results.skills', 'Skills')}</h5>
+                            <h5>{t('results.skills')}</h5>
                             <ul>
                               {selectedRecommendation.requirements.skills.map((skill, index) => (
                                 <li key={index}>{skill}</li>
@@ -298,7 +298,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                             </ul>
                           </div>
                           <div className="requirement-category">
-                            <h5>{t('results.entranceExams', 'Entrance Exams')}</h5>
+                            <h5>{t('results.entranceExams')}</h5>
                             <ul>
                               {selectedRecommendation.requirements.entranceExams.map((exam, index) => (
                                 <li key={index}>{exam}</li>
@@ -309,25 +309,25 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
 
                         {/* Prospects */}
                         <div className="prospects-section">
-                          <h4>{t('results.prospects', 'Career Prospects')}</h4>
+                          <h4>{t('results.prospects')}</h4>
                           <div className="prospect-item">
-                            <span className="label">{t('results.growthRate', 'Growth Rate')}</span>
+                            <span className="label">{t('results.growthRate')}</span>
                             <span className="value">{selectedRecommendation.prospects.growthRate}</span>
                           </div>
                           <div className="prospect-item">
-                            <span className="label">{t('results.jobMarket', 'Job Market')}</span>
+                            <span className="label">{t('results.jobMarket')}</span>
                             <span className="value">{selectedRecommendation.prospects.jobMarket}</span>
                           </div>
                           <div className="prospect-item">
-                            <span className="label">{t('results.demandLevel', 'Demand Level')}</span>
+                            <span className="label">{t('results.demandLevel')}</span>
                             <span className={`value demand-${selectedRecommendation.prospects.demandLevel}`}>
-                              {t(`results.demand.${selectedRecommendation.prospects.demandLevel}`, selectedRecommendation.prospects.demandLevel)}
+                              {t(`results.demand.${selectedRecommendation.prospects.demandLevel}`)}
                             </span>
                           </div>
                           <div className="prospect-item">
-                            <span className="label">{t('results.workLifeBalance', 'Work-Life Balance')}</span>
+                            <span className="label">{t('results.workLifeBalance')}</span>
                             <span className={`value balance-${selectedRecommendation.prospects.workLifeBalance}`}>
-                              {t(`results.balance.${selectedRecommendation.prospects.workLifeBalance}`, selectedRecommendation.prospects.workLifeBalance)}
+                              {t(`results.balance.${selectedRecommendation.prospects.workLifeBalance}`)}
                             </span>
                           </div>
                         </div>
@@ -336,7 +336,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                       {/* Day in Life */}
                       {selectedRecommendation.dayInLife && (
                         <div className="day-in-life">
-                          <h4>{t('results.dayInLife', 'A Day in the Life')}</h4>
+                          <h4>{t('results.dayInLife')}</h4>
                           <p>{selectedRecommendation.dayInLife}</p>
                         </div>
                       )}
@@ -344,7 +344,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                       {/* Career Path */}
                       {selectedRecommendation.careerPath && (
                         <div className="career-progression">
-                          <h4>{t('results.careerPath', 'Career Progression')}</h4>
+                          <h4>{t('results.careerPath')}</h4>
                           <div className="career-steps">
                             {selectedRecommendation.careerPath.map((step, index) => (
                               <div key={index} className="career-step">
@@ -359,10 +359,10 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                       {/* Industry Insights */}
                       {selectedRecommendation.industryInsights && (
                         <div className="industry-insights">
-                          <h4>{t('results.industryInsights', 'Industry Insights')}</h4>
+                          <h4>{t('results.industryInsights')}</h4>
                           <div className="insights-grid">
                             <div className="insight-category">
-                              <h5>{t('results.topCompanies', 'Top Companies')}</h5>
+                              <h5>{t('results.topCompanies')}</h5>
                               <ul>
                                 {selectedRecommendation.industryInsights.topCompanies.map((company, index) => (
                                   <li key={index}>{company}</li>
@@ -370,7 +370,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                               </ul>
                             </div>
                             <div className="insight-category">
-                              <h5>{t('results.emergingTrends', 'Emerging Trends')}</h5>
+                              <h5>{t('results.emergingTrends')}</h5>
                               <ul>
                                 {selectedRecommendation.industryInsights.emergingTrends.map((trend, index) => (
                                   <li key={index}>{trend}</li>
@@ -378,7 +378,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                               </ul>
                             </div>
                             <div className="insight-category">
-                              <h5>{t('results.opportunities', 'Opportunities')}</h5>
+                              <h5>{t('results.opportunities')}</h5>
                               <ul>
                                 {selectedRecommendation.industryInsights.opportunities.map((opportunity, index) => (
                                   <li key={index}>{opportunity}</li>
@@ -386,7 +386,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                               </ul>
                             </div>
                             <div className="insight-category">
-                              <h5>{t('results.challenges', 'Challenges')}</h5>
+                              <h5>{t('results.challenges')}</h5>
                               <ul>
                                 {selectedRecommendation.industryInsights.challenges.map((challenge, index) => (
                                   <li key={index}>{challenge}</li>

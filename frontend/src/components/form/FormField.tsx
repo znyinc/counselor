@@ -29,7 +29,7 @@ export interface FormFieldProps {
   max?: number;
 }
 
-export const FormField: React.FC<FormFieldProps> = ({
+const FormFieldComponent: React.FC<FormFieldProps> = ({
   name,
   type,
   label,
@@ -48,7 +48,7 @@ export const FormField: React.FC<FormFieldProps> = ({
 }) => {
   const { language } = useTranslation();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>): void => {
+  const handleInputChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>): void => {
     const { value: inputValue, type: inputType } = e.target;
     
     if (inputType === 'checkbox') {
@@ -59,19 +59,19 @@ export const FormField: React.FC<FormFieldProps> = ({
     } else {
       onChange(name, inputValue);
     }
-  };
+  }, [name, onChange]);
 
-  const handleMultiSelectChange = (optionValue: string): void => {
+  const handleMultiSelectChange = React.useCallback((optionValue: string): void => {
     const currentValues = Array.isArray(value) ? value : [];
     const newValues = currentValues.includes(optionValue)
       ? currentValues.filter(v => v !== optionValue)
       : [...currentValues, optionValue];
     onChange(name, newValues);
-  };
+  }, [name, onChange, value]);
 
-  const handleRadioChange = (optionValue: string): void => {
+  const handleRadioChange = React.useCallback((optionValue: string): void => {
     onChange(name, optionValue);
-  };
+  }, [name, onChange]);
 
   const renderInput = (): JSX.Element => {
     const baseProps = {
@@ -217,4 +217,5 @@ export const FormField: React.FC<FormFieldProps> = ({
   );
 };
 
+export const FormField = React.memo(FormFieldComponent);
 export default FormField;

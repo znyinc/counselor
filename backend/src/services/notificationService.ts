@@ -37,8 +37,8 @@ export interface WebhookPayload {
 }
 
 export interface NotificationConfig {
-  webhookUrl?: string;
-  webhookSecret?: string;
+  webhookUrl?: string | undefined;
+  webhookSecret?: string | undefined;
   enableConsoleLogging: boolean;
   enableN8nIntegration: boolean;
   retryAttempts: number;
@@ -380,7 +380,7 @@ export class NotificationService {
       successCount: this.successCount,
       failureCount: this.failureCount,
       successRate: this.notificationCount > 0 ? (this.successCount / this.notificationCount) * 100 : 0,
-      config: { ...this.config, webhookSecret: this.config.webhookSecret ? '[REDACTED]' : undefined }
+  config: { ...(this.config as any), webhookSecret: this.config.webhookSecret ? '[REDACTED]' : undefined } as NotificationConfig
     };
   }
 

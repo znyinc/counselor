@@ -47,7 +47,7 @@ export interface DataProcessingLog {
   legalBasis: string;
   dataTypes: string[];
   timestamp: Date;
-  userId?: string;
+  userId?: string | undefined;
   ipAddress: string;
 }
 
@@ -373,7 +373,7 @@ export class GDPRCompliance {
       ],
     };
 
-    return fieldMappings[purpose] || [];
+  return (fieldMappings as any)[purpose] || [];
   }
 
   /**

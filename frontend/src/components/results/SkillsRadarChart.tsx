@@ -97,7 +97,7 @@ export const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
     labels: skillData.map(skill => skill.label),
     datasets: [
       {
-        label: t('results.skillLevel', 'Skill Level'),
+        label: t('results.skillLevel'),
         data: skillData.map(skill => skill.score),
         backgroundColor: 'rgba(102, 126, 234, 0.2)',
         borderColor: '#667eea',
@@ -137,7 +137,7 @@ export const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
           label: (context) => {
             const index = context.dataIndex;
             return [
-              `${t('results.importance', 'Importance')}: ${context.parsed.r}%`,
+              `${t('results.importance')}: ${context.parsed.r}%`,
               skillData[index].description
             ];
           }
@@ -167,7 +167,7 @@ export const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
           color: '#333',
           font: {
             size: 11,
-            weight: '500'
+            weight: 500
           }
         }
       }
@@ -186,7 +186,7 @@ export const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
 
       {/* Skills Breakdown */}
       <div className="skills-breakdown">
-        <h5>{t('results.skillsBreakdown', 'Skills Breakdown')}</h5>
+        <h5>{t('results.skillsBreakdown')}</h5>
         <div className="skills-list">
           {skillData.map((skill, index) => (
             <div key={index} className="skill-item">
@@ -210,7 +210,7 @@ export const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
 
       {/* Key Skills from Requirements */}
       <div className="key-skills">
-        <h5>{t('results.keySkills', 'Key Skills Required')}</h5>
+        <h5>{t('results.keySkills')}</h5>
         <div className="skills-tags">
           {recommendation.requirements.skills.slice(0, 6).map((skill, index) => (
             <span key={index} className="skill-tag">
@@ -219,7 +219,7 @@ export const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
           ))}
           {recommendation.requirements.skills.length > 6 && (
             <span className="skill-tag more">
-              +{recommendation.requirements.skills.length - 6} {t('results.more', 'more')}
+              +{recommendation.requirements.skills.length - 6} {t('results.more')}
             </span>
           )}
         </div>

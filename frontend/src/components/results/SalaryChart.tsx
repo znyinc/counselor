@@ -83,15 +83,14 @@ export const SalaryChart: React.FC<SalaryChartProps> = ({
           color: '#666',
           font: {
             size: 12,
-            weight: '500'
+            weight: 500
           }
         }
       },
       y: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(0, 0, 0, 0.1)',
-          drawBorder: false
+          color: 'rgba(0, 0, 0, 0.1)'
         },
         ticks: {
           color: '#666',

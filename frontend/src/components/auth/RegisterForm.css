@@ -1,0 +1,399 @@
+/**
+ * Register Form Styles
+ */
+
+.register-form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.register-form__header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.register-form__title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+}
+
+.register-form__subtitle {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.register-form__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.register-form__error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 0.875rem;
+}
+
+.register-form__error-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.register-form__error-message {
+  flex: 1;
+}
+
+.register-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.register-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.register-form__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.register-form__required {
+  color: #dc2626;
+}
+
+.register-form__input {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: #ffffff;
+}
+
+.register-form__input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.register-form__input--error {
+  border-color: #dc2626;
+}
+
+.register-form__input--error:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.register-form__input:disabled {
+  background-color: #f9fafb;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.register-form__select {
+  cursor: pointer;
+}
+
+.register-form__select:disabled {
+  cursor: not-allowed;
+}
+
+.register-form__password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.register-form__password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  color: #6b7280;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+
+.register-form__password-toggle:hover:not(:disabled) {
+  color: #374151;
+}
+
+.register-form__password-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.register-form__field-error {
+  font-size: 0.875rem;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.register-form__checkbox-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.register-form__checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.register-form__checkbox {
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.125rem;
+  cursor: pointer;
+  accent-color: #3b82f6;
+}
+
+.register-form__checkbox:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.register-form__checkbox-text {
+  flex: 1;
+}
+
+.register-form__actions {
+  margin-top: 1rem;
+}
+
+.register-form__submit {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.register-form__submit:hover:not(:disabled) {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.register-form__submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.register-form__submit:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.register-form__link {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  cursor: pointer;
+  font-size: 0.875rem;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.register-form__link:hover:not(:disabled) {
+  color: #2563eb;
+}
+
+.register-form__link:disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.register-form__link--primary {
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.register-form__link--primary:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.register-form__footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.register-form__footer-text {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .register-form {
+    padding: 1.5rem;
+    margin: 1rem;
+    max-width: none;
+  }
+
+  .register-form__title {
+    font-size: 1.5rem;
+  }
+
+  .register-form__subtitle {
+    font-size: 0.875rem;
+  }
+
+  .register-form__row {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-form {
+    padding: 1rem;
+  }
+
+  .register-form__form {
+    gap: 1rem;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .register-form {
+    border: 2px solid #000000;
+  }
+
+  .register-form__input {
+    border: 2px solid #000000;
+  }
+
+  .register-form__input:focus {
+    border-color: #0000ff;
+    box-shadow: 0 0 0 3px rgba(0, 0, 255, 0.3);
+  }
+
+  .register-form__submit {
+    border: 2px solid #000000;
+  }
+
+  .register-form__checkbox {
+    border: 2px solid #000000;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .register-form__input,
+  .register-form__submit,
+  .register-form__password-toggle,
+  .register-form__link {
+    transition: none;
+  }
+
+  .register-form__submit:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .register-form {
+    background: #1f2937;
+    border-color: #374151;
+    color: #f9fafb;
+  }
+
+  .register-form__title {
+    color: #f9fafb;
+  }
+
+  .register-form__subtitle {
+    color: #d1d5db;
+  }
+
+  .register-form__label {
+    color: #e5e7eb;
+  }
+
+  .register-form__input {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+
+  .register-form__input:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+  }
+
+  .register-form__input:disabled {
+    background-color: #4b5563;
+    color: #9ca3af;
+  }
+
+  .register-form__password-toggle {
+    color: #d1d5db;
+  }
+
+  .register-form__password-toggle:hover:not(:disabled) {
+    color: #f9fafb;
+  }
+
+  .register-form__checkbox-label {
+    color: #e5e7eb;
+  }
+
+  .register-form__error {
+    background-color: #7f1d1d;
+    border-color: #dc2626;
+    color: #fecaca;
+  }
+
+  .register-form__footer {
+    border-top-color: #4b5563;
+  }
+
+  .register-form__footer-text {
+    color: #d1d5db;
+  }
+}

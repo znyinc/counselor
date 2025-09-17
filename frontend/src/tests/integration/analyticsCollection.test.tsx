@@ -3,6 +3,8 @@
  * Tests analytics data collection during user interactions
  */
 
+// @ts-nocheck
+
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -10,7 +12,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from '../../App';
 import { LanguageProvider } from '../../contexts/LanguageContext';
 import { server } from './mocks/server';
-import { rest } from 'msw';
+import { http } from 'msw';
 import './setup';
 
 const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (

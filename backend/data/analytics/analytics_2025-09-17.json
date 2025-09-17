@@ -1,0 +1,288 @@
+[
+  {
+    "id": "analytics_1758122071950_jkz9gf",
+    "timestamp": "2025-09-17T15:14:31.950Z",
+    "anonymizedData": {
+      "profileHash": "d61dbf1159f770ae",
+      "demographics": {
+        "grade": "12",
+        "board": "CBSE",
+        "location": "Delhi",
+        "ruralUrban": "urban",
+        "languagePreference": "english",
+        "category": "General",
+        "gender": "male"
+      },
+      "socioeconomic": {
+        "incomeRange": "5-10 Lakh per annum",
+        "familyBackground": "other",
+        "economicFactors": [
+          "Stable income"
+        ],
+        "internetAccess": true,
+        "deviceAccess": [
+          "Laptop",
+          "Smartphone"
+        ]
+      },
+      "academic": {
+        "interests": [
+          "Technology",
+          "Science"
+        ],
+        "subjects": [
+          "Physics",
+          "Chemistry",
+          "Mathematics"
+        ],
+        "performance": "Good",
+        "favoriteSubjects": [
+          "Mathematics"
+        ],
+        "difficultSubjects": [
+          "Chemistry"
+        ],
+        "extracurricularActivities": [
+          "Coding Club"
+        ]
+      },
+      "recommendations": {
+        "totalCount": 1,
+        "averageMatchScore": 85,
+        "topCareerTitles": [
+          "Software Engineer"
+        ],
+        "demandLevels": [
+          "high"
+        ],
+        "averageSalaryRanges": [
+          600000
+        ]
+      },
+      "processing": {
+        "aiModel": "unknown",
+        "processingTime": 0,
+        "generatedAt": "2025-09-17T15:14:31.950Z"
+      }
+    }
+  },
+  {
+    "id": "analytics_1758122071958_f5094m",
+    "timestamp": "2025-09-17T15:14:31.958Z",
+    "anonymizedData": {
+      "profileHash": "f2be007cb579a1a2",
+      "demographics": {
+        "grade": "12",
+        "board": "CBSE",
+        "location": "Delhi",
+        "ruralUrban": "urban",
+        "languagePreference": "english",
+        "category": "General",
+        "gender": "male"
+      },
+      "socioeconomic": {
+        "incomeRange": "5-10 Lakh per annum",
+        "familyBackground": "other",
+        "economicFactors": [
+          "Stable income"
+        ],
+        "internetAccess": true,
+        "deviceAccess": [
+          "Laptop",
+          "Smartphone"
+        ]
+      },
+      "academic": {
+        "interests": [
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest",
+          "Interest"
+        ],
+        "subjects": [
+          "Physics",
+          "Chemistry",
+          "Mathematics"
+        ],
+        "performance": "Good",
+        "favoriteSubjects": [
+          "Mathematics"
+        ],
+        "difficultSubjects": [
+          "Chemistry"
+        ],
+        "extracurricularActivities": [
+          "Coding Club"
+        ]
+      },
+      "recommendations": {
+        "totalCount": 1,
+        "averageMatchScore": 85,
+        "topCareerTitles": [
+          "Software Engineer"
+        ],
+        "demandLevels": [
+          "high"
+        ],
+        "averageSalaryRanges": [
+          600000
+        ]
+      },
+      "processing": {
+        "aiModel": "unknown",
+        "processingTime": 0,
+        "generatedAt": "2025-09-17T15:14:31.958Z"
+      }
+    }
+  },
+  {
+    "id": "analytics_1758122071978_cgpftm",
+    "timestamp": "2025-09-17T15:14:31.978Z",
+    "anonymizedData": {
+      "profileHash": "51fb1147d1278517",
+      "demographics": {
+        "grade": "12",
+        "board": "CBSE",
+        "location": "Delhi",
+        "ruralUrban": "urban",
+        "languagePreference": "hindi",
+        "category": "General",
+        "gender": "male"
+      },
+      "socioeconomic": {
+        "incomeRange": "5-10 Lakh per annum",
+        "familyBackground": "other",
+        "economicFactors": [
+          "Stable income"
+        ],
+        "internetAccess": true,
+        "deviceAccess": [
+          "Laptop",
+          "Smartphone"
+        ]
+      },
+      "academic": {
+        "interests": [
+          "Technology",
+          "Science"
+        ],
+        "subjects": [
+          "Physics",
+          "Chemistry",
+          "Mathematics"
+        ],
+        "performance": "Good",
+        "favoriteSubjects": [
+          "Mathematics"
+        ],
+        "difficultSubjects": [
+          "Chemistry"
+        ],
+        "extracurricularActivities": [
+          "Coding Club"
+        ]
+      },
+      "recommendations": {
+        "totalCount": 1,
+        "averageMatchScore": 85,
+        "topCareerTitles": [
+          "Software Engineer"
+        ],
+        "demandLevels": [
+          "high"
+        ],
+        "averageSalaryRanges": [
+          600000
+        ]
+      },
+      "processing": {
+        "aiModel": "unknown",
+        "processingTime": 0,
+        "generatedAt": "2025-09-17T15:14:31.978Z"
+      }
+    }
+  },
+  {
+    "id": "analytics_1758122072063_2dyjar",
+    "timestamp": "2025-09-17T15:14:32.063Z",
+    "anonymizedData": {
+      "profileHash": "2108e09be30d77a1",
+      "demographics": {
+        "grade": "12",
+        "board": "CBSE",
+        "location": "Delhi",
+        "ruralUrban": "urban",
+        "languagePreference": "english",
+        "category": "General",
+        "gender": "male"
+      },
+      "socioeconomic": {
+        "incomeRange": "5-10 Lakh per annum",
+        "familyBackground": "other",
+        "economicFactors": [
+          "Stable income"
+        ],
+        "internetAccess": true,
+        "deviceAccess": [
+          "Laptop",
+          "Smartphone"
+        ]
+      },
+      "academic": {
+        "interests": [
+          "Technology",
+          "Science"
+        ],
+        "subjects": [
+          "Physics",
+          "Chemistry",
+          "Mathematics"
+        ],
+        "performance": "Good",
+        "favoriteSubjects": [
+          "Mathematics"
+        ],
+        "difficultSubjects": [
+          "Chemistry"
+        ],
+        "extracurricularActivities": [
+          "Coding Club"
+        ]
+      },
+      "recommendations": {
+        "totalCount": 1,
+        "averageMatchScore": 85,
+        "topCareerTitles": [
+          "Software Engineer"
+        ],
+        "demandLevels": [
+          "high"
+        ],
+        "averageSalaryRanges": [
+          600000
+        ]
+      },
+      "processing": {
+        "aiModel": "unknown",
+        "processingTime": 0,
+        "generatedAt": "2025-09-17T15:14:32.063Z"
+      }
+    }
+  }
+]

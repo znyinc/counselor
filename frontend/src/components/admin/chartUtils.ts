@@ -165,17 +165,22 @@ export const getLineChartOptions = (
 // Doughnut/Pie chart specific options
 export const getDoughnutChartOptions = (
   cutout = '60%'
-): Partial<ChartOptions<'doughnut'>> => ({
-  ...getBaseChartOptions(),
-  cutout,
-  plugins: {
-    ...getBaseChartOptions().plugins,
-    legend: {
-      ...getBaseChartOptions().plugins?.legend,
-      position: 'bottom' as const
+): Partial<ChartOptions<'doughnut'>> => {
+  const baseOptions = getBaseChartOptions();
+  const { scales, ...baseWithoutScales } = baseOptions;
+  
+  return {
+    ...baseWithoutScales,
+    cutout,
+    plugins: {
+      ...baseOptions.plugins,
+      legend: {
+        ...baseOptions.plugins?.legend,
+        position: 'bottom' as const
+      }
     }
-  }
-});
+  };
+};
 
 // Utility functions for data formatting
 export const formatNumber = (num: number): string => {

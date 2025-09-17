@@ -37,11 +37,11 @@ export class AuthenticationService {
    * Generate JWT access token
    */
   static generateAccessToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): string {
-    return jwt.sign(payload, this.JWT_SECRET, {
+    return jwt.sign(payload, this.JWT_SECRET as any, ({
       expiresIn: this.JWT_EXPIRES_IN,
       issuer: 'ai-career-counseling',
       audience: 'ai-career-counseling-users',
-    });
+    } as any));
   }
 
   /**
@@ -50,12 +50,12 @@ export class AuthenticationService {
   static generateRefreshToken(userId: string): string {
     return jwt.sign(
       { userId, type: 'refresh' },
-      this.JWT_SECRET,
-      {
+      this.JWT_SECRET as any,
+      ({
         expiresIn: this.REFRESH_TOKEN_EXPIRES_IN,
         issuer: 'ai-career-counseling',
         audience: 'ai-career-counseling-users',
-      }
+      } as any)
     );
   }
 
@@ -262,13 +262,13 @@ export const rateLimitByUser = (maxRequests: number, windowMs: number) => {
 
   return (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
     try {
-      const userId = req.user?.id || req.ip;
+  const userId: string = (req.user?.id ?? req.ip ?? 'anonymous') as string;
       const now = Date.now();
       
-      const userLimit = userRequests.get(userId);
+  const userLimit = userRequests.get(userId);
       
       if (!userLimit || now > userLimit.resetTime) {
-        userRequests.set(userId, {
+  userRequests.set(userId, {
           count: 1,
           resetTime: now + windowMs,
         });

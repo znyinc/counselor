@@ -103,26 +103,31 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
-  // Initialize form data with initial data if provided
+  // Only set formData from initialData or navigation state on mount or when those props change meaningfully
   useEffect(() => {
-    if (initialData) {
+    let didSet = false;
+    if (initialData && Object.keys(initialData).length > 0) {
       setFormData(prevData => ({
         ...prevData,
         ...initialData,
       }));
+      didSet = true;
+    } else {
+      const savedProfileData = getProfileData();
+      if (savedProfileData && Object.keys(savedProfileData).length > 0) {
+        setFormData(prevData => ({
+          ...prevData,
+          ...savedProfileData,
+        }));
+        didSet = true;
+      }
     }
-  }, [initialData]);
-
-  // Load saved profile data from navigation state
-  useEffect(() => {
-    const savedProfileData = getProfileData();
-    if (savedProfileData && !initialData) {
-      setFormData(prevData => ({
-        ...prevData,
-        ...savedProfileData,
-      }));
+    // Only reset currentStep if we loaded new data
+    if (didSet) {
+      setCurrentStep(0);
     }
-  }, [getProfileData, initialData]);
+    // eslint-disable-next-line
+  }, []); // Only run on mount
 
   // Update language preference when language changes
   useEffect(() => {
@@ -137,37 +142,34 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
 
   const handleFieldChange = useCallback((fieldName: string, value: any): void => {
     const fieldPath = fieldName.split('.');
-    
+
     setFormData(prevData => {
-      const newData = { ...prevData };
-      let current: any = newData;
-      
-      // Navigate to the correct nested object
-      for (let i = 0; i < fieldPath.length - 1; i++) {
-        if (!current[fieldPath[i]]) {
-          current[fieldPath[i]] = {};
+      // Deep clone only the changed path, preserve references for others
+      const clone = (obj: any, path: string[], idx: number): any => {
+        if (idx === path.length - 1) {
+          return { ...obj, [path[idx]]: value };
         }
-        current = current[fieldPath[i]];
-      }
-      
-      // Set the value
-      current[fieldPath[fieldPath.length - 1]] = value;
-      
-      return newData;
+        return {
+          ...obj,
+          [path[idx]]: clone(obj?.[path[idx]] || {}, path, idx + 1)
+        };
+      };
+      return clone(prevData, fieldPath, 0);
     });
 
     // Mark field as touched
     setTouched(prev => ({ ...prev, [fieldName]: true }));
 
     // Clear errors for this field
-    if (errors[fieldName]) {
-      setErrors(prev => {
+    setErrors(prev => {
+      if (prev[fieldName]) {
         const newErrors = { ...prev };
         delete newErrors[fieldName];
         return newErrors;
-      });
-    }
-  }, [errors]);
+      }
+      return prev;
+    });
+  }, []);
 
   const validateCurrentStep = (): boolean => {
     let stepErrors: FormErrors = {};
@@ -249,78 +251,69 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
     }
   };
 
-  const calculateProgress = useMemo((): number => {
-    const totalSteps = steps.length;
-    return Math.round(((currentStep + 1) / totalSteps) * 100);
-  }, [currentStep, steps.length]);
+
 
   // Form step components
-  const PersonalInfoStep: React.FC = () => (
+  const PersonalInfoStep = React.memo(({ personalInfo, errors, handleFieldChange, personalFormT }: {
+    personalInfo: PersonalInfo,
+    errors: FormErrors,
+    handleFieldChange: (fieldName: string, value: any) => void,
+    personalFormT: any
+  }) => (
     <div className="form-step">
       <h2>{personalFormT.t('form.personalInfo.title')}</h2>
       <p className="step-description">{personalFormT.t('form.personalInfo.description')}</p>
-      
       <FormField
         name="personalInfo.name"
         type="text"
         label={personalFormT.getFieldTranslation('name', 'label')}
-        value={formData.personalInfo?.name || ''}
+        value={typeof personalInfo?.name === 'string' ? personalInfo.name : ''}
         onChange={handleFieldChange}
         placeholder={personalFormT.getFieldTranslation('name', 'placeholder')}
         error={FormValidator.getFirstError(errors, 'name')}
         required
       />
-
       <div className="form-row">
         <FormField
           name="personalInfo.grade"
           type="select"
           label={personalFormT.getFieldTranslation('grade', 'label')}
-          value={formData.personalInfo?.grade || ''}
+          value={personalInfo?.grade || ''}
           onChange={handleFieldChange}
-          options={GRADE_LEVELS.map(grade => ({
-            value: grade,
-            label: grade,
-          }))}
+          options={GRADE_LEVELS.map(grade => ({ value: grade, label: grade }))}
           placeholder={personalFormT.getFieldTranslation('grade', 'placeholder')}
           error={FormValidator.getFirstError(errors, 'grade')}
           required
         />
-
         <FormField
           name="personalInfo.board"
           type="select"
           label={personalFormT.getFieldTranslation('board', 'label')}
-          value={formData.personalInfo?.board || ''}
+          value={personalInfo?.board || ''}
           onChange={handleFieldChange}
-          options={EDUCATION_BOARDS.map(board => ({
-            value: board,
-            label: board,
-          }))}
+          options={EDUCATION_BOARDS.map(board => ({ value: board, label: board }))}
           placeholder={personalFormT.getFieldTranslation('board', 'placeholder')}
           error={FormValidator.getFirstError(errors, 'board')}
           required
         />
       </div>
-
       <div className="form-row">
         <FormField
           name="personalInfo.age"
           type="number"
           label={personalFormT.getFieldTranslation('age', 'label')}
-          value={formData.personalInfo?.age || ''}
+          value={personalInfo?.age || ''}
           onChange={handleFieldChange}
           placeholder={personalFormT.getFieldTranslation('age', 'placeholder')}
           error={FormValidator.getFirstError(errors, 'age')}
           min={10}
           max={25}
         />
-
         <FormField
           name="personalInfo.gender"
           type="select"
           label={personalFormT.getFieldTranslation('gender', 'label')}
-          value={formData.personalInfo?.gender || ''}
+          value={personalInfo?.gender || ''}
           onChange={handleFieldChange}
           options={[
             { value: 'male', label: personalFormT.getOptionTranslation('gender', 'male') },
@@ -331,26 +324,21 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
           placeholder={personalFormT.getFieldTranslation('gender', 'placeholder')}
         />
       </div>
-
       <div className="form-row">
         <FormField
           name="personalInfo.category"
           type="select"
           label={personalFormT.getFieldTranslation('category', 'label')}
-          value={formData.personalInfo?.category || ''}
+          value={personalInfo?.category || ''}
           onChange={handleFieldChange}
-          options={STUDENT_CATEGORIES.map(category => ({
-            value: category,
-            label: personalFormT.getOptionTranslation('category', category.toLowerCase()),
-          }))}
+          options={STUDENT_CATEGORIES.map(category => ({ value: category, label: personalFormT.getOptionTranslation('category', category.toLowerCase()) }))}
           placeholder={personalFormT.getFieldTranslation('category', 'placeholder')}
         />
-
         <FormField
           name="personalInfo.physicallyDisabled"
           type="radio"
           label={personalFormT.getFieldTranslation('physicallyDisabled', 'label')}
-          value={formData.personalInfo?.physicallyDisabled ? 'yes' : 'no'}
+          value={personalInfo?.physicallyDisabled ? 'yes' : 'no'}
           onChange={(name, value) => handleFieldChange(name, value === 'yes')}
           options={[
             { value: 'no', label: personalFormT.getFieldTranslation('physicallyDisabled', 'no') },
@@ -359,126 +347,110 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
         />
       </div>
     </div>
-  );
+  ));
 
-  const AcademicInfoStep: React.FC = () => (
+  const AcademicInfoStep = React.memo(({ academicData, errors, handleFieldChange, academicFormT }: {
+    academicData: AcademicData,
+    errors: FormErrors,
+    handleFieldChange: (fieldName: string, value: any) => void,
+    academicFormT: any
+  }) => (
     <div className="form-step">
-      <h2>{academicFormT.t('form.academicInfo.title')}</h2>
-      <p className="step-description">{academicFormT.t('form.academicInfo.description')}</p>
-      
+      <h2>{academicFormT.t('academicInfo.title')}</h2>
+      <p className="step-description">{academicFormT.t('academicInfo.description')}</p>
       <FormField
         name="academicData.interests"
         type="multiselect"
         label={academicFormT.getFieldTranslation('interests', 'label')}
-        value={formData.academicData?.interests || []}
+        value={academicData?.interests || []}
         onChange={handleFieldChange}
-        options={COMMON_INTERESTS.map(interest => ({
-          value: interest,
-          label: interest,
-        }))}
+        options={COMMON_INTERESTS.map(interest => ({ value: interest, label: interest }))}
         helpText={academicFormT.getFieldTranslation('interests', 'helpText')}
         error={FormValidator.getFirstError(errors, 'interests')}
         required
       />
-
       <FormField
         name="academicData.subjects"
         type="multiselect"
         label={academicFormT.getFieldTranslation('subjects', 'label')}
-        value={formData.academicData?.subjects || []}
+        value={academicData?.subjects || []}
         onChange={handleFieldChange}
         options={[
           'Mathematics', 'Physics', 'Chemistry', 'Biology', 'English', 'Hindi',
           'History', 'Geography', 'Economics', 'Political Science', 'Computer Science',
           'Accountancy', 'Business Studies', 'Psychology', 'Sociology', 'Philosophy',
           'Physical Education', 'Art', 'Music'
-        ].map(subject => ({
-          value: subject,
-          label: subject,
-        }))}
+        ].map(subject => ({ value: subject, label: subject }))}
+        helpText={academicFormT.getFieldTranslation('subjects', 'helpText')}
         error={FormValidator.getFirstError(errors, 'subjects')}
         required
       />
-
       <FormField
         name="academicData.performance"
         type="select"
         label={academicFormT.getFieldTranslation('performance', 'label')}
-        value={formData.academicData?.performance || ''}
+        value={academicData?.performance || ''}
         onChange={handleFieldChange}
         options={[
-          { value: 'excellent', label: academicFormT.getOptionTranslation('performance', 'excellent') },
-          { value: 'good', label: academicFormT.getOptionTranslation('performance', 'good') },
-          { value: 'average', label: academicFormT.getOptionTranslation('performance', 'average') },
-          { value: 'below-average', label: academicFormT.getOptionTranslation('performance', 'below-average') },
+          { value: 'excellent', label: academicFormT.getOptionTranslation('performanceOptions', 'excellent') },
+          { value: 'good', label: academicFormT.getOptionTranslation('performanceOptions', 'good') },
+          { value: 'average', label: academicFormT.getOptionTranslation('performanceOptions', 'average') },
+          { value: 'below-average', label: academicFormT.getOptionTranslation('performanceOptions', 'below-average') },
         ]}
         placeholder={academicFormT.getFieldTranslation('performance', 'placeholder')}
         error={FormValidator.getFirstError(errors, 'performance')}
         required
       />
-
       <div className="form-row">
         <FormField
           name="academicData.favoriteSubjects"
           type="multiselect"
           label={academicFormT.getFieldTranslation('favoriteSubjects', 'label')}
-          value={formData.academicData?.favoriteSubjects || []}
+          value={academicData?.favoriteSubjects || []}
           onChange={handleFieldChange}
-          options={(formData.academicData?.subjects || []).map(subject => ({
-            value: subject,
-            label: subject,
-          }))}
+          options={(academicData?.subjects || []).map(subject => ({ value: subject, label: subject }))}
           helpText={academicFormT.getFieldTranslation('favoriteSubjects', 'helpText')}
         />
-
         <FormField
           name="academicData.difficultSubjects"
           type="multiselect"
           label={academicFormT.getFieldTranslation('difficultSubjects', 'label')}
-          value={formData.academicData?.difficultSubjects || []}
+          value={academicData?.difficultSubjects || []}
           onChange={handleFieldChange}
-          options={(formData.academicData?.subjects || []).map(subject => ({
-            value: subject,
-            label: subject,
-          }))}
+          options={(academicData?.subjects || []).map(subject => ({ value: subject, label: subject }))}
           helpText={academicFormT.getFieldTranslation('difficultSubjects', 'helpText')}
         />
       </div>
-
       <FormField
         name="academicData.extracurricularActivities"
         type="multiselect"
         label={academicFormT.getFieldTranslation('extracurricular', 'label')}
-        value={formData.academicData?.extracurricularActivities || []}
+        value={academicData?.extracurricularActivities || []}
         onChange={handleFieldChange}
         options={[
           'Sports', 'Music', 'Dance', 'Drama', 'Debate', 'Quiz', 'Art', 'Photography',
           'Writing', 'Robotics', 'Science Club', 'Math Olympiad', 'Model UN',
           'Community Service', 'Environmental Club', 'Student Government'
-        ].map(activity => ({
-          value: activity,
-          label: activity,
-        }))}
+        ].map(activity => ({ value: activity, label: activity }))}
         helpText={academicFormT.getFieldTranslation('extracurricular', 'helpText')}
       />
-
       <FormField
         name="academicData.achievements"
         type="textarea"
         label={academicFormT.getFieldTranslation('achievements', 'label')}
-        value={formData.academicData?.achievements?.join('\n') || ''}
+        value={academicData?.achievements?.join('\n') || ''}
         onChange={(name, value) => handleFieldChange(name, value.split('\n').filter((item: string) => item.trim()))}
         placeholder={academicFormT.getFieldTranslation('achievements', 'placeholder')}
         helpText={academicFormT.getFieldTranslation('achievements', 'helpText')}
         rows={4}
       />
     </div>
-  );
+  ));
 
   const SocioeconomicInfoStep: React.FC = () => (
     <div className="form-step">
-      <h2>{socioFormT.t('form.socioeconomicInfo.title')}</h2>
-      <p className="step-description">{socioFormT.t('form.socioeconomicInfo.description')}</p>
+      <h2>{socioFormT.t('socioeconomicInfo.title')}</h2>
+      <p className="step-description">{socioFormT.t('socioeconomicInfo.description')}</p>
       
       <FormField
         name="socioeconomicData.location"
@@ -765,12 +737,12 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
     {
       id: 'personal',
       title: t('form.progress.personalInfo', 'Personal Info'),
-      component: <PersonalInfoStep />,
+      component: <PersonalInfoStep personalInfo={formData.personalInfo!} errors={errors} handleFieldChange={handleFieldChange} personalFormT={personalFormT} />,
     },
     {
       id: 'academic',
       title: t('form.progress.academicInfo', 'Academic Info'),
-      component: <AcademicInfoStep />,
+      component: <AcademicInfoStep academicData={formData.academicData!} errors={errors} handleFieldChange={handleFieldChange} academicFormT={academicFormT} />,
     },
     {
       id: 'background',
@@ -787,7 +759,12 @@ export const StudentProfileForm: React.FC<StudentProfileFormProps> = React.memo(
       title: t('form.progress.review', 'Review'),
       component: <ConstraintsStep />,
     },
-  ], [t]);
+  ], [t, formData.personalInfo, formData.academicData, errors, handleFieldChange, personalFormT, academicFormT]);
+
+  const calculateProgress = useMemo((): number => {
+    const totalSteps = steps.length;
+    return Math.round(((currentStep + 1) / totalSteps) * 100);
+  }, [currentStep, steps.length]);
 
   return (
     <div className="student-profile-form">

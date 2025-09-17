@@ -295,8 +295,8 @@ export class CareerRecommendationUtils {
       datasets: [{
         label: 'Skill Requirements',
         data: [skills.technical, skills.communication, skills.leadership, skills.creativity, skills.analytical],
-        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-        borderColor: '#3B82F6',
+        backgroundColor: ['rgba(59, 130, 246, 0.2)'],
+        borderColor: ['#3B82F6'],
         borderWidth: 2
       }]
     };
@@ -361,7 +361,9 @@ export class CareerRecommendationUtils {
     });
 
     const totalYears = steps.reduce((total, step) => {
-      const years = parseInt(step.duration.split('-')[0]) || parseInt(step.duration);
+      const dur = String(step.duration || '0');
+      const firstPart = String(dur.split('-')[0] || '0');
+      const years = parseInt(firstPart) || parseInt(String(dur)) || 0;
       return total + years;
     }, 0);
 

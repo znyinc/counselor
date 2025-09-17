@@ -174,7 +174,10 @@ export const ErrorNotification: React.FC<ErrorNotificationProps> = ({
               disabled={countdown > 0}
             >
               {countdown > 0 
-                ? t('errors.retryIn', { seconds: countdown })
+                ? t('errors.retryIn', { 
+                    defaultValue: `Retry in ${countdown} seconds`,
+                    interpolation: { seconds: countdown }
+                  })
                 : t('errors.retry')
               }
             </button>
